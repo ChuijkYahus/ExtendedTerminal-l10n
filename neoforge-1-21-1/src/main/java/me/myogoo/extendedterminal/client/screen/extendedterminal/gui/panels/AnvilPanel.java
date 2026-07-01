@@ -76,11 +76,6 @@ public class AnvilPanel extends ETTerminalModePanel {
 
     @Override
     public void updateBeforeRender() {
-        var resultSlot = menu.getSlots(ETSlotSemantics.ANVIL_RESULT).getFirst();
-        if (resultSlot.hasItem()) {
-            enchantCostLabel.setCost(menu.getAnvilCost());
-        } else {
-            enchantCostLabel.setCost(0);
-        }
+        enchantCostLabel.setCost(menu.getAnvilCost());
     }
 }

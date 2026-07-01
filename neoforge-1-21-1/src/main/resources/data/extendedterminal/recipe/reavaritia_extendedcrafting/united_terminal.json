@@ -2,14 +2,11 @@
   "neoforge:conditions": [
     {
       "type": "myotus:mod_condition",
-      "active_mod": "extendedcrafting"
+      "active_mod": "re-avaritia"
     },
     {
-      "type": "neoforge:not",
-      "value": {
-        "type": "myotus:mod_condition",
-        "active_mod": "re-avaritia"
-      }
+      "type": "myotus:mod_condition",
+      "active_mod": "extendedcrafting"
     },
     {
       "type": "neoforge:not",
@@ -23,6 +20,18 @@
   "ingredients": [
     {
       "item": "myotus:compat_processor"
+    },
+    {
+      "item": "extendedterminal:sculk_terminal"
+    },
+    {
+      "item": "extendedterminal:nether_terminal"
+    },
+    {
+      "item": "extendedterminal:end_terminal"
+    },
+    {
+      "item": "extendedterminal:extreme_terminal"
     },
     {
       "item": "extendedterminal:basic_terminal"

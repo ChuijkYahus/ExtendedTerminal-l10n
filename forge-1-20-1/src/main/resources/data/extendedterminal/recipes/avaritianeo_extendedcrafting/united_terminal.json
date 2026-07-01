@@ -5,6 +5,10 @@
       "conditions": [
         {
           "type": "myotus:mod_condition",
+          "active_mod": "avaritia-neo"
+        },
+        {
+          "type": "myotus:mod_condition",
           "active_mod": "extendedcrafting"
         },
         {
@@ -13,13 +17,6 @@
             "type": "myotus:mod_condition",
             "active_mod": "re-avaritia"
           }
-        },
-        {
-          "type": "forge:not",
-          "value": {
-            "type": "myotus:mod_condition",
-            "active_mod": "avaritia-neo"
-          }
         }
       ],
       "recipe": {
@@ -27,6 +24,9 @@
         "ingredients": [
           {
             "item": "myotus:compat_processor"
+          },
+          {
+            "item": "extendedterminal:neo_extreme_terminal"
           },
           {
             "item": "extendedterminal:basic_terminal"

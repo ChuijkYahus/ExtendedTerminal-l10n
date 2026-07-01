@@ -58,12 +58,6 @@ public class AnvilPanel extends ETTerminalModePanel {
     }
 
 
-    @Override
-    public void updateBeforeRender() {
-        var resultSlot = menu.getSlots(ETSlotSemantics.ANVIL_RESULT).get(0);
-        this.enchantCostLabel.setCost(resultSlot.hasItem() ? menu.getAnvilCost() : 0);
-    }
-
     private void onNameChanged(String input) {
         var slot = menu.getSlots(ETSlotSemantics.ANVIL_LEFT_INPUT).get(0);
         if (slot.hasItem()) {
@@ -73,5 +67,10 @@ public class AnvilPanel extends ETTerminalModePanel {
             }
             menu.setAnvilItemName(name);
         }
+    }
+
+    @Override
+    public void updateBeforeRender() {
+        this.enchantCostLabel.setCost(menu.getAnvilCost());
     }
 }

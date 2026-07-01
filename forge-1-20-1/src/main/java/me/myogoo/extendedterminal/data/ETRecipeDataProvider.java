@@ -58,8 +58,6 @@ public final class ETRecipeDataProvider extends JsonRecipeProvider {
                 "extendedcrafting:epic_table", "ae2:crafting_terminal", "extendedterminal:epic_terminal");
         saveTerminalUpgrade(output, "extendedcrafting/ultimate_terminal", extendedCrafting,
                 "extendedcrafting:ultimate_table", "ae2:crafting_terminal", "extendedterminal:ultimate_terminal");
-        saveTerminalUpgrade(output, "extendedcrafting/united_terminal", extendedCrafting,
-                "extendedcrafting:ultimate_table", "extendedterminal:ultimate_terminal", "extendedterminal:united_terminal");
 
         JsonArray avaritiaNeo = conditions("avaritia-neo");
         saveTerminalUpgrade(output, "avaritianeo/extreme_terminal", avaritiaNeo,
@@ -74,6 +72,8 @@ public final class ETRecipeDataProvider extends JsonRecipeProvider {
                 "avaritia:end_crafting_table", "ae2:crafting_terminal", "extendedterminal:end_terminal");
         saveTerminalUpgrade(output, "reavaritia/extreme_terminal", reAvaritia,
                 "avaritia:extreme_crafting_table", "ae2:crafting_terminal", "extendedterminal:extreme_terminal");
+
+        buildUnitedTerminalCrafting(output);
 
         saveShaped(output, "extendedterminal/wt/wireless_et_terminal", conditions("ae2wtlib"),
                 "extendedterminal:wireless_et_terminal",
@@ -104,6 +104,39 @@ public final class ETRecipeDataProvider extends JsonRecipeProvider {
                 "extendedterminal:wireless_united_terminal", "wireless_united_terminal");
     }
 
+    private static void buildUnitedTerminalCrafting(JsonRecipeOutput output) {
+        saveUnitedTerminal(output, "reavaritia/united_terminal",
+                conditionsFor(new String[]{"re-avaritia"}, "avaritia-neo", "extendedcrafting"),
+                "extendedterminal:sculk_terminal", "extendedterminal:nether_terminal",
+                "extendedterminal:end_terminal", "extendedterminal:extreme_terminal");
+        saveUnitedTerminal(output, "avaritianeo/united_terminal",
+                conditionsFor(new String[]{"avaritia-neo"}, "re-avaritia", "extendedcrafting"),
+                "extendedterminal:neo_extreme_terminal");
+        saveUnitedTerminal(output, "extendedcrafting/united_terminal",
+                conditionsFor(new String[]{"extendedcrafting"}, "re-avaritia", "avaritia-neo"),
+                "extendedterminal:basic_terminal", "extendedterminal:advanced_terminal",
+                "extendedterminal:elite_terminal", "extendedterminal:ultimate_terminal");
+        saveUnitedTerminal(output, "reavaritia_extendedcrafting/united_terminal",
+                conditionsFor(new String[]{"re-avaritia", "extendedcrafting"}, "avaritia-neo"),
+                "extendedterminal:sculk_terminal", "extendedterminal:nether_terminal",
+                "extendedterminal:end_terminal", "extendedterminal:extreme_terminal",
+                "extendedterminal:basic_terminal", "extendedterminal:advanced_terminal",
+                "extendedterminal:elite_terminal", "extendedterminal:ultimate_terminal");
+        saveUnitedTerminal(output, "avaritianeo_extendedcrafting/united_terminal",
+                conditionsFor(new String[]{"avaritia-neo", "extendedcrafting"}, "re-avaritia"),
+                "extendedterminal:neo_extreme_terminal",
+                "extendedterminal:basic_terminal", "extendedterminal:advanced_terminal",
+                "extendedterminal:elite_terminal", "extendedterminal:ultimate_terminal");
+    }
+
+    private static void saveUnitedTerminal(JsonRecipeOutput output, String path, JsonArray conditions,
+            String... terminals) {
+        String[] ingredients = new String[terminals.length + 1];
+        ingredients[0] = "myotus:compat_processor";
+        System.arraycopy(terminals, 0, ingredients, 1, terminals.length);
+        saveShapeless(output, path, conditions, "extendedterminal:united_terminal", ingredients);
+    }
+
     private static void saveTerminalUpgrade(JsonRecipeOutput output, String path, JsonArray conditions,
             String table, String terminal, String result) {
         saveShaped(output, path, conditions, result,
@@ -118,6 +151,18 @@ public final class ETRecipeDataProvider extends JsonRecipeProvider {
         recipe.add("ingredients", ingredients);
         recipe.add("result", result(result, 1));
         save(output, path, recipe);
+    }
+
+    private static void saveShapeless(JsonRecipeOutput output, String path, JsonArray conditions, String result,
+            String... ingredients) {
+        JsonObject recipe = recipe("minecraft:crafting_shapeless");
+        JsonArray ingredientsJson = new JsonArray();
+        for (String ingredient : ingredients) {
+            ingredientsJson.add(item(ingredient));
+        }
+        recipe.add("ingredients", ingredientsJson);
+        recipe.add("result", result(result, 1));
+        save(output, path, wrap(conditions, recipe));
     }
 
     private static void saveShaped(JsonRecipeOutput output, String path, JsonArray conditions, String result,
@@ -175,6 +220,21 @@ public final class ETRecipeDataProvider extends JsonRecipeProvider {
             conditions.add(myoCondition(activeMod));
         }
         return conditions;
+    }
+
+    private static JsonArray conditionsFor(String[] activeMods, String... inactiveMods) {
+        JsonArray conditions = conditions(activeMods);
+        for (String inactiveMod : inactiveMods) {
+            conditions.add(notCondition(myoCondition(inactiveMod)));
+        }
+        return conditions;
+    }
+
+    private static JsonObject notCondition(JsonObject value) {
+        JsonObject condition = new JsonObject();
+        condition.addProperty("type", "forge:not");
+        condition.add("value", value);
+        return condition;
     }
 
     private static JsonObject recipe(String type) {

@@ -5,20 +5,20 @@
       "conditions": [
         {
           "type": "myotus:mod_condition",
-          "active_mod": "extendedcrafting"
-        },
-        {
-          "type": "forge:not",
-          "value": {
-            "type": "myotus:mod_condition",
-            "active_mod": "re-avaritia"
-          }
+          "active_mod": "re-avaritia"
         },
         {
           "type": "forge:not",
           "value": {
             "type": "myotus:mod_condition",
             "active_mod": "avaritia-neo"
+          }
+        },
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "myotus:mod_condition",
+            "active_mod": "extendedcrafting"
           }
         }
       ],
@@ -29,16 +29,16 @@
             "item": "myotus:compat_processor"
           },
           {
-            "item": "extendedterminal:basic_terminal"
+            "item": "extendedterminal:sculk_terminal"
           },
           {
-            "item": "extendedterminal:advanced_terminal"
+            "item": "extendedterminal:nether_terminal"
           },
           {
-            "item": "extendedterminal:elite_terminal"
+            "item": "extendedterminal:end_terminal"
           },
           {
-            "item": "extendedterminal:ultimate_terminal"
+            "item": "extendedterminal:extreme_terminal"
           }
         ],
         "result": {

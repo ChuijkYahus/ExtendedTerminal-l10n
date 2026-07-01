@@ -2,6 +2,10 @@
   "neoforge:conditions": [
     {
       "type": "myotus:mod_condition",
+      "active_mod": "avaritia-neo"
+    },
+    {
+      "type": "myotus:mod_condition",
       "active_mod": "extendedcrafting"
     },
     {
@@ -10,19 +14,15 @@
         "type": "myotus:mod_condition",
         "active_mod": "re-avaritia"
       }
-    },
-    {
-      "type": "neoforge:not",
-      "value": {
-        "type": "myotus:mod_condition",
-        "active_mod": "avaritia-neo"
-      }
     }
   ],
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
       "item": "myotus:compat_processor"
+    },
+    {
+      "item": "extendedterminal:neo_extreme_terminal"
     },
     {
       "item": "extendedterminal:basic_terminal"

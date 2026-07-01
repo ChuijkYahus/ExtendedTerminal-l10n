@@ -15,6 +15,7 @@ import me.myogoo.extendedterminal.menu.ETMenuType;
 import me.myogoo.extendedterminal.menu.extendedterminal.ETTerminalMenu;
 import me.myogoo.extendedterminal.menu.extendedterminal.ETTerminalMode;
 import me.myogoo.extendedterminal.part.ETTerminalBasePart;
+import me.myogoo.myotus.api.experience.ExperienceMath;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -52,6 +53,8 @@ public class ETTerminalPart extends ETTerminalBasePart implements IETTerminalHos
     private ETTerminalMode mode;
     @Nullable
     private ResourceLocation stonecuttingRecipeId;
+    @Nullable
+    private ExperienceMath.ExperienceSource rememberedAnvilExperienceSource;
     private boolean isLoading = false;
 
     public ETTerminalPart(IPartItem<?> partItem) {
@@ -97,6 +100,9 @@ public class ETTerminalPart extends ETTerminalBasePart implements IETTerminalHos
         if (this.stonecuttingRecipeId != null) {
             data.putString("stonecuttingRecipeId", this.stonecuttingRecipeId.toString());
         }
+        if (this.rememberedAnvilExperienceSource != null) {
+            data.putString("anvilExperienceSource", this.rememberedAnvilExperienceSource.name());
+        }
 
         smithingGrid.writeToNBT(data, "smithingGrid", registries);
         stoneCutterGrid.writeToNBT(data, "stoneCutterGrid", registries);
@@ -127,6 +133,7 @@ public class ETTerminalPart extends ETTerminalBasePart implements IETTerminalHos
             } else {
                 this.stonecuttingRecipeId = null;
             }
+            this.rememberedAnvilExperienceSource = readAnvilExperienceSource(data);
             smithingGrid.readFromNBT(data, "smithingGrid", registries);
             stoneCutterGrid.readFromNBT(data, "stoneCutterGrid", registries);
             anvilInv.readFromNBT(data, "anvilInv", registries);
@@ -176,6 +183,28 @@ public class ETTerminalPart extends ETTerminalBasePart implements IETTerminalHos
     public void setStoneCutterRecipeId(@Nullable ResourceLocation stonecuttingRecipeId) {
         this.stonecuttingRecipeId = stonecuttingRecipeId;
         this.saveChanges();
+    }
+
+    @Override
+    public @Nullable ExperienceMath.ExperienceSource getRememberedAnvilExperienceSource() {
+        return this.rememberedAnvilExperienceSource;
+    }
+
+    @Override
+    public void setRememberedAnvilExperienceSource(@Nullable ExperienceMath.ExperienceSource source) {
+        this.rememberedAnvilExperienceSource = source;
+        this.saveChanges();
+    }
+
+    private static @Nullable ExperienceMath.ExperienceSource readAnvilExperienceSource(CompoundTag data) {
+        if (!data.contains("anvilExperienceSource", Tag.TAG_STRING)) {
+            return null;
+        }
+        try {
+            return ExperienceMath.ExperienceSource.valueOf(data.getString("anvilExperienceSource"));
+        } catch (IllegalArgumentException ignored) {
+            return null;
+        }
     }
 
 

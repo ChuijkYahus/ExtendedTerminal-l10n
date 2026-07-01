@@ -1,6 +1,5 @@
 package me.myogoo.extendedterminal.menu.extendedterminal;
 
-import appeng.api.config.Actionable;
 import appeng.api.networking.security.IActionSource;
 import appeng.api.inventories.ISegmentedInventory;
 import appeng.api.inventories.InternalInventory;
@@ -105,6 +104,7 @@ public class ETTerminalMenu extends ETTerminalBaseMenu<CraftingRecipe> {
     @GuiSync(5)
     private boolean anvilAppliedExperiencedAvailable;
     private boolean handlingAnvilTake;
+    private boolean anvilExperienceConsumedForTake;
 
     public ETTerminalMenu(MenuType<?> menuType, int id, Inventory ip, IETTerminalHost host) {
         super(menuType, id, ip, host, ETMenuType.ET_TERMINAL,
@@ -168,6 +168,9 @@ public class ETTerminalMenu extends ETTerminalBaseMenu<CraftingRecipe> {
         registerClientAction(ACTION_SET_ANVIL_ITEM_NAME, String.class, this::setAnvilItemName);
         registerClientAction(ACTION_CYCLE_ANVIL_EXPERIENCE_SOURCE_PRIORITY, this::cycleAnvilExperienceSourcePriority);
 
+        if (isServerSide()) {
+            updateAnvilExperienceSourceAvailability();
+        }
         updateCurrentRecipeAndOutput(true);
     }
 
@@ -431,6 +434,7 @@ public class ETTerminalMenu extends ETTerminalBaseMenu<CraftingRecipe> {
             this.anvilExperienceSourcePriorityIndex = sourceCount <= 1
                     ? 0
                     : (this.anvilExperienceSourcePriorityIndex + 1) % sourceCount;
+            rememberSelectedAnvilExperienceSource();
         }
     }
 
@@ -483,10 +487,27 @@ public class ETTerminalMenu extends ETTerminalBaseMenu<CraftingRecipe> {
         this.anvilAppliedExperiencedAvailable = hasNetworkExperienceSource(
                 ExperienceMath.ExperienceSource.APPLIED_EXPERIENCED_AMOUNT);
 
-        int sourceCount = getAvailableAnvilExperienceSources().size();
-        this.anvilExperienceSourcePriorityIndex = sourceCount <= 1
-                ? 0
-                : Math.floorMod(this.anvilExperienceSourcePriorityIndex, sourceCount);
+        restoreRememberedAnvilExperienceSource();
+    }
+
+    private void restoreRememberedAnvilExperienceSource() {
+        var sources = getAvailableAnvilExperienceSources();
+        var remembered = this.host.getRememberedAnvilExperienceSource();
+        var selected = remembered != null && sources.contains(remembered)
+                ? remembered
+                : ExperienceMath.ExperienceSource.PLAYER;
+        int index = sources.indexOf(selected);
+        this.anvilExperienceSourcePriorityIndex = index >= 0 ? index : 0;
+        if (this.host.getRememberedAnvilExperienceSource() != selected) {
+            this.host.setRememberedAnvilExperienceSource(selected);
+        }
+    }
+
+    private void rememberSelectedAnvilExperienceSource() {
+        var selected = getAnvilExperienceSourcePriority().get(0);
+        if (this.host.getRememberedAnvilExperienceSource() != selected) {
+            this.host.setRememberedAnvilExperienceSource(selected);
+        }
     }
 
     private boolean hasNetworkExperienceSource(ExperienceMath.ExperienceSource source) {
@@ -497,41 +518,58 @@ public class ETTerminalMenu extends ETTerminalBaseMenu<CraftingRecipe> {
         if (player.getAbilities().instabuild) {
             return true;
         }
-        return createAnvilExperienceConsumptionPlan(player).canPay();
+        return createAnvilExperience(player).enough();
     }
 
     public boolean consumeAnvilExperience(Player player) {
         if (player.getAbilities().instabuild) {
             return true;
         }
-        var plan = createAnvilExperienceConsumptionPlan(player);
-        if (!plan.canPay()) {
+        var experience = createAnvilExperience(player);
+        if (!experience.enough()) {
             return false;
         }
 
-        if (!canExtractStorageExperience(player, plan.fluidXpUsed(), ExperienceMath.ExperienceSource.FLUID_XP)
-                || !canExtractStorageExperience(player, plan.appliedExperiencedAmountUsed(),
+        if (!canExtractStorageExperience(player, experience.fluidXp(), ExperienceMath.ExperienceSource.FLUID_XP)
+                || !canExtractStorageExperience(player, experience.appliedExperiencedAmount(),
                         ExperienceMath.ExperienceSource.APPLIED_EXPERIENCED_AMOUNT)) {
             return false;
         }
 
-        extractStorageExperience(player, plan.fluidXpUsed(), ExperienceMath.ExperienceSource.FLUID_XP);
-        extractStorageExperience(player, plan.appliedExperiencedAmountUsed(),
-                ExperienceMath.ExperienceSource.APPLIED_EXPERIENCED_AMOUNT);
+        if (!extractStorageExperienceExact(player, experience.fluidXp(), ExperienceMath.ExperienceSource.FLUID_XP)
+                || !extractStorageExperienceExact(player, experience.appliedExperiencedAmount(),
+                        ExperienceMath.ExperienceSource.APPLIED_EXPERIENCED_AMOUNT)) {
+            return false;
+        }
 
-        long playerExperienceUsed = plan.playerExperienceUsed();
+        long playerExperienceUsed = experience.player();
         if (playerExperienceUsed > 0) {
             player.giveExperiencePoints(-Math.toIntExact(playerExperienceUsed));
         }
         return true;
     }
 
-    private ExperienceMath.ExperienceConsumptionPlan createAnvilExperienceConsumptionPlan(Player player) {
+    public boolean prepareAnvilExperienceForTake(Player player) {
+        if (player.level().isClientSide || player.getAbilities().instabuild) {
+            return canPayAnvilCost(player);
+        }
+        if (this.anvilExperienceConsumedForTake) {
+            return true;
+        }
+        this.anvilExperienceConsumedForTake = consumeAnvilExperience(player);
+        return this.anvilExperienceConsumedForTake;
+    }
+
+    public void clearPreparedAnvilExperienceForTake() {
+        this.anvilExperienceConsumedForTake = false;
+    }
+
+    private ExperienceMath.MyoExperience createAnvilExperience(Player player) {
         return MyotusAPI.experience().consumeExperience(
                 getRequiredAnvilExperience(player),
                 getPlayerRawExperience(player),
-                getAvailableFluidXpExperience(),
-                getAvailableAppliedExperiencedAmount(),
+                getExtractableFluidXpExperience(player),
+                getExtractableAppliedExperiencedAmount(player),
                 getAnvilExperienceSourcePriority());
     }
 
@@ -556,16 +594,17 @@ public class ETTerminalMenu extends ETTerminalBaseMenu<CraftingRecipe> {
                 + Math.round(player.experienceProgress * player.getXpNeededForNextLevel());
     }
 
-    private long getAvailableFluidXpExperience() {
-        return getAvailableStorageExperience(ExperienceMath.ExperienceSource.FLUID_XP);
+    private long getExtractableFluidXpExperience(Player player) {
+        return getExtractableStorageExperience(player, ExperienceMath.ExperienceSource.FLUID_XP);
     }
 
-    private long getAvailableAppliedExperiencedAmount() {
-        return getAvailableStorageExperience(ExperienceMath.ExperienceSource.APPLIED_EXPERIENCED_AMOUNT);
+    private long getExtractableAppliedExperiencedAmount(Player player) {
+        return getExtractableStorageExperience(player, ExperienceMath.ExperienceSource.APPLIED_EXPERIENCED_AMOUNT);
     }
 
-    private long getAvailableStorageExperience(ExperienceMath.ExperienceSource source) {
-        return MyotusAPI.experience().availableStorageExperience(this.storage, source);
+    private long getExtractableStorageExperience(Player player, ExperienceMath.ExperienceSource source) {
+        return MyotusAPI.experience().extractableStorageExperience(this.powerSource, this.storage,
+                getActionSourceFor(player), source);
     }
 
     private IActionSource getActionSourceFor(Player player) {
@@ -577,9 +616,9 @@ public class ETTerminalMenu extends ETTerminalBaseMenu<CraftingRecipe> {
                 getActionSourceFor(player), amount, source);
     }
 
-    private void extractStorageExperience(Player player, long amount, ExperienceMath.ExperienceSource source) {
-        MyotusAPI.experience().extractStorageExperience(this.powerSource, this.storage, getActionSourceFor(player),
-                amount, source, Actionable.MODULATE);
+    private boolean extractStorageExperienceExact(Player player, long amount, ExperienceMath.ExperienceSource source) {
+        return MyotusAPI.experience().extractStorageExperienceExact(this.powerSource, this.storage,
+                getActionSourceFor(player), amount, source);
     }
 
     @Override
@@ -598,6 +637,11 @@ public class ETTerminalMenu extends ETTerminalBaseMenu<CraftingRecipe> {
                 updateCurrentRecipeAndOutput(true);
             }
         } else {
+            this.anvilDelegate.slots.get(0).set(this.anvilLeftSlot.getItem());
+            this.anvilDelegate.slots.get(1).set(this.anvilRightSlot.getItem());
+            if (this.anvilDelegate.setItemName(name)) {
+                updateCurrentRecipeAndOutput(true);
+            }
             sendClientAction(ACTION_SET_ANVIL_ITEM_NAME, name);
         }
     }

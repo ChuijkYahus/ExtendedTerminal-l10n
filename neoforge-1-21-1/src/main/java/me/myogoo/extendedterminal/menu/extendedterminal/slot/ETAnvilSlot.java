@@ -25,26 +25,33 @@ public class ETAnvilSlot extends AppEngCraftingSlot {
 
     @Override
     public void onTake(Player player, ItemStack stack) {
-        if (this.getMenu() instanceof ETTerminalMenu terminalMenu && !terminalMenu.consumeAnvilExperience(player)) {
+        ETTerminalMenu terminalMenu = this.getMenu() instanceof ETTerminalMenu menu ? menu : null;
+        if (terminalMenu != null && !terminalMenu.prepareAnvilExperienceForTake(player)) {
             return;
         }
-        anvilDelegate.ET$OnTakeWithoutExperience(player, stack);
+        try {
+            anvilDelegate.ET$OnTakeWithoutExperience(player, stack);
 
-        ItemStack newLeft = anvilDelegate.slots.get(0).getItem().copy();
-        ItemStack newRight = anvilDelegate.slots.get(1).getItem().copy();
+            ItemStack newLeft = anvilDelegate.slots.get(0).getItem().copy();
+            ItemStack newRight = anvilDelegate.slots.get(1).getItem().copy();
 
-        if (this.getMenu() instanceof ETTerminalMenu terminalMenu) {
-            terminalMenu.onAnvilTake(() -> {
-                LEFT_INPUT.set(newLeft);
-                RIGHT_INPUT.set(newRight);
-            });
+            if (terminalMenu != null) {
+                terminalMenu.onAnvilTake(() -> {
+                    LEFT_INPUT.set(newLeft);
+                    RIGHT_INPUT.set(newRight);
+                });
+            }
+        } finally {
+            if (terminalMenu != null) {
+                terminalMenu.clearPreparedAnvilExperienceForTake();
+            }
         }
     }
 
     @Override
     public boolean mayPickup(Player player) {
         if (this.getMenu() instanceof ETTerminalMenu terminalMenu) {
-            return super.mayPickup(player) && terminalMenu.canPayAnvilCost(player);
+            return super.mayPickup(player) && terminalMenu.prepareAnvilExperienceForTake(player);
         }
         return anvilDelegate.ET$MayPickup(player, super.mayPickup(player));
     }
