@@ -38,7 +38,7 @@ public class ExCraftingTerminalSlot extends ETCraftingBaseSlot<ITableRecipe, Tab
         if (this.menu instanceof ExtendedTerminalBaseMenu terminalMenu) {
             var recipe = terminalMenu.getCurrentRecipe();
 
-            if (recipe != null && recipe.value().matches(terminalMenu.createTableInput(ic.items(), recipe.value()), level)) {
+            if (recipe != null && recipe.value().matches(ic, level)) {
                 return terminalMenu.getCurrentRecipe();
             }
         }
@@ -51,11 +51,8 @@ public class ExCraftingTerminalSlot extends ETCraftingBaseSlot<ITableRecipe, Tab
         if (this.menu instanceof ExtendedTerminalBaseMenu terminalMenu) {
             var recipe = terminalMenu.getCurrentRecipe();
 
-            if (recipe != null) {
-                var adjustedInput = terminalMenu.createTableInput(ic.items(), recipe.value());
-                if (recipe.value().matches(adjustedInput, level)) {
-                    return terminalMenu.getCurrentRecipe().value().getRemainingItems(adjustedInput);
-                }
+            if (recipe != null && recipe.value().matches(ic, level)) {
+                return terminalMenu.getCurrentRecipe().value().getRemainingItems(ic);
             }
         }
         return super.getRemainingItems(ic,level);
@@ -70,9 +67,8 @@ public class ExCraftingTerminalSlot extends ETCraftingBaseSlot<ITableRecipe, Tab
         for(int i = 0; i < this.craftInv.size(); i++) {
             items.set(i, this.craftInv.getStackInSlot(i));
         }
-        TableCraftingInput positioned = this.menu instanceof ExtendedTerminalBaseMenu terminalMenu
-                ? terminalMenu.createTableInput(items, terminalMenu.getCurrentRecipe() == null ? null : terminalMenu.getCurrentRecipe().value())
-                : TableCraftingInput.of(this.menuType.getGridSideLength(), this.menuType.getGridSideLength(), items, this.menuType.getTier());
+        TableCraftingInput positioned = TableCraftingInput.of(
+                this.menuType.getGridSideLength(), this.menuType.getGridSideLength(), items, this.menuType.getTier());
 
         CommonHooks.setCraftingPlayer(player);
         var remainingItems = this.getETRemainingItems(positioned,player.level());
@@ -81,7 +77,7 @@ public class ExCraftingTerminalSlot extends ETCraftingBaseSlot<ITableRecipe, Tab
         for(int y = 0; y < menuType.getGridSideLength(); y++) {
             for(int x = 0; x < menuType.getGridSideLength(); x++) {
                 var slotIdx = y * menuType.getGridSideLength() + x;
-                var remainderIdx = (y - positioned.top()) * positioned.width() + (x - positioned.left());
+                var remainderIdx = (y - positioned.top()) * 3 + (x - positioned.left());
 
                 // Consumes the item from the grid
                 this.craftInv.extractItem(slotIdx, 1, false);
@@ -120,9 +116,7 @@ public class ExCraftingTerminalSlot extends ETCraftingBaseSlot<ITableRecipe, Tab
             for (var x = 0; x < menuType.getGridSize(); x++) {
                 ic.set(x, this.getPattern().getStackInSlot(x));
             }
-            var recipeInput = this.menu instanceof ExtendedTerminalBaseMenu terminalMenu
-                    ? terminalMenu.createTableInput(ic, terminalMenu.getCurrentRecipe() == null ? null : terminalMenu.getCurrentRecipe().value())
-                    : TableCraftingInput.of(menuType.getGridSideLength(), menuType.getGridSideLength(), ic, menuType.getTier());
+            var recipeInput = TableCraftingInput.of(menuType.getGridSideLength(), menuType.getGridSideLength(), ic, menuType.getTier());
 
             final var r = this.findRecipe(recipeInput, level);
             setRecipeUsed(r);
@@ -195,7 +189,7 @@ public class ExCraftingTerminalSlot extends ETCraftingBaseSlot<ITableRecipe, Tab
                         if (providedTemplate.getItem() == itemKey.getItem() && !itemKey.matches(output)) {
 
                             craftingInputItems.set(slot, itemKey.toStack());
-                            var adjustedCraftingInput = TableCraftingInput.of(gridWidth, gridHeight, craftingInputItems, r.getTier());
+                            var adjustedCraftingInput = TableCraftingInput.of(gridWidth, gridHeight, craftingInputItems,menuType.getTier());
                             if (r.matches(adjustedCraftingInput, level)
                                     && ItemStack.matches(r.assemble(adjustedCraftingInput, level.registryAccess()),
                                     output)) {
