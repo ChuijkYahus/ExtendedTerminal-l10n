@@ -51,7 +51,6 @@ public class ETCraftingRecipeTransfer<T extends ETTerminalMenu> extends ETTermin
 
             return helper.createUserErrorForMissingSlots(ItemModText.NO_ITEMS.text(), missingSlotViews);
         }
-
         if (!doTransfer) {
             if (missingSlots.totalSize() != 0) {
                 int color = missingSlots.anyMissing() ? ORANGE_PLUS_BUTTON_COLOR : BLUE_PLUS_BUTTON_COLOR;

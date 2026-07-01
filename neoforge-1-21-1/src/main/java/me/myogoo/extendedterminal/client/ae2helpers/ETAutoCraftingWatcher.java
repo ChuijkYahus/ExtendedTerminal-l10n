@@ -5,7 +5,7 @@ import appeng.menu.me.common.GridInventoryEntry;
 import me.myogoo.extendedterminal.client.screen.ETTerminalBaseScreen;
 import me.myogoo.extendedterminal.menu.ETMenuType;
 import me.myogoo.extendedterminal.menu.ETTerminalBaseMenu;
-import me.myogoo.extendedterminal.network.serverbound.FillPendingCraftingSlotPacket;
+import me.myogoo.extendedterminal.network.serverbound.ae2helpers.FillPendingCraftingSlotPacket;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.network.PacketDistributor;
 

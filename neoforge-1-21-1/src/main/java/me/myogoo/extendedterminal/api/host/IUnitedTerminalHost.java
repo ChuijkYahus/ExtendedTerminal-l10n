@@ -1,15 +1,16 @@
 package me.myogoo.extendedterminal.api.host;
 
-import me.myogoo.extendedterminal.menu.extendedcrafting.UnitedTerminalMenu;
+import appeng.api.storage.ITerminalHost;
+import me.myogoo.extendedterminal.menu.extendedterminal.UnitedRecipeType;
 import org.jetbrains.annotations.Nullable;
 
-public interface IUnitedTerminalHost {
-    boolean rememberUnitedRecipeKind();
+public interface IUnitedTerminalHost extends ITerminalHost {
+    boolean getRememberRecipeType();
 
-    void setRememberUnitedRecipeKind(boolean remember);
+    void setRememberRecipeType(boolean remember);
 
     @Nullable
-    UnitedTerminalMenu.UnitedRecipeKind getRememberedUnitedRecipeKind();
+    UnitedRecipeType getUnitedRecipeType();
 
-    void setRememberedUnitedRecipeKind(@Nullable UnitedTerminalMenu.UnitedRecipeKind recipeKind);
+    void setUnitedRecipeType(@Nullable UnitedRecipeType recipeKind);
 }

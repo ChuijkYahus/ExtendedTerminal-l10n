@@ -22,19 +22,11 @@ import org.jetbrains.annotations.Nullable;
 public class ECTerminalRecipeHandler<T extends ETTerminalBaseMenu<?>> extends AbstractEmiTableRecipeHandler<T> {
     private final ETMenuType menuType;
     private final EmiRecipeCategory category;
-    @Nullable
-    private final UnitedTerminalMenu.UnitedRecipeKind unitedRecipeKind;
 
     public ECTerminalRecipeHandler(EmiRecipeCategory category, Class<T> containerClass, ETMenuType menuType) {
-        this(category, containerClass, menuType, null);
-    }
-
-    public ECTerminalRecipeHandler(EmiRecipeCategory category, Class<T> containerClass, ETMenuType menuType,
-                                   @Nullable UnitedTerminalMenu.UnitedRecipeKind unitedRecipeKind) {
         super(containerClass);
         this.menuType = menuType;
         this.category = category;
-        this.unitedRecipeKind = unitedRecipeKind;
     }
 
     @Override
@@ -61,10 +53,7 @@ public class ECTerminalRecipeHandler<T extends ETTerminalBaseMenu<?>> extends Ab
             return Result.createFailed(ItemModText.INCOMPATIBLE_RECIPE.text());
         }
         var adapterRecipe = ITableRecipeAdapter.of(tableRecipe);
-        return doTransfer(menu, adapterRecipe, holder.id(), doTransfer,
-                unitedRecipeKind != null
-                        ? unitedRecipeKind
-                        : UnitedTerminalMenu.UnitedRecipeKind.fromExtendedCraftingTier(adapterRecipe.tier()));
+        return doTransfer(menu, adapterRecipe, holder.id(), doTransfer);
     }
 
     @Override

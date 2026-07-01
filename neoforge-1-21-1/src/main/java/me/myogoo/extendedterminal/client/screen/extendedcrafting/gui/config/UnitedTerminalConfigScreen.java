@@ -38,6 +38,6 @@ public class UnitedTerminalConfigScreen implements MyoConfigTabScreen {
             return;
         }
 
-        menu.setRememberRecipeKind(rememberRecipeKind.isSelected());
+        menu.setRememberRecipeType(rememberRecipeKind.isSelected());
     }
 }

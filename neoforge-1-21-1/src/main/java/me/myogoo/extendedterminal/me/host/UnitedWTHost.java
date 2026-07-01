@@ -10,6 +10,7 @@ import de.mari_023.ae2wtlib.wct.WCTMenuHost;
 import me.myogoo.extendedterminal.api.host.IUnitedTerminalHost;
 import me.myogoo.extendedterminal.menu.ETMenuType;
 import me.myogoo.extendedterminal.menu.extendedcrafting.UnitedTerminalMenu;
+import me.myogoo.extendedterminal.menu.extendedterminal.UnitedRecipeType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.player.Player;
@@ -21,8 +22,8 @@ import java.util.function.BiConsumer;
 import static me.myogoo.extendedterminal.init.ETDataComponent.*;
 
 public class UnitedWTHost extends WCTMenuHost implements IUnitedTerminalHost {
-    private static final String REMEMBER_RECIPE_KIND = "rememberUnitedRecipeKind";
-    private static final String SELECTED_RECIPE_KIND = "selectedUnitedRecipeKind";
+    private static final String REMEMBER_RECIPE_TYPE = "rememberUnitedRecipeType";
+    private static final String SELECTED_RECIPE_TYPE = "selectedUnitedRecipeType";
 
     private final SupplierInternalInventory<InternalInventory> craftingGrid;
 
@@ -41,36 +42,39 @@ public class UnitedWTHost extends WCTMenuHost implements IUnitedTerminalHost {
         return super.getSubInventory(id);
     }
 
-    public boolean rememberUnitedRecipeKind() {
+    public boolean getRememberRecipeType() {
         var tag = getHostTag();
-        return !tag.contains(REMEMBER_RECIPE_KIND, Tag.TAG_BYTE) || tag.getBoolean(REMEMBER_RECIPE_KIND);
+        return !tag.contains(REMEMBER_RECIPE_TYPE, Tag.TAG_BYTE) || tag.getBoolean(REMEMBER_RECIPE_TYPE);
     }
 
-    public void setRememberUnitedRecipeKind(boolean remember) {
+    public void setRememberRecipeType(boolean remember) {
         var tag = getHostTag();
-        tag.putBoolean(REMEMBER_RECIPE_KIND, remember);
+        tag.putBoolean(REMEMBER_RECIPE_TYPE, remember);
         if (!remember) {
-            tag.remove(SELECTED_RECIPE_KIND);
+            tag.remove(SELECTED_RECIPE_TYPE);
         }
         saveHostTag(tag);
     }
 
-    public @Nullable UnitedTerminalMenu.UnitedRecipeKind getRememberedUnitedRecipeKind() {
+    @Override
+    public @Nullable UnitedRecipeType getUnitedRecipeType() {
         var tag = getHostTag();
-        if (!tag.contains(SELECTED_RECIPE_KIND, Tag.TAG_STRING)) {
+        if (!tag.contains(SELECTED_RECIPE_TYPE, Tag.TAG_STRING)) {
             return null;
         }
-        return UnitedTerminalMenu.UnitedRecipeKind.bySerializedName(tag.getString(SELECTED_RECIPE_KIND));
+        return UnitedRecipeType.valueOf(tag.getString(SELECTED_RECIPE_TYPE));
     }
 
-    public void setRememberedUnitedRecipeKind(@Nullable UnitedTerminalMenu.UnitedRecipeKind recipeKind) {
+    @Override
+    public void setUnitedRecipeType(@Nullable UnitedRecipeType recipeType) {
         var tag = getHostTag();
-        if (recipeKind == null) {
-            tag.remove(SELECTED_RECIPE_KIND);
+        if (recipeType == null) {
+            tag.remove(SELECTED_RECIPE_TYPE);
         } else {
-            tag.putString(SELECTED_RECIPE_KIND, recipeKind.serializedName());
+            tag.putString(SELECTED_RECIPE_TYPE, recipeType.toString());
         }
         saveHostTag(tag);
+
     }
 
     private CompoundTag getHostTag() {

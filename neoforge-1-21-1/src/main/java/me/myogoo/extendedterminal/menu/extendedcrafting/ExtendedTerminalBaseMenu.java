@@ -112,18 +112,5 @@ public class ExtendedTerminalBaseMenu extends ETTerminalBaseMenu<ITableRecipe> {
         return this.menuType.getTier();
     }
 
-    @Override
-    public void doAction(ServerPlayer player, InventoryAction action, int slot, long id) {
-        if (this.getSlot(slot) instanceof ExCraftingTerminalSlot craftingSlot) {
-            switch (action) {
-                case CRAFT_SHIFT:
-                case CRAFT_ALL:
-                case CRAFT_ITEM:
-                case CRAFT_STACK:
-                    craftingSlot.doClick(action, player);
-            }
-            return;
-        }
-        super.doAction(player, action, slot, id);
-    }
+
 }

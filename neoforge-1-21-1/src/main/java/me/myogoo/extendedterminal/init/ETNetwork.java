@@ -5,7 +5,7 @@ import com.blakebr0.extendedcrafting.ExtendedCrafting;
 import me.myogoo.extendedterminal.network.serverbound.FillSmithingGridFromRecipePacket;
 import me.myogoo.extendedterminal.network.serverbound.FillStonecutterGridFromRecipePacket;
 import me.myogoo.extendedterminal.network.serverbound.FillTableCraftingGridFromRecipePacket;
-import me.myogoo.extendedterminal.network.serverbound.FillPendingCraftingSlotPacket;
+import me.myogoo.extendedterminal.network.serverbound.ae2helpers.FillPendingCraftingSlotPacket;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
 public class ETNetwork {

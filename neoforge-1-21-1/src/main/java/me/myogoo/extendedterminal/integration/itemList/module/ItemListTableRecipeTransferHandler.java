@@ -19,11 +19,6 @@ public abstract class ItemListTableRecipeTransferHandler<T extends ETTerminalBas
     protected abstract Map<Integer, Ingredient> getGuiSlotToIngredientMap(T menu, ITableRecipeAdapter recipe);
 
     protected void performTransfer(T menu, ITableRecipeAdapter recipe, boolean craftMissing, ResourceLocation recipeId) {
-        performTransfer(menu, recipe, craftMissing, recipeId, null);
-    }
-
-    protected void performTransfer(T menu, ITableRecipeAdapter recipe, boolean craftMissing, ResourceLocation recipeId,
-                                   UnitedTerminalMenu.UnitedRecipeKind unitedRecipeKind) {
         var templateItems = recipe.findGoodTemplateItems(menu);
         int recipeWidth = NOT_SET_RECIPE_SIZE;
         int recipeHeight = NOT_SET_RECIPE_SIZE;
@@ -34,7 +29,7 @@ public abstract class ItemListTableRecipeTransferHandler<T extends ETTerminalBas
 
         ETAutoCraftingWatcher.INSTANCE.preparePending(menu, getGuiSlotToIngredientMap(menu, recipe), craftMissing);
         ServerboundPacket message = new FillTableCraftingGridFromRecipePacket(recipeId, templateItems, craftMissing,
-                recipeWidth, recipeHeight, unitedRecipeKind);
+                recipeWidth, recipeHeight);
         PacketDistributor.sendToServer(message);
     }
 }

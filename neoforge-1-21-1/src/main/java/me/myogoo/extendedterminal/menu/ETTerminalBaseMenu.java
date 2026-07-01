@@ -5,6 +5,7 @@ import appeng.api.networking.energy.IEnergySource;
 import appeng.api.stacks.AEItemKey;
 import appeng.api.storage.ITerminalHost;
 import appeng.helpers.ICraftingGridMenu;
+import appeng.helpers.InventoryAction;
 import appeng.menu.SlotSemantic;
 import appeng.menu.me.common.MEStorageMenu;
 import appeng.menu.me.crafting.CraftConfirmMenu;
@@ -12,6 +13,8 @@ import appeng.menu.me.items.CraftingTermMenu;
 import appeng.util.inv.PlayerInternalInventory;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import me.myogoo.extendedterminal.api.config.IETTerminalConfig;
+import me.myogoo.extendedterminal.menu.extendedcrafting.slot.ExCraftingTerminalSlot;
+import me.myogoo.extendedterminal.menu.slot.ETCraftingBaseSlot;
 import me.myogoo.myotus.api.MyotusAPI;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -104,6 +107,21 @@ public abstract class ETTerminalBaseMenu<R extends Recipe<?>> extends MEStorageM
         return this.energySource;
     }
 
+    @Override
+    public void doAction(ServerPlayer player, InventoryAction action, int slot, long id) {
+        if (this.getSlot(slot) instanceof ETCraftingBaseSlot<?,?> craftingSlot) {
+            switch (action) {
+                case CRAFT_SHIFT:
+                case CRAFT_ALL:
+                case CRAFT_ITEM:
+                case CRAFT_STACK:
+                    craftingSlot.doClick(action, player);
+            }
+            return;
+        }
+        super.doAction(player, action, slot, id);
+    }
+
     protected boolean isCraftable(ItemStack itemStack) {
         var clientRepo = getClientRepo();
 
@@ -117,10 +135,6 @@ public abstract class ETTerminalBaseMenu<R extends Recipe<?>> extends MEStorageM
         return false;
     }
 
-    /**
-     * @param ingredients
-     * @return
-     */
     public CraftingTermMenu.MissingIngredientSlots findMissingIngredients(Map<Integer, Ingredient> ingredients) {
 
         // Try to figure out if any slots have missing ingredients

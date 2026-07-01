@@ -28,20 +28,13 @@ import static appeng.integration.modules.itemlists.TransferHelper.ORANGE_PLUS_BU
 
 public class AVJeiRecipeTransferHandler<T extends ETTerminalBaseMenu<?>> extends AbstractTableHolderRecipeHandler<T, ITierCraftingRecipe, RecipeHolder<ITierCraftingRecipe>> {
     private final IRecipeTransferHandlerHelper helper;
-    @Nullable
-    private final UnitedTerminalMenu.UnitedRecipeKind unitedRecipeKind;
-
-    public AVJeiRecipeTransferHandler(Class<T> containerClass, MenuType<T> menuType, RecipeType<RecipeHolder<ITierCraftingRecipe>> recipeType, IRecipeTransferHandlerHelper helper) {
-        this(containerClass, menuType, recipeType, helper, null);
-    }
 
     public AVJeiRecipeTransferHandler(Class<T> containerClass, MenuType<T> menuType,
                                       RecipeType<RecipeHolder<ITierCraftingRecipe>> recipeType,
-                                      IRecipeTransferHandlerHelper helper,
-                                      @Nullable UnitedTerminalMenu.UnitedRecipeKind unitedRecipeKind) {
+                                      IRecipeTransferHandlerHelper helper
+    ) {
         super(containerClass, menuType, recipeType);
         this.helper = helper;
-        this.unitedRecipeKind = unitedRecipeKind;
     }
 
     @Override
@@ -77,10 +70,7 @@ public class AVJeiRecipeTransferHandler<T extends ETTerminalBaseMenu<?>> extends
                 return new Result.PartiallyCraftable(missingSlots, color, craftMissing);
             }
         } else {
-            performTransfer(menu, adapterRecipe, craftMissing, recipeHolder.id(),
-                    menu instanceof UnitedTerminalMenu && unitedRecipeKind != null
-                            ? unitedRecipeKind
-                            : UnitedTerminalMenu.UnitedRecipeKind.fromReAvaritiaTier(adapterRecipe.tier()));
+            performTransfer(menu, adapterRecipe, craftMissing, recipeHolder.id());
         }
 
         return Result.createSuccessful();

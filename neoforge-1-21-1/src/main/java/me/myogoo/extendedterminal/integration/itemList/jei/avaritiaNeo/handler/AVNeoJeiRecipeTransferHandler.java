@@ -74,7 +74,7 @@ public class AVNeoJeiRecipeTransferHandler<T extends ETTerminalBaseMenu<?>>
                 return new Result.PartiallyCraftable(missingSlots, color, craftMissing);
             }
         } else {
-            performTransfer(menu, adapterRecipe, craftMissing, UnitedTerminalMenu.UnitedRecipeKind.AVARITIA_NEO_EXTREME, () -> {
+            performTransfer(menu, adapterRecipe, craftMissing, () -> {
                 var level = menu.getPlayer().level();
                 var recipeManager = level.getRecipeManager();
                 var findRecipe = recipeManager.getAllRecipesFor(AvaritiaRecipes.EXTREME_CRAFTING.get()).stream().filter(x -> x.value().equals(recipe)).toList();
@@ -91,11 +91,10 @@ public class AVNeoJeiRecipeTransferHandler<T extends ETTerminalBaseMenu<?>>
     }
 
     private <R extends Recipe<?>> void performTransfer(T menu, ITableRecipeAdapter recipe, boolean craftMissing,
-                                                       UnitedTerminalMenu.UnitedRecipeKind unitedRecipeKind,
                                                        Supplier<RecipeHolder<R>> supplier) {
         var recipeHolder = supplier.get();
         if (recipeHolder != null) {
-            performTransfer(menu, recipe, craftMissing, recipeHolder.id(), unitedRecipeKind);
+            performTransfer(menu, recipe, craftMissing, recipeHolder.id());
         }
     }
 }

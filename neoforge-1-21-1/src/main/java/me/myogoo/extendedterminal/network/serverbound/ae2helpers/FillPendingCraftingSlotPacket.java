@@ -1,4 +1,4 @@
-package me.myogoo.extendedterminal.network.serverbound;
+package me.myogoo.extendedterminal.network.serverbound.ae2helpers;
 
 import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.AEKey;

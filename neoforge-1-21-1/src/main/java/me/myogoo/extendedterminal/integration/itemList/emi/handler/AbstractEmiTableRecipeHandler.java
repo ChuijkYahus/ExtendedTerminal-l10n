@@ -181,11 +181,6 @@ public abstract class AbstractEmiTableRecipeHandler<T extends ETTerminalBaseMenu
     }
 
     protected Result doTransfer(T menu, ITableRecipeAdapter recipe, ResourceLocation id, boolean doTransfer) {
-        return doTransfer(menu, recipe, id, doTransfer, null);
-    }
-
-    protected Result doTransfer(T menu, ITableRecipeAdapter recipe, ResourceLocation id, boolean doTransfer,
-                                UnitedTerminalMenu.UnitedRecipeKind unitedRecipeKind) {
         // Find missing ingredient
         var slotToIngredientMap = getGuiSlotToIngredientMap(menu, recipe);
         var missingSlots = menu.findMissingIngredients(slotToIngredientMap);
@@ -204,7 +199,7 @@ public abstract class AbstractEmiTableRecipeHandler<T extends ETTerminalBaseMenu
         } else {
             // Thank you RS for pioneering this amazing feature! :)
             boolean craftMissing = AbstractContainerScreen.hasControlDown();
-            performTransfer(menu, recipe, craftMissing, id, unitedRecipeKind);
+            performTransfer(menu, recipe, craftMissing, id);
         }
         return Result.createSuccessful();
     }

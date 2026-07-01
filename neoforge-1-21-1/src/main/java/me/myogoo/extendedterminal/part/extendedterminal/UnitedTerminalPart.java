@@ -1,4 +1,4 @@
-package me.myogoo.extendedterminal.part.extendedcrafting;
+package me.myogoo.extendedterminal.part.extendedterminal;
 
 import appeng.api.parts.IPartItem;
 import appeng.api.parts.IPartModel;
@@ -9,6 +9,7 @@ import me.myogoo.extendedterminal.api.host.IUnitedTerminalHost;
 import me.myogoo.extendedterminal.config.extendedcrafting.ExtendedCraftingConfig;
 import me.myogoo.extendedterminal.menu.ETMenuType;
 import me.myogoo.extendedterminal.menu.extendedcrafting.UnitedTerminalMenu;
+import me.myogoo.extendedterminal.menu.extendedterminal.UnitedRecipeType;
 import me.myogoo.extendedterminal.part.ETTerminalBasePart;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -18,11 +19,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import org.jetbrains.annotations.Nullable;
 
-import static appeng.parts.reporting.CraftingTerminalPart.*;
-
 public class UnitedTerminalPart extends ETTerminalBasePart implements IUnitedTerminalHost {
-    private static final String REMEMBER_RECIPE_KIND = "rememberUnitedRecipeKind";
-    private static final String SELECTED_RECIPE_KIND = "selectedUnitedRecipeKind";
+    private static final String REMEMBER_RECIPE_TYPE = "rememberUnitedRecipeType";
+    private static final String SELECTED_RECIPE_TYPE = "selectedUnitedRecipeType";
 
     @PartModels
     public static final ResourceLocation UNITED_MODEL_BASE = ExtendedTerminal.makeId("part/extendedcrafting/united_terminal_base");
@@ -35,9 +34,9 @@ public class UnitedTerminalPart extends ETTerminalBasePart implements IUnitedTer
     public static final IPartModel MODELS_ON = new PartModel(MODEL_BASE, UNITED_MODEL_BASE, MODEL_ON, MODEL_STATUS_ON);
     public static final IPartModel MODELS_HAS_CHANNEL = new PartModel(MODEL_BASE, UNITED_MODEL_BASE, MODEL_ON, MODEL_STATUS_HAS_CHANNEL);
 
-    private boolean rememberUnitedRecipeKind = true;
+    private boolean rememberUnitedRecipeType = true;
     @Nullable
-    private UnitedTerminalMenu.UnitedRecipeKind rememberedUnitedRecipeKind;
+    private UnitedRecipeType rememberedUnitedRecipeType;
 
     public UnitedTerminalPart(IPartItem<?> partItem) {
         super(partItem, ETMenuType.UNITED_TERMINAL);
@@ -57,49 +56,56 @@ public class UnitedTerminalPart extends ETTerminalBasePart implements IUnitedTer
     @Override
     public void readFromNBT(CompoundTag data, HolderLookup.Provider registries) {
         super.readFromNBT(data, registries);
-        this.rememberUnitedRecipeKind = !data.contains(REMEMBER_RECIPE_KIND, Tag.TAG_BYTE)
-                || data.getBoolean(REMEMBER_RECIPE_KIND);
-        if (data.contains(SELECTED_RECIPE_KIND, Tag.TAG_STRING)) {
-            this.rememberedUnitedRecipeKind = UnitedTerminalMenu.UnitedRecipeKind.bySerializedName(
-                    data.getString(SELECTED_RECIPE_KIND));
+        this.rememberUnitedRecipeType = !data.contains(REMEMBER_RECIPE_TYPE, Tag.TAG_BYTE)
+                || data.getBoolean(REMEMBER_RECIPE_TYPE);
+        if (data.contains(SELECTED_RECIPE_TYPE, Tag.TAG_STRING)) {
+            this.rememberedUnitedRecipeType = UnitedRecipeType.valueOf(data.getString(SELECTED_RECIPE_TYPE));
         } else {
-            this.rememberedUnitedRecipeKind = null;
+            this.rememberedUnitedRecipeType = null;
         }
     }
 
     @Override
     public void writeToNBT(CompoundTag data, HolderLookup.Provider registries) {
         super.writeToNBT(data, registries);
-        data.putBoolean(REMEMBER_RECIPE_KIND, this.rememberUnitedRecipeKind);
-        if (this.rememberedUnitedRecipeKind != null) {
-            data.putString(SELECTED_RECIPE_KIND, this.rememberedUnitedRecipeKind.serializedName());
+        data.putBoolean(REMEMBER_RECIPE_TYPE, this.rememberUnitedRecipeType);
+        if (this.rememberedUnitedRecipeType != null) {
+            data.putString(SELECTED_RECIPE_TYPE, this.rememberedUnitedRecipeType.toString());
         } else {
-            data.remove(SELECTED_RECIPE_KIND);
+            data.remove(SELECTED_RECIPE_TYPE);
         }
     }
 
     @Override
-    public boolean rememberUnitedRecipeKind() {
-        return rememberUnitedRecipeKind;
+    public boolean getRememberRecipeType() {
+        return rememberUnitedRecipeType;
     }
 
     @Override
-    public void setRememberUnitedRecipeKind(boolean remember) {
-        this.rememberUnitedRecipeKind = remember;
+    public void setRememberRecipeType(boolean remember) {
+        this.rememberUnitedRecipeType = remember;
         if (!remember) {
-            this.rememberedUnitedRecipeKind = null;
+            this.rememberedUnitedRecipeType = null;
         }
         getHost().markForSave();
     }
 
     @Override
-    public @Nullable UnitedTerminalMenu.UnitedRecipeKind getRememberedUnitedRecipeKind() {
-        return rememberedUnitedRecipeKind;
+    public @Nullable UnitedRecipeType getUnitedRecipeType() {
+        return null;
     }
 
     @Override
-    public void setRememberedUnitedRecipeKind(@Nullable UnitedTerminalMenu.UnitedRecipeKind recipeKind) {
-        this.rememberedUnitedRecipeKind = recipeKind;
+    public void setUnitedRecipeType(@Nullable UnitedRecipeType recipeKind) {
+
+    }
+
+    public @Nullable UnitedRecipeType getRememberedUnitedRecipeType() {
+        return rememberedUnitedRecipeType;
+    }
+
+    public void setRememberedUnitedRecipeType(@Nullable UnitedRecipeType recipeKind) {
+        this.rememberedUnitedRecipeType = recipeKind;
         getHost().markForSave();
     }
 }

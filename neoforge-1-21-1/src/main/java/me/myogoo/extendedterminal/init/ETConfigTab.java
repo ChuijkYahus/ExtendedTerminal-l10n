@@ -7,7 +7,7 @@ import me.myogoo.extendedterminal.client.screen.extendedterminal.gui.config.ETTe
 import me.myogoo.extendedterminal.init.wt.WTItems;
 import me.myogoo.extendedterminal.me.host.ETWTHost;
 import me.myogoo.extendedterminal.me.host.UnitedWTHost;
-import me.myogoo.extendedterminal.part.extendedcrafting.UnitedTerminalPart;
+import me.myogoo.extendedterminal.part.extendedterminal.UnitedTerminalPart;
 import me.myogoo.myotus.api.MyotusAPI;
 import me.myogoo.myotus.api.annotation.mods.AE2WTLib;
 import me.myogoo.myotus.api.config.MyoConfigTab;

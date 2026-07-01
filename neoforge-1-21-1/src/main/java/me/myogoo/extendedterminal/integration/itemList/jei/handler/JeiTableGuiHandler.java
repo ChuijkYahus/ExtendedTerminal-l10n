@@ -9,13 +9,15 @@ import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.world.item.crafting.Recipe;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public class JeiTableGuiHandler<R extends Recipe<?>, T extends ETTerminalBaseMenu<R>, S extends ETTerminalBaseScreen<R,T>> implements IGuiContainerHandler<S> {
-    private final RecipeType<R> recipeType;
+    private final RecipeType<R>[] recipeType;
 
-    public JeiTableGuiHandler(RecipeType<R> recipeType) {
+    @SafeVarargs
+    public JeiTableGuiHandler(RecipeType<R>... recipeType) {
         this.recipeType = recipeType;
     }
 

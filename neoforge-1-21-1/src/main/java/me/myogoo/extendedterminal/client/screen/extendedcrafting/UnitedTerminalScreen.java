@@ -1,8 +1,6 @@
 package me.myogoo.extendedterminal.client.screen.extendedcrafting;
 
 import appeng.client.gui.style.ScreenStyle;
-import appeng.client.gui.Icon;
-import me.myogoo.extendedterminal.api.translation.ETTranslationKey;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeInput;
 import me.myogoo.extendedterminal.client.screen.ETTerminalBaseScreen;
@@ -45,16 +43,12 @@ public class UnitedTerminalScreen<M extends UnitedTerminalMenu> extends ETTermin
     }
 
     private Component selectedRecipeKindTooltip() {
-        return Component.translatable(this.getMenu().getSelectedRecipeKind().labelKey());
+        return Component.translatable(this.getMenu().getSelectedRecipeType().getTranslateKey());
     }
 
     private Item selectedRecipeKindItem() {
-        var kind = this.getMenu().getSelectedRecipeKind();
-        return icon(kind.iconNamespace(), kind.iconPath());
-    }
-
-    private Item icon(String namespace, String path) {
-        Item item = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(namespace, path));
+        var recipeType = this.getMenu().getSelectedRecipeType();
+        var item = BuiltInRegistries.ITEM.get(recipeType.getIcon());
         return item == Items.AIR ? Items.CRAFTING_TABLE : item;
     }
 }

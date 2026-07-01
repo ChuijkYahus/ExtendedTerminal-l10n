@@ -14,9 +14,10 @@ import java.util.Collection;
 import java.util.List;
 
 public class JeiTableHolderGuiHandler<R extends Recipe<?>, T extends ETTerminalBaseMenu<R>, S extends ETTerminalBaseScreen<R,T>, H extends RecipeHolder<R>> implements IGuiContainerHandler<S> {
-    private final RecipeType<H> recipeType;
+    private final RecipeType<H>[] recipeType;
 
-    public JeiTableHolderGuiHandler(RecipeType<H> recipeType) {
+    @SafeVarargs
+    public JeiTableHolderGuiHandler(RecipeType<H>... recipeType) {
         this.recipeType = recipeType;
     }
 

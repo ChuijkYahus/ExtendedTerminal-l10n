@@ -20,7 +20,7 @@ import me.myogoo.extendedterminal.part.extendedcrafting.AdvancedTerminalPart;
 import me.myogoo.extendedterminal.part.extendedcrafting.BasicExtendedTerminalPart;
 import me.myogoo.extendedterminal.part.extendedcrafting.EliteTerminalPart;
 import me.myogoo.extendedterminal.part.extendedcrafting.UltimateTerminalPart;
-import me.myogoo.extendedterminal.part.extendedcrafting.UnitedTerminalPart;
+import me.myogoo.extendedterminal.part.extendedterminal.UnitedTerminalPart;
 import me.myogoo.extendedterminal.part.extendedterminal.ETTerminalPart;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredRegister;

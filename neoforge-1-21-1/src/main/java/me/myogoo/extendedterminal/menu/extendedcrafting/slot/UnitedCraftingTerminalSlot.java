@@ -170,7 +170,7 @@ public class UnitedCraftingTerminalSlot extends ETCraftingBaseSlot<Recipe<Recipe
                 if (entry.getKey() instanceof AEItemKey itemKey) {
                     if (providedTemplate.getItem() == itemKey.getItem() && !itemKey.matches(output)) {
                         craftingInputItems.set(slot, itemKey.toStack());
-                        var adjustedRecipe = recipe.menu().findUnitedRecipe(craftingInputItems, recipe.kind());
+                        var adjustedRecipe = recipe.menu().findUnitedRecipe(craftingInputItems, recipe.recipeType());
                         if (adjustedRecipe != null && ItemStack.matches(adjustedRecipe.assemble(level), output)) {
                             if (filter == null || filter.isListed(itemKey)) {
                                 var extracted = src.extract(itemKey, 1, Actionable.MODULATE, mySrc);
