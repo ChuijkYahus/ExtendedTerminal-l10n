@@ -9,8 +9,7 @@ import de.mari_023.ae2wtlib.api.terminal.ItemWT;
 import de.mari_023.ae2wtlib.wct.WCTMenuHost;
 import me.myogoo.extendedterminal.api.host.IUnitedTerminalHost;
 import me.myogoo.extendedterminal.menu.ETMenuType;
-import me.myogoo.extendedterminal.menu.extendedcrafting.UnitedTerminalMenu;
-import me.myogoo.extendedterminal.menu.extendedterminal.UnitedRecipeType;
+import me.myogoo.extendedterminal.menu.extendedterminal.MyoRecipeType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.player.Player;
@@ -57,16 +56,16 @@ public class UnitedWTHost extends WCTMenuHost implements IUnitedTerminalHost {
     }
 
     @Override
-    public @Nullable UnitedRecipeType getUnitedRecipeType() {
+    public @Nullable MyoRecipeType getUnitedRecipeType() {
         var tag = getHostTag();
         if (!tag.contains(SELECTED_RECIPE_TYPE, Tag.TAG_STRING)) {
             return null;
         }
-        return UnitedRecipeType.valueOf(tag.getString(SELECTED_RECIPE_TYPE));
+        return MyoRecipeType.valueOf(tag.getString(SELECTED_RECIPE_TYPE));
     }
 
     @Override
-    public void setUnitedRecipeType(@Nullable UnitedRecipeType recipeType) {
+    public void setUnitedRecipeType(@Nullable MyoRecipeType recipeType) {
         var tag = getHostTag();
         if (recipeType == null) {
             tag.remove(SELECTED_RECIPE_TYPE);

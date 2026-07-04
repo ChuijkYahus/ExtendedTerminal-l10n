@@ -1,13 +1,11 @@
 package me.myogoo.extendedterminal.integration.itemList.jei.avaritiaRe.handler;
 
-import me.myogoo.extendedterminal.menu.extendedcrafting.UnitedTerminalMenu;
 import me.myogoo.extendedterminal.menu.ETTerminalBaseMenu;
 import appeng.core.localization.ItemModText;
 import committee.nova.mods.avaritia.api.common.crafting.ITierCraftingRecipe;
-import me.myogoo.extendedterminal.api.adapter.recipe.table.ITableRecipeAdapter;
+import me.myogoo.extendedterminal.api.adapter.recipe.table.MyoTableRecipe;
 import me.myogoo.extendedterminal.integration.itemList.jei.handler.AbstractTableHolderRecipeHandler;
 import me.myogoo.extendedterminal.integration.itemList.module.avaritia.AVRecipeTransferHelper;
-import me.myogoo.extendedterminal.menu.avaritiaRe.AvaritiaTerminalBaseMenu;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
@@ -50,7 +48,7 @@ public class AVJeiRecipeTransferHandler<T extends ETTerminalBaseMenu<?>> extends
 
         boolean craftMissing = AbstractContainerScreen.hasControlDown();
         var inputSlots = recipeSlots.getSlotViews(RecipeIngredientRole.INPUT);
-        var adapterRecipe = ITableRecipeAdapter.of(recipe);
+        var adapterRecipe = MyoTableRecipe.of(recipe, recipeHolder.id());
 
         var slotToIngredientMap = getGuiSlotToIngredientMap(menu, adapterRecipe);
         var missingSlots = menu.findMissingIngredients(slotToIngredientMap);
@@ -70,14 +68,14 @@ public class AVJeiRecipeTransferHandler<T extends ETTerminalBaseMenu<?>> extends
                 return new Result.PartiallyCraftable(missingSlots, color, craftMissing);
             }
         } else {
-            performTransfer(menu, adapterRecipe, craftMissing, recipeHolder.id());
+            performTransfer(menu, adapterRecipe, craftMissing);
         }
 
         return Result.createSuccessful();
     }
 
     @Override
-    public Map<Integer, Ingredient> getGuiSlotToIngredientMap(T menu, ITableRecipeAdapter recipe) {
+    public Map<Integer, Ingredient> getGuiSlotToIngredientMap(T menu, MyoTableRecipe recipe) {
         return AVRecipeTransferHelper.GuiSlotToIngredientMap.jei(menu, recipe);
     }
 }

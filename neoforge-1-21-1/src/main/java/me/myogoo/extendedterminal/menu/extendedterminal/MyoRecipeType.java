@@ -3,18 +3,17 @@ package me.myogoo.extendedterminal.menu.extendedterminal;
 import me.myogoo.extendedterminal.api.annotation.AvaritiaNeo;
 import me.myogoo.extendedterminal.api.annotation.ExtendedCrafting;
 import me.myogoo.extendedterminal.api.annotation.ReAvaritia;
-import me.myogoo.extendedterminal.api.annotation.Minecraft;
+import me.myogoo.extendedterminal.api.annotation.VANILLA;
 import me.myogoo.extendedterminal.api.integration.IntegrationConstant;
 import me.myogoo.extendedterminal.api.translation.ETTranslationKey;
 import me.myogoo.myotus.api.MyotusAPI;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.Nullable;
 
 import java.lang.annotation.Annotation;
 
 
-public enum UnitedRecipeType {
-    VANILLA(Minecraft.class, ETTranslationKey.BLOCK.BLOCK_MATERIAL_CONVERTER.key(), -1, ResourceLocation.fromNamespaceAndPath(IntegrationConstant.MINECRAFT, "crafting_table")),
+public enum MyoRecipeType {
+    VANILLA(VANILLA.class, ETTranslationKey.BLOCK.BLOCK_MATERIAL_CONVERTER.key(), -1, ResourceLocation.fromNamespaceAndPath(IntegrationConstant.MINECRAFT, "crafting_table")),
 
     BASIC(ExtendedCrafting.class, ETTranslationKey.BLOCK.BLOCK_MATERIAL_CONVERTER.key(), 1, ResourceLocation.fromNamespaceAndPath(IntegrationConstant.EXTENDED_CRAFTING_MODID, "basic_table")),
     ADVANCED(ExtendedCrafting.class, ETTranslationKey.BLOCK.BLOCK_MATERIAL_CONVERTER.key(), 2, ResourceLocation.fromNamespaceAndPath(IntegrationConstant.EXTENDED_CRAFTING_MODID, "advanced_table")),
@@ -33,7 +32,7 @@ public enum UnitedRecipeType {
     private final ResourceLocation icon;
     private final Class<? extends Annotation> myomodAnnotation;
 
-    UnitedRecipeType(@Nullable Class<? extends Annotation> annotationClass, String translateKey, int tier, ResourceLocation icon) {
+    MyoRecipeType(Class<? extends Annotation> annotationClass, String translateKey, int tier, ResourceLocation icon) {
         this.translateKey = translateKey;
         this.tier = tier;
         this.icon = icon;
@@ -41,7 +40,7 @@ public enum UnitedRecipeType {
     }
 
     public boolean isActive() {
-        return myomodAnnotation.equals(Minecraft.class) || MyotusAPI.integrations().isLoaded(myomodAnnotation);
+        return myomodAnnotation.equals(VANILLA.class) || MyotusAPI.integrations().isLoaded(myomodAnnotation);
     }
 
     public Class<?> getMyomodAnnotation() {

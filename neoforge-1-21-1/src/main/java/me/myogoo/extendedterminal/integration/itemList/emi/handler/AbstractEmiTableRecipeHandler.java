@@ -5,23 +5,20 @@ import appeng.core.AEConfig;
 import appeng.core.localization.ItemModText;
 import appeng.integration.modules.emi.EmiStackHelper;
 import appeng.menu.SlotSemantics;
-import appeng.menu.me.common.MEStorageMenu;
 import dev.emi.emi.api.recipe.EmiPlayerInventory;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.handler.EmiCraftContext;
 import dev.emi.emi.api.recipe.handler.StandardRecipeHandler;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.Widget;
-import me.myogoo.extendedterminal.api.adapter.recipe.table.ITableRecipeAdapter;
+import me.myogoo.extendedterminal.api.adapter.recipe.table.MyoTableRecipe;
 import me.myogoo.extendedterminal.integration.itemList.module.ItemListTableRecipeTransferHandler;
 import me.myogoo.extendedterminal.menu.ETTerminalBaseMenu;
-import me.myogoo.extendedterminal.menu.extendedcrafting.UnitedTerminalMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -180,7 +177,7 @@ public abstract class AbstractEmiTableRecipeHandler<T extends ETTerminalBaseMenu
         return null;
     }
 
-    protected Result doTransfer(T menu, ITableRecipeAdapter recipe, ResourceLocation id, boolean doTransfer) {
+    protected Result doTransfer(T menu, MyoTableRecipe recipe, boolean doTransfer) {
         // Find missing ingredient
         var slotToIngredientMap = getGuiSlotToIngredientMap(menu, recipe);
         var missingSlots = menu.findMissingIngredients(slotToIngredientMap);
@@ -199,7 +196,7 @@ public abstract class AbstractEmiTableRecipeHandler<T extends ETTerminalBaseMenu
         } else {
             // Thank you RS for pioneering this amazing feature! :)
             boolean craftMissing = AbstractContainerScreen.hasControlDown();
-            performTransfer(menu, recipe, craftMissing, id);
+            performTransfer(menu, recipe, craftMissing);
         }
         return Result.createSuccessful();
     }
@@ -210,5 +207,5 @@ public abstract class AbstractEmiTableRecipeHandler<T extends ETTerminalBaseMenu
 
     protected abstract boolean isCraftingRecipe(Recipe<?> recipe, EmiRecipe emiRecipe);
 
-    protected abstract Map<Integer, Ingredient> getGuiSlotToIngredientMap(T menu, ITableRecipeAdapter recipe);
+    protected abstract Map<Integer, Ingredient> getGuiSlotToIngredientMap(T menu, MyoTableRecipe recipe);
 }

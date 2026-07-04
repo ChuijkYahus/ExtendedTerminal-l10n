@@ -4,7 +4,7 @@ import me.myogoo.extendedterminal.api.translation.ETTranslationKey;
 import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.WidgetContainer;
 import appeng.client.gui.widgets.AECheckbox;
-import me.myogoo.extendedterminal.menu.extendedcrafting.UnitedTerminalMenu;
+import me.myogoo.extendedterminal.menu.extendedterminal.UnitedTerminalMenu;
 import me.myogoo.myotus.api.config.MyoConfigTabScreen;
 import net.minecraft.network.chat.Component;
 

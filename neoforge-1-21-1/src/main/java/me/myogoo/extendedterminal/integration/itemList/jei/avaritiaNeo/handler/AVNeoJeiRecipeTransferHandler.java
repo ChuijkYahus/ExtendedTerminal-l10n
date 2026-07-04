@@ -1,13 +1,11 @@
 package me.myogoo.extendedterminal.integration.itemList.jei.avaritiaNeo.handler;
 
-import me.myogoo.extendedterminal.menu.extendedcrafting.UnitedTerminalMenu;
 import me.myogoo.extendedterminal.menu.ETTerminalBaseMenu;
 import appeng.core.localization.ItemModText;
-import me.myogoo.extendedterminal.api.adapter.recipe.table.ITableRecipeAdapter;
+import me.myogoo.extendedterminal.api.adapter.recipe.table.MyoTableRecipe;
 import me.myogoo.extendedterminal.integration.itemList.jei.handler.AbstractJeiTableRecipeHandler;
 import me.myogoo.extendedterminal.integration.itemList.jei.handler.IJeiAbstractRecipeHandler;
 import me.myogoo.extendedterminal.integration.itemList.module.avaritia.AVNeoRecipeTransferHelper;
-import me.myogoo.extendedterminal.menu.avaritiaNeo.NeoExtremeTerminalMenu;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
@@ -20,13 +18,10 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Supplier;
 
 import static appeng.integration.modules.itemlists.TransferHelper.BLUE_PLUS_BUTTON_COLOR;
 import static appeng.integration.modules.itemlists.TransferHelper.ORANGE_PLUS_BUTTON_COLOR;
@@ -54,7 +49,11 @@ public class AVNeoJeiRecipeTransferHandler<T extends ETTerminalBaseMenu<?>>
 
         boolean craftMissing = AbstractContainerScreen.hasControlDown();
         var inputSlots = recipeSlots.getSlotViews(RecipeIngredientRole.INPUT);
-        var adapterRecipe = ITableRecipeAdapter.of(recipe);
+
+        var recipeManager = menu.getPlayer().level().getRecipeManager();
+        var findRecipe = recipeManager.getAllRecipesFor(AvaritiaRecipes.EXTREME_CRAFTING.get()).stream().filter(x -> x.value().equals(recipe)).findFirst().orElse(null);
+
+        var adapterRecipe = MyoTableRecipe.of(recipe, findRecipe.id());
 
         var slotToIngredientMap = getGuiSlotToIngredientMap(menu, adapterRecipe);
         var missingSlots = menu.findMissingIngredients(slotToIngredientMap);
@@ -74,27 +73,14 @@ public class AVNeoJeiRecipeTransferHandler<T extends ETTerminalBaseMenu<?>>
                 return new Result.PartiallyCraftable(missingSlots, color, craftMissing);
             }
         } else {
-            performTransfer(menu, adapterRecipe, craftMissing, () -> {
-                var level = menu.getPlayer().level();
-                var recipeManager = level.getRecipeManager();
-                var findRecipe = recipeManager.getAllRecipesFor(AvaritiaRecipes.EXTREME_CRAFTING.get()).stream().filter(x -> x.value().equals(recipe)).toList();
-                return !findRecipe.isEmpty() ? findRecipe.getFirst() : null;
-            });
+            performTransfer(menu, adapterRecipe, craftMissing);
         }
 
         return Result.createSuccessful();
     }
 
     @Override
-    protected Map<Integer, Ingredient> getGuiSlotToIngredientMap(T menu, ITableRecipeAdapter recipe) {
+    protected Map<Integer, Ingredient> getGuiSlotToIngredientMap(T menu, MyoTableRecipe recipe) {
         return AVNeoRecipeTransferHelper.GuiSlotToIngredientMap.jei(menu, recipe);
-    }
-
-    private <R extends Recipe<?>> void performTransfer(T menu, ITableRecipeAdapter recipe, boolean craftMissing,
-                                                       Supplier<RecipeHolder<R>> supplier) {
-        var recipeHolder = supplier.get();
-        if (recipeHolder != null) {
-            performTransfer(menu, recipe, craftMissing, recipeHolder.id());
-        }
     }
 }

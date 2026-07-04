@@ -2,7 +2,7 @@ package me.myogoo.extendedterminal.integration.itemList.jei.extendedcrafting.han
 
 import appeng.core.localization.ItemModText;
 import com.blakebr0.extendedcrafting.api.crafting.ITableRecipe;
-import me.myogoo.extendedterminal.api.adapter.recipe.table.ITableRecipeAdapter;
+import me.myogoo.extendedterminal.api.adapter.recipe.table.MyoTableRecipe;
 import me.myogoo.extendedterminal.integration.itemList.jei.handler.AbstractTableHolderRecipeHandler;
 import me.myogoo.extendedterminal.integration.itemList.module.extendedcrafting.ECRecipeTransferHelper;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -24,7 +24,6 @@ import java.util.Objects;
 import static appeng.integration.modules.itemlists.TransferHelper.BLUE_PLUS_BUTTON_COLOR;
 import static appeng.integration.modules.itemlists.TransferHelper.ORANGE_PLUS_BUTTON_COLOR;
 import me.myogoo.extendedterminal.menu.ETTerminalBaseMenu;
-import me.myogoo.extendedterminal.menu.extendedcrafting.UnitedTerminalMenu;
 
 public class ECJeiRecipeTransferHandler<T extends ETTerminalBaseMenu<?>> extends AbstractTableHolderRecipeHandler<T, ITableRecipe, RecipeHolder<ITableRecipe>> {
     private final IRecipeTransferHandlerHelper helper;
@@ -48,7 +47,7 @@ public class ECJeiRecipeTransferHandler<T extends ETTerminalBaseMenu<?>> extends
 
         boolean craftMissing = AbstractContainerScreen.hasControlDown();
         var inputSlots = recipeSlots.getSlotViews(RecipeIngredientRole.INPUT);
-        var adapterRecipe = ITableRecipeAdapter.of(recipe);
+        var adapterRecipe = MyoTableRecipe.of(recipe, recipeHolder.id());
 
         var slotToIngredientMap = getGuiSlotToIngredientMap(menu, adapterRecipe);
         var missingSlots = menu.findMissingIngredients(slotToIngredientMap);
@@ -68,13 +67,13 @@ public class ECJeiRecipeTransferHandler<T extends ETTerminalBaseMenu<?>> extends
                 return new Result.PartiallyCraftable(missingSlots, color, craftMissing);
             }
         } else {
-            performTransfer(menu, adapterRecipe, craftMissing, recipeHolder.id());
+            performTransfer(menu, adapterRecipe, craftMissing);
         }
         return Result.createSuccessful();
     }
 
     @Override
-    public Map<Integer, Ingredient> getGuiSlotToIngredientMap(T menu, ITableRecipeAdapter recipe) {
+    public Map<Integer, Ingredient> getGuiSlotToIngredientMap(T menu, MyoTableRecipe recipe) {
         return ECRecipeTransferHelper.getGuiSlotToIngredientMap(menu, recipe);
     }
 

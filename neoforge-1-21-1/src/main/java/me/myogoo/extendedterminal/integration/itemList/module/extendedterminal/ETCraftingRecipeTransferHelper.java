@@ -3,7 +3,7 @@ package me.myogoo.extendedterminal.integration.itemList.module.extendedterminal;
 import appeng.core.network.ServerboundPacket;
 import appeng.core.network.serverbound.FillCraftingGridFromRecipePacket;
 import me.myogoo.extendedterminal.ExtendedTerminal;
-import me.myogoo.extendedterminal.api.adapter.recipe.table.ITableRecipeAdapter;
+import me.myogoo.extendedterminal.api.adapter.recipe.table.MyoTableRecipe;
 import me.myogoo.extendedterminal.client.ae2helpers.ETAutoCraftingWatcher;
 import me.myogoo.extendedterminal.menu.extendedterminal.ETTerminalMenu;
 import net.minecraft.resources.ResourceLocation;
@@ -45,7 +45,7 @@ public class ETCraftingRecipeTransferHelper {
 
     public static void performTransfer(ETTerminalMenu menu, CraftingRecipe recipe, ResourceLocation recipeId,
             boolean craftingMissing) {
-        var templateItems = ITableRecipeAdapter.of(recipe).findGoodTemplateItems(menu);
+        var templateItems = MyoTableRecipe.of(recipe, recipeId).findGoodTemplateItems(menu);
 
         if (recipeId != null && menu.getPlayer().level().getRecipeManager().byKey(recipeId).isEmpty()) {
             ExtendedTerminal.LOGGER.warn(

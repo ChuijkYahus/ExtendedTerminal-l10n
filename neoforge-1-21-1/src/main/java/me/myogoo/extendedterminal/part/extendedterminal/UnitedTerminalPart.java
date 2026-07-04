@@ -8,8 +8,8 @@ import me.myogoo.extendedterminal.ExtendedTerminal;
 import me.myogoo.extendedterminal.api.host.IUnitedTerminalHost;
 import me.myogoo.extendedterminal.config.extendedcrafting.ExtendedCraftingConfig;
 import me.myogoo.extendedterminal.menu.ETMenuType;
-import me.myogoo.extendedterminal.menu.extendedcrafting.UnitedTerminalMenu;
-import me.myogoo.extendedterminal.menu.extendedterminal.UnitedRecipeType;
+import me.myogoo.extendedterminal.menu.extendedterminal.UnitedTerminalMenu;
+import me.myogoo.extendedterminal.menu.extendedterminal.MyoRecipeType;
 import me.myogoo.extendedterminal.part.ETTerminalBasePart;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -36,7 +36,7 @@ public class UnitedTerminalPart extends ETTerminalBasePart implements IUnitedTer
 
     private boolean rememberUnitedRecipeType = true;
     @Nullable
-    private UnitedRecipeType rememberedUnitedRecipeType;
+    private MyoRecipeType rememberedUnitedRecipeType;
 
     public UnitedTerminalPart(IPartItem<?> partItem) {
         super(partItem, ETMenuType.UNITED_TERMINAL);
@@ -59,7 +59,7 @@ public class UnitedTerminalPart extends ETTerminalBasePart implements IUnitedTer
         this.rememberUnitedRecipeType = !data.contains(REMEMBER_RECIPE_TYPE, Tag.TAG_BYTE)
                 || data.getBoolean(REMEMBER_RECIPE_TYPE);
         if (data.contains(SELECTED_RECIPE_TYPE, Tag.TAG_STRING)) {
-            this.rememberedUnitedRecipeType = UnitedRecipeType.valueOf(data.getString(SELECTED_RECIPE_TYPE));
+            this.rememberedUnitedRecipeType = MyoRecipeType.valueOf(data.getString(SELECTED_RECIPE_TYPE));
         } else {
             this.rememberedUnitedRecipeType = null;
         }
@@ -91,20 +91,20 @@ public class UnitedTerminalPart extends ETTerminalBasePart implements IUnitedTer
     }
 
     @Override
-    public @Nullable UnitedRecipeType getUnitedRecipeType() {
+    public @Nullable MyoRecipeType getUnitedRecipeType() {
         return null;
     }
 
     @Override
-    public void setUnitedRecipeType(@Nullable UnitedRecipeType recipeKind) {
+    public void setUnitedRecipeType(@Nullable MyoRecipeType recipeKind) {
 
     }
 
-    public @Nullable UnitedRecipeType getRememberedUnitedRecipeType() {
+    public @Nullable MyoRecipeType getRememberedUnitedRecipeType() {
         return rememberedUnitedRecipeType;
     }
 
-    public void setRememberedUnitedRecipeType(@Nullable UnitedRecipeType recipeKind) {
+    public void setRememberedUnitedRecipeType(@Nullable MyoRecipeType recipeKind) {
         this.rememberedUnitedRecipeType = recipeKind;
         getHost().markForSave();
     }

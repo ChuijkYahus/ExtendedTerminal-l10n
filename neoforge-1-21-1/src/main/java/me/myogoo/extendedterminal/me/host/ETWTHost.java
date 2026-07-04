@@ -2,7 +2,6 @@ package me.myogoo.extendedterminal.me.host;
 
 import appeng.api.implementations.blockentities.IViewCellStorage;
 import appeng.api.inventories.InternalInventory;
-import appeng.api.storage.ITerminalHost;
 import appeng.items.contents.StackDependentSupplier;
 import appeng.menu.ISubMenu;
 import appeng.menu.locator.ItemMenuHostLocator;

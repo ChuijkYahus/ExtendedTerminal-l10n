@@ -1,7 +1,7 @@
 package me.myogoo.extendedterminal.integration.itemList.module.avaritia;
 
 import me.myogoo.extendedterminal.api.adapter.recipe.table.IShapedTableRecipeAdapter;
-import me.myogoo.extendedterminal.api.adapter.recipe.table.ITableRecipeAdapter;
+import me.myogoo.extendedterminal.api.adapter.recipe.table.MyoTableRecipe;
 import me.myogoo.extendedterminal.api.integration.itemList.IGuiSlotToIngredientMap;
 import me.myogoo.extendedterminal.menu.ETTerminalBaseMenu;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class AVNeoRecipeTransferHelper {
     public static IGuiSlotToIngredientMap GuiSlotToIngredientMap = new IGuiSlotToIngredientMap() {
-        public Map<Integer, Ingredient> jei(ETTerminalBaseMenu<?> menu, ITableRecipeAdapter recipe) {
+        public Map<Integer, Ingredient> jei(ETTerminalBaseMenu<?> menu, MyoTableRecipe recipe) {
             int gridSideLength = menu.getCraftingGridWidth();
             var raw = recipe.get().getIngredients();
             List<Ingredient> ingredients;
@@ -48,7 +48,7 @@ public class AVNeoRecipeTransferHelper {
         }
 
 
-        public Map<Integer, Ingredient> emi(ETTerminalBaseMenu<?> menu, ITableRecipeAdapter recipe) {
+        public Map<Integer, Ingredient> emi(ETTerminalBaseMenu<?> menu, MyoTableRecipe recipe) {
             int gridSideLength = menu.getCraftingGridWidth();
             var raw = recipe.get().getIngredients();
             List<Ingredient> ingredients;

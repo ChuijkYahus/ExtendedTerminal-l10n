@@ -1,7 +1,7 @@
 package me.myogoo.extendedterminal.api.host;
 
 import appeng.api.storage.ITerminalHost;
-import me.myogoo.extendedterminal.menu.extendedterminal.UnitedRecipeType;
+import me.myogoo.extendedterminal.menu.extendedterminal.MyoRecipeType;
 import org.jetbrains.annotations.Nullable;
 
 public interface IUnitedTerminalHost extends ITerminalHost {
@@ -10,7 +10,7 @@ public interface IUnitedTerminalHost extends ITerminalHost {
     void setRememberRecipeType(boolean remember);
 
     @Nullable
-    UnitedRecipeType getUnitedRecipeType();
+    MyoRecipeType getUnitedRecipeType();
 
-    void setUnitedRecipeType(@Nullable UnitedRecipeType recipeKind);
+    void setUnitedRecipeType(@Nullable MyoRecipeType recipeKind);
 }

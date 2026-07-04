@@ -1,6 +1,6 @@
 package me.myogoo.extendedterminal.integration.itemList.jei.handler;
 
-import me.myogoo.extendedterminal.api.adapter.recipe.table.ITableRecipeAdapter;
+import me.myogoo.extendedterminal.api.adapter.recipe.table.MyoTableRecipe;
 import me.myogoo.extendedterminal.integration.itemList.module.ItemListTableRecipeTransferHandler;
 import me.myogoo.extendedterminal.menu.ETTerminalBaseMenu;
 import mezz.jei.api.recipe.RecipeType;
@@ -42,5 +42,5 @@ public abstract class AbstractTableHolderRecipeHandler<T extends ETTerminalBaseM
         return recipeType;
     }
 
-    protected abstract Map<Integer, Ingredient> getGuiSlotToIngredientMap(T menu, ITableRecipeAdapter recipe);
+    protected abstract Map<Integer, Ingredient> getGuiSlotToIngredientMap(T menu, MyoTableRecipe recipe);
 }

@@ -11,7 +11,6 @@ import me.myogoo.extendedterminal.menu.extendedcrafting.AdvancedTerminalMenu;
 import me.myogoo.extendedterminal.menu.extendedcrafting.BasicTerminalMenu;
 import me.myogoo.extendedterminal.menu.extendedcrafting.EliteTerminalMenu;
 import me.myogoo.extendedterminal.menu.extendedcrafting.UltimateTerminalMenu;
-import me.myogoo.extendedterminal.menu.extendedcrafting.UnitedTerminalMenu;
 import me.myogoo.myotus.api.annotation.MyotusSubscriber;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
 import me.myogoo.extendedterminal.api.annotation.ExtendedCrafting;

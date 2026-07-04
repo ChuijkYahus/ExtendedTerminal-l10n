@@ -3,10 +3,9 @@ package me.myogoo.extendedterminal.integration.itemList.emi.extendedterminal.han
 import appeng.core.localization.ItemModText;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
-import me.myogoo.extendedterminal.api.adapter.recipe.table.ITableRecipeAdapter;
+import me.myogoo.extendedterminal.api.adapter.recipe.table.MyoTableRecipe;
 import me.myogoo.extendedterminal.integration.itemList.emi.extendedterminal.handler.ETTerminalBaseRecipeHandler;
 import me.myogoo.extendedterminal.integration.itemList.emi.handler.EmiTransferResult;
-import me.myogoo.extendedterminal.integration.itemList.module.extendedterminal.ETCraftingRecipeTransferHelper;
 import me.myogoo.extendedterminal.integration.itemList.module.extendedterminal.ETStoneCutterRecipeTransferHelper;
 import me.myogoo.extendedterminal.menu.extendedterminal.ETTerminalMenu;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -64,7 +63,7 @@ public class ETStonecutterRecipeHandler<T extends ETTerminalMenu> extends ETTerm
     }
 
     @Override
-    protected Map<Integer, Ingredient> getGuiSlotToIngredientMap(T menu, ITableRecipeAdapter recipe) {
+    protected Map<Integer, Ingredient> getGuiSlotToIngredientMap(T menu, MyoTableRecipe recipe) {
         return Map.of();
     }
 }

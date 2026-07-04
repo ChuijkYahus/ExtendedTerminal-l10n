@@ -5,10 +5,9 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeInput;
 import me.myogoo.extendedterminal.client.screen.ETTerminalBaseScreen;
 import me.myogoo.myotus.client.gui.widgets.button.MyoCycleOverlayButton;
-import me.myogoo.extendedterminal.menu.extendedcrafting.UnitedTerminalMenu;
+import me.myogoo.extendedterminal.menu.extendedterminal.UnitedTerminalMenu;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -31,7 +30,6 @@ public class UnitedTerminalScreen<M extends UnitedTerminalMenu> extends ETTermin
     @Override
     protected void updateBeforeRender() {
         super.updateBeforeRender();
-        this.cycleRecipeKindButton.setVisibility(this.getMenu().hasMultipleRecipeKinds());
     }
 
     private void cycleRecipeKind() {

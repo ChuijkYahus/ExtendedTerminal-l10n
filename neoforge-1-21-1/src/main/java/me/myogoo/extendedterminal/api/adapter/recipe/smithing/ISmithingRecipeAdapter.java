@@ -2,7 +2,7 @@ package me.myogoo.extendedterminal.api.adapter.recipe.smithing;
 
 import me.myogoo.extendedterminal.adapter.recipe.smithing.SmithingTransformRecipeAdapter;
 import me.myogoo.extendedterminal.adapter.recipe.smithing.SmithingTrimRecipeAdapter;
-import me.myogoo.extendedterminal.api.adapter.recipe.IRecipeAdapter;
+import me.myogoo.extendedterminal.api.adapter.recipe.MyoBaseRecipe;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -10,7 +10,7 @@ import net.minecraft.world.item.crafting.SmithingRecipe;
 import net.minecraft.world.item.crafting.SmithingTransformRecipe;
 import net.minecraft.world.item.crafting.SmithingTrimRecipe;
 
-public interface ISmithingRecipeAdapter extends IRecipeAdapter {
+public interface ISmithingRecipeAdapter extends MyoBaseRecipe {
     NonNullList<Ingredient> getIngredients();
 
     boolean isTemplateIngredient(ItemStack item);

@@ -1,9 +1,9 @@
 package me.myogoo.extendedterminal.integration.itemList.emi.avaritiaRe;
 
-import me.myogoo.extendedterminal.menu.extendedcrafting.UnitedTerminalMenu;
+import me.myogoo.extendedterminal.integration.itemList.emi.avaritiaRe.handler.AVUnitedTerminalRecipeHandler;
+import me.myogoo.extendedterminal.menu.extendedterminal.UnitedTerminalMenu;
 import committee.nova.mods.avaritia.init.compat.emi.category.tables.*;
 import dev.emi.emi.api.EmiRegistry;
-import me.myogoo.extendedterminal.menu.extendedterminal.UnitedRecipeType;
 import me.myogoo.myotus.api.annotation.itemList.RecipeTransfer;
 import me.myogoo.myotus.api.annotation.itemList.emi.EMI;
 import me.myogoo.extendedterminal.integration.itemList.emi.avaritiaRe.handler.AVTerminalRecipeHandler;
@@ -25,9 +25,9 @@ public class AVRecipeHandler {
         registry.addRecipeHandler(NetherTerminalMenu.TYPE, new AVTerminalRecipeHandler<>(NetherCraftingTableCategory.CATEGORY, NetherTerminalMenu.class, ETMenuType.NETHER_TERMINAL));
         registry.addRecipeHandler(EndTerminalMenu.TYPE, new AVTerminalRecipeHandler<>(EndCraftingTableCategory.CATEGORY, EndTerminalMenu.class, ETMenuType.END_TERMINAL));
         registry.addRecipeHandler(ExtremeTerminalMenu.TYPE, new AVTerminalRecipeHandler<>(ExtremeCraftingTableCategory.CATEGORY, ExtremeTerminalMenu.class, ETMenuType.EXTREME_TERMINAL));
-        //registry.addRecipeHandler(UnitedTerminalMenu.TYPE, new AVTerminalRecipeHandler<>(NetherCraftingTableCategory.CATEGORY, UnitedTerminalMenu.class, ETMenuType.UNITED_TERMINAL, UnitedTerminalMenu.UnitedRecipeKind.RE_AVARITIA_NETHER));
-        //registry.addRecipeHandler(UnitedTerminalMenu.TYPE, new AVTerminalRecipeHandler<>(EndCraftingTableCategory.CATEGORY, UnitedTerminalMenu.class, ETMenuType.UNITED_TERMINAL, UnitedTerminalMenu.UnitedRecipeKind.RE_AVARITIA_END));
-        //registry.addRecipeHandler(UnitedTerminalMenu.TYPE, new AVTerminalRecipeHandler<>(ExtremeCraftingTableCategory.CATEGORY, UnitedTerminalMenu.class, ETMenuType.UNITED_TERMINAL, UnitedTerminalMenu.UnitedRecipeKind.RE_AVARITIA_EXTREME));
-        //registry.addRecipeHandler(UnitedTerminalMenu.TYPE, new AVTerminalRecipeHandler<>(SculkCraftingTableCategory.CATEGORY, UnitedTerminalMenu.class, ETMenuType.UNITED_TERMINAL, UnitedRecipeType.SCULK));
+        registry.addRecipeHandler(UnitedTerminalMenu.TYPE, new AVUnitedTerminalRecipeHandler(NetherCraftingTableCategory.CATEGORY));
+        registry.addRecipeHandler(UnitedTerminalMenu.TYPE, new AVUnitedTerminalRecipeHandler(EndCraftingTableCategory.CATEGORY));
+        registry.addRecipeHandler(UnitedTerminalMenu.TYPE, new AVUnitedTerminalRecipeHandler(ExtremeCraftingTableCategory.CATEGORY));
+        registry.addRecipeHandler(UnitedTerminalMenu.TYPE, new AVUnitedTerminalRecipeHandler(SculkCraftingTableCategory.CATEGORY));
     }
 }

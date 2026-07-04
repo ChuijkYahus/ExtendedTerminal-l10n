@@ -1,23 +1,20 @@
 package me.myogoo.extendedterminal.integration.itemList.emi.avaritiaRe.handler;
 
-import me.myogoo.extendedterminal.menu.extendedcrafting.UnitedTerminalMenu;
 import me.myogoo.extendedterminal.menu.ETTerminalBaseMenu;
 import appeng.core.localization.ItemModText;
 import committee.nova.mods.avaritia.api.common.crafting.ITierCraftingRecipe;
 import committee.nova.mods.avaritia.init.compat.emi.category.tables.*;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
-import me.myogoo.extendedterminal.api.adapter.recipe.table.ITableRecipeAdapter;
+import me.myogoo.extendedterminal.api.adapter.recipe.table.MyoTableRecipe;
 import me.myogoo.extendedterminal.integration.itemList.emi.handler.AbstractEmiTableRecipeHandler;
 import me.myogoo.extendedterminal.integration.itemList.module.avaritia.AVRecipeTransferHelper;
 import me.myogoo.extendedterminal.menu.ETMenuType;
-import me.myogoo.extendedterminal.menu.avaritiaRe.AvaritiaTerminalBaseMenu;
 import net.minecraft.world.item.crafting.*;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-public class AVTerminalRecipeHandler<T extends ETTerminalBaseMenu<?>> extends AbstractEmiTableRecipeHandler<T>  {
+public class AVTerminalRecipeHandler<T extends ETTerminalBaseMenu<?>> extends AbstractEmiTableRecipeHandler<T> {
     private final ETMenuType menuType;
     private final EmiRecipeCategory category;
 
@@ -35,15 +32,14 @@ public class AVTerminalRecipeHandler<T extends ETTerminalBaseMenu<?>> extends Ab
     @Override
     protected Result transferRecipe(T menu, RecipeHolder<?> holder, EmiRecipe emiRecipe, boolean doTransfer) {
         Result setup;
-        if((setup = transferSetup(holder, emiRecipe, menuType.getGridSideLength())) != null) {
+        if ((setup = transferSetup(holder, emiRecipe, menuType.getGridSideLength())) != null) {
             return setup;
         }
 
         if (holder == null || !(holder.value() instanceof ITierCraftingRecipe tableRecipe)) {
             return Result.createFailed(ItemModText.INCOMPATIBLE_RECIPE.text());
         }
-        var adapterRecipe = ITableRecipeAdapter.of(tableRecipe);
-        return doTransfer(menu, adapterRecipe, holder.id(), doTransfer);
+        return doTransfer(menu, MyoTableRecipe.of(tableRecipe, holder.id()), doTransfer);
     }
 
     @Override
@@ -55,7 +51,7 @@ public class AVTerminalRecipeHandler<T extends ETTerminalBaseMenu<?>> extends Ab
     }
 
     @Override
-    protected Map<Integer, Ingredient> getGuiSlotToIngredientMap(T menu, ITableRecipeAdapter recipe) {
+    protected Map<Integer, Ingredient> getGuiSlotToIngredientMap(T menu, MyoTableRecipe recipe) {
         return AVRecipeTransferHelper.GuiSlotToIngredientMap.emi(menu, recipe);
     }
 

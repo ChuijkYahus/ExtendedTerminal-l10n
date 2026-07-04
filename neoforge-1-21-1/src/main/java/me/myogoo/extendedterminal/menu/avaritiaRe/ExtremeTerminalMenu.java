@@ -7,7 +7,7 @@ import me.myogoo.extendedterminal.menu.ETMenuType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 
-public class ExtremeTerminalMenu extends  AvaritiaTerminalBaseMenu {
+public class ExtremeTerminalMenu extends AvaritiaTerminalBaseMenu {
     public static final MenuType<ExtremeTerminalMenu> TYPE = MenuTypeBuilder
             .create(ExtremeTerminalMenu::new, ITerminalHost.class)
             .buildUnregistered(ETMenuType.EXTREME_TERMINAL.getId());

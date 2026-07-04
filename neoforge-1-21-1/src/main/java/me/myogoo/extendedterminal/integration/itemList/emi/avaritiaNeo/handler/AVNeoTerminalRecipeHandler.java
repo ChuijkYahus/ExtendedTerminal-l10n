@@ -1,16 +1,13 @@
 package me.myogoo.extendedterminal.integration.itemList.emi.avaritiaNeo.handler;
 
-import me.myogoo.extendedterminal.menu.extendedcrafting.UnitedTerminalMenu;
 import me.myogoo.extendedterminal.menu.ETTerminalBaseMenu;
 import appeng.core.localization.ItemModText;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
-import me.myogoo.extendedterminal.api.adapter.recipe.table.ITableRecipeAdapter;
+import me.myogoo.extendedterminal.api.adapter.recipe.table.MyoTableRecipe;
 import me.myogoo.extendedterminal.integration.itemList.emi.handler.AbstractEmiTableRecipeHandler;
 import me.myogoo.extendedterminal.integration.itemList.module.avaritia.AVNeoRecipeTransferHelper;
-import me.myogoo.extendedterminal.integration.itemList.module.avaritia.AVRecipeTransferHelper;
 import me.myogoo.extendedterminal.menu.ETMenuType;
-import me.myogoo.extendedterminal.menu.avaritiaNeo.NeoExtremeTerminalMenu;
 import net.byAqua3.avaritia.recipe.RecipeExtremeCrafting;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -43,7 +40,7 @@ public class AVNeoTerminalRecipeHandler<T extends ETTerminalBaseMenu<?>> extends
         if (holder == null || !(holder.value() instanceof RecipeExtremeCrafting tableRecipe)) {
             return Result.createFailed(ItemModText.INCOMPATIBLE_RECIPE.text());
         }
-        return doTransfer(menu, ITableRecipeAdapter.of(tableRecipe), holder.id(), doTransfer);
+        return doTransfer(menu, MyoTableRecipe.of(tableRecipe, holder.id()), doTransfer);
     }
 
     @Override
@@ -52,7 +49,7 @@ public class AVNeoTerminalRecipeHandler<T extends ETTerminalBaseMenu<?>> extends
     }
 
     @Override
-    protected Map<Integer, Ingredient> getGuiSlotToIngredientMap(T menu, ITableRecipeAdapter recipe) {
+    protected Map<Integer, Ingredient> getGuiSlotToIngredientMap(T menu, MyoTableRecipe recipe) {
         return AVNeoRecipeTransferHelper.GuiSlotToIngredientMap.emi(menu, recipe);
     }
 }

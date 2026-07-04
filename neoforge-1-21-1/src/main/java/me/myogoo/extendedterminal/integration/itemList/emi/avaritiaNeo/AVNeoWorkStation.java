@@ -1,6 +1,6 @@
 package me.myogoo.extendedterminal.integration.itemList.emi.avaritiaNeo;
 
-import me.myogoo.extendedterminal.menu.extendedcrafting.UnitedTerminalMenu;
+import me.myogoo.extendedterminal.menu.extendedterminal.UnitedTerminalMenu;
 import dev.emi.emi.api.EmiRegistry;
 import me.myogoo.myotus.api.annotation.itemList.RecipeCategory;
 import me.myogoo.myotus.api.annotation.itemList.emi.EMI;

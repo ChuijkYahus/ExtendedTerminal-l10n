@@ -3,7 +3,7 @@ package me.myogoo.extendedterminal.integration.itemList.emi.extendedterminal.han
 import appeng.core.localization.ItemModText;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
-import me.myogoo.extendedterminal.api.adapter.recipe.table.ITableRecipeAdapter;
+import me.myogoo.extendedterminal.api.adapter.recipe.table.MyoTableRecipe;
 import me.myogoo.extendedterminal.integration.itemList.emi.extendedterminal.handler.ETTerminalBaseRecipeHandler;
 import me.myogoo.extendedterminal.integration.itemList.emi.handler.EmiTransferResult;
 import me.myogoo.extendedterminal.integration.itemList.module.extendedterminal.ETSmithingRecipeTransferHelper;
@@ -66,7 +66,7 @@ public class ETSmithingRecipeHandler<T extends ETTerminalMenu> extends ETTermina
     }
 
     @Override
-    protected Map<Integer, Ingredient> getGuiSlotToIngredientMap(T menu, ITableRecipeAdapter recipe) {
+    protected Map<Integer, Ingredient> getGuiSlotToIngredientMap(T menu, MyoTableRecipe recipe) {
         return Map.of();
     }
 }

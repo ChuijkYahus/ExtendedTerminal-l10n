@@ -4,20 +4,17 @@ import appeng.core.localization.ItemModText;
 import com.blakebr0.extendedcrafting.api.crafting.ITableRecipe;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
-import me.myogoo.extendedterminal.api.adapter.recipe.table.ITableRecipeAdapter;
+import me.myogoo.extendedterminal.api.adapter.recipe.table.MyoTableRecipe;
 import me.myogoo.extendedterminal.integration.itemList.emi.handler.AbstractEmiTableRecipeHandler;
 import me.myogoo.extendedterminal.integration.itemList.module.extendedcrafting.ECRecipeTransferHelper;
 import me.myogoo.extendedterminal.menu.ETMenuType;
-import me.myogoo.extendedterminal.menu.extendedcrafting.*;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 import java.util.Map;
+
 import me.myogoo.extendedterminal.menu.ETTerminalBaseMenu;
-import me.myogoo.extendedterminal.menu.extendedcrafting.UnitedTerminalMenu;
-import org.jetbrains.annotations.Nullable;
 
 public class ECTerminalRecipeHandler<T extends ETTerminalBaseMenu<?>> extends AbstractEmiTableRecipeHandler<T> {
     private final ETMenuType menuType;
@@ -52,12 +49,11 @@ public class ECTerminalRecipeHandler<T extends ETTerminalBaseMenu<?>> extends Ab
         if (holder == null || !(holder.value() instanceof ITableRecipe tableRecipe)) {
             return Result.createFailed(ItemModText.INCOMPATIBLE_RECIPE.text());
         }
-        var adapterRecipe = ITableRecipeAdapter.of(tableRecipe);
-        return doTransfer(menu, adapterRecipe, holder.id(), doTransfer);
+        return doTransfer(menu, MyoTableRecipe.of(tableRecipe, holder.id()), doTransfer);
     }
 
     @Override
-    protected Map<Integer, Ingredient> getGuiSlotToIngredientMap(T menu, ITableRecipeAdapter recipe) {
+    protected Map<Integer, Ingredient> getGuiSlotToIngredientMap(T menu, MyoTableRecipe recipe) {
         return ECRecipeTransferHelper.getGuiSlotToIngredientMap(menu, recipe);
     }
 }

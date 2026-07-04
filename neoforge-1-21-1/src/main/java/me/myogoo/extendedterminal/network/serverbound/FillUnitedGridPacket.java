@@ -1,8 +1,8 @@
 package me.myogoo.extendedterminal.network.serverbound;
 
 import me.myogoo.extendedterminal.ExtendedTerminal;
-import me.myogoo.extendedterminal.menu.extendedcrafting.UnitedTerminalMenu;
-import me.myogoo.extendedterminal.menu.extendedterminal.UnitedRecipeType;
+import me.myogoo.extendedterminal.menu.extendedterminal.UnitedTerminalMenu;
+import me.myogoo.extendedterminal.menu.extendedterminal.MyoRecipeType;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -23,9 +23,9 @@ public class FillUnitedGridPacket extends FillTableCraftingGridFromRecipePacket 
     public static final CustomPacketPayload.Type<FillUnitedGridPacket> TYPE = new CustomPacketPayload
             .Type<>(ExtendedTerminal.makeId("fill_united_grid_from_recipe"));
 
-    private final UnitedRecipeType recipeType;
+    private final MyoRecipeType recipeType;
 
-    public FillUnitedGridPacket(@Nullable ResourceLocation recipeId, List<ItemStack> ingredientTemplates, boolean craftMissing, UnitedRecipeType recipeType) {
+    public FillUnitedGridPacket(@Nullable ResourceLocation recipeId, List<ItemStack> ingredientTemplates, boolean craftMissing, MyoRecipeType recipeType) {
         super(recipeId, ingredientTemplates, craftMissing, 9, 9);
         this.recipeType = recipeType;
     }
@@ -55,7 +55,7 @@ public class FillUnitedGridPacket extends FillTableCraftingGridFromRecipePacket 
         var ingredientTemplates = NonNullList.withSize(stream.readInt(), ItemStack.EMPTY);
         ingredientTemplates.replaceAll(ignored -> ItemStack.OPTIONAL_STREAM_CODEC.decode(stream));
         var craftMissing = stream.readBoolean();
-        UnitedRecipeType recipeType = stream.readEnum(UnitedRecipeType.class);
+        MyoRecipeType recipeType = stream.readEnum(MyoRecipeType.class);
         return new FillUnitedGridPacket(recipeId, ingredientTemplates, craftMissing, recipeType);
     }
 

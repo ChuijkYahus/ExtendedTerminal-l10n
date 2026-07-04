@@ -4,7 +4,7 @@ import appeng.core.localization.ItemModText;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
 import dev.emi.emi.api.stack.EmiStack;
-import me.myogoo.extendedterminal.api.adapter.recipe.table.ITableRecipeAdapter;
+import me.myogoo.extendedterminal.api.adapter.recipe.table.MyoTableRecipe;
 import me.myogoo.extendedterminal.integration.itemList.emi.extendedterminal.handler.ETTerminalBaseRecipeHandler;
 import me.myogoo.extendedterminal.integration.itemList.module.extendedterminal.ETCraftingRecipeTransferHelper;
 import me.myogoo.extendedterminal.menu.extendedterminal.ETTerminalMenu;
@@ -39,7 +39,7 @@ public class ETCraftingRecipeHandler<T extends ETTerminalMenu> extends ETTermina
             return Result.createFailed(ItemModText.INCOMPATIBLE_RECIPE.text());
         }
 
-        var slotToIngredientMap = getGuiSlotToIngredientMap(menu, ITableRecipeAdapter.of(cRecipe));
+        var slotToIngredientMap = getGuiSlotToIngredientMap(menu, MyoTableRecipe.of(cRecipe, holder.id()));
         var missingSlots = menu.findMissingIngredients(slotToIngredientMap);
 
         if (missingSlots.missingSlots().size() == slotToIngredientMap.size()) {
@@ -73,7 +73,7 @@ public class ETCraftingRecipeHandler<T extends ETTerminalMenu> extends ETTermina
     }
 
     @Override
-    protected Map<Integer, Ingredient> getGuiSlotToIngredientMap(T menu, ITableRecipeAdapter recipe) {
+    protected Map<Integer, Ingredient> getGuiSlotToIngredientMap(T menu, MyoTableRecipe recipe) {
         return ETCraftingRecipeTransferHelper.getGuiSlotToIngredientMap(menu, recipe.get());
     }
 
