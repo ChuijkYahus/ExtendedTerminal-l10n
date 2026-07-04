@@ -1,13 +1,11 @@
 package me.myogoo.extendedterminal.integration.itemList.jei.extendedterminal.handler;
 
 import me.myogoo.extendedterminal.client.screen.extendedterminal.ETTerminalScreen;
-import me.myogoo.extendedterminal.menu.ETSlotSemantics;
 import me.myogoo.extendedterminal.menu.extendedterminal.ETTerminalMenu;
 import me.myogoo.extendedterminal.menu.extendedterminal.ETTerminalMode;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.gui.handlers.IGuiClickableArea;
 import mezz.jei.api.gui.handlers.IGuiContainerHandler;
-import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.IFocusFactory;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.runtime.IRecipesGui;
@@ -15,22 +13,19 @@ import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.world.inventory.Slot;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 
 public class ETTerminalGuiHandler implements IGuiContainerHandler<ETTerminalScreen<?>> {
 
     @Override
-    public List<Rect2i> getGuiExtraAreas(ETTerminalScreen screen) {
+    public @NotNull List<Rect2i> getGuiExtraAreas(ETTerminalScreen<?> screen) {
         return screen.getExclusionZones();
     }
 
     @Override
-    public Collection<IGuiClickableArea> getGuiClickableAreas(ETTerminalScreen<?> screen, double guiMouseX, double guiMouseY) {
+    public @NotNull Collection<IGuiClickableArea> getGuiClickableAreas(ETTerminalScreen<?> screen, double guiMouseX, double guiMouseY) {
         var menu = screen.getMenu();
-        var mode = menu.getMode();
 
         return List.of(
                 new ETGuiClickableArea(ETTerminalMode.CRAFTING, menu),
@@ -49,17 +44,12 @@ public class ETTerminalGuiHandler implements IGuiContainerHandler<ETTerminalScre
                 RecipeTypes.ANVIL
         );
 
-        private final ArrayList<RecipeType<?>> recipeTypes;
         private final ETTerminalMenu menu;
         private final ETTerminalMode targetMode;
-        private final SelectedRecipePrimaryComparator comparator;
 
         public ETGuiClickableArea(ETTerminalMode mode, ETTerminalMenu menu) {
-            var outputSlotPos = menu.getSlots(ETSlotSemantics.ANVIL_RESULT).getFirst();
             this.targetMode = mode;
             this.menu = menu;
-            this.recipeTypes = new ArrayList<>(DEFAULT_RECIPE_TYPES);
-            this.comparator = new SelectedRecipePrimaryComparator(mode);
         }
 
         @Override
@@ -78,8 +68,7 @@ public class ETTerminalGuiHandler implements IGuiContainerHandler<ETTerminalScre
         @Override
         public void onClick(IFocusFactory focusFactory, IRecipesGui recipesGui) {
             if (targetMode == menu.getMode()) {
-                recipeTypes.sort(comparator);
-                recipesGui.showTypes(recipeTypes);
+                recipesGui.showTypes(List.of(recipeTypeFor(targetMode)));
             }
         }
 
@@ -101,34 +90,13 @@ public class ETTerminalGuiHandler implements IGuiContainerHandler<ETTerminalScre
             }
         }
 
-        record SelectedRecipePrimaryComparator(ETTerminalMode mode) implements Comparator<RecipeType<?>> {
-            @Override
-            public int compare(RecipeType<?> o1, RecipeType<?> o2) {
-                var selected = selectedRecipeType();
-
-                if (selected == null) {
-                    return 0;
-                }
-
-                boolean firstSelected = o1 == selected;
-                boolean secondSelected = o2 == selected;
-
-                if (firstSelected == secondSelected) {
-                    return 0;
-                }
-
-                return firstSelected ? -1 : 1;
-            }
-
-            private RecipeType<?> selectedRecipeType() {
-                return switch (this.mode) {
-                    case CRAFTING -> RecipeTypes.CRAFTING;
-                    case STONECUTTING -> RecipeTypes.STONECUTTING;
-                    case SMITHING -> RecipeTypes.SMITHING;
-                    case ANVIL -> RecipeTypes.ANVIL;
-                };
-            }
-
+        private static RecipeType<?> recipeTypeFor(ETTerminalMode mode) {
+            return switch (mode) {
+                case CRAFTING -> RecipeTypes.CRAFTING;
+                case SMITHING -> RecipeTypes.SMITHING;
+                case STONECUTTING -> RecipeTypes.STONECUTTING;
+                case ANVIL -> RecipeTypes.ANVIL;
+            };
         }
     }
 }
