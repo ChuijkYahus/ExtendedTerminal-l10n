@@ -1,4 +1,4 @@
-package me.myogoo.extendedterminal.compat.ae2helpers;
+package me.myogoo.extendedterminal.integration.ae2helpers;
 
 import appeng.api.upgrades.Upgrades;
 import me.myogoo.extendedterminal.init.ETParts;
