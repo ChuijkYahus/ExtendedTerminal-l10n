@@ -5,12 +5,12 @@ import me.myogoo.extendedterminal.menu.extendedterminal.MyoRecipeType;
 import org.jetbrains.annotations.Nullable;
 
 public interface IUnitedTerminalHost extends ITerminalHost {
-    boolean getRememberRecipeType();
+    boolean shouldRememberRecipeType();
 
     void setRememberRecipeType(boolean remember);
 
     @Nullable
-    MyoRecipeType getUnitedRecipeType();
+    MyoRecipeType getLastRecipeType();
 
-    void setUnitedRecipeType(@Nullable MyoRecipeType recipeKind);
+    void setLastRecipeType(@Nullable MyoRecipeType recipeType);
 }

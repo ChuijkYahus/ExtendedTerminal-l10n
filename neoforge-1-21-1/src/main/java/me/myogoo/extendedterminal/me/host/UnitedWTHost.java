@@ -12,6 +12,7 @@ import me.myogoo.extendedterminal.menu.ETMenuType;
 import me.myogoo.extendedterminal.menu.extendedterminal.MyoRecipeType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -34,18 +35,20 @@ public class UnitedWTHost extends WCTMenuHost implements IUnitedTerminalHost {
     }
 
     @Override
-    public @Nullable InternalInventory getSubInventory(net.minecraft.resources.ResourceLocation id) {
+    public @Nullable InternalInventory getSubInventory(ResourceLocation id) {
         if (id.equals(ETMenuType.UNITED_TERMINAL.getCraftingInventory())) {
             return craftingGrid;
         }
         return super.getSubInventory(id);
     }
 
-    public boolean getRememberRecipeType() {
+    @Override
+    public boolean shouldRememberRecipeType() {
         var tag = getHostTag();
         return !tag.contains(REMEMBER_RECIPE_TYPE, Tag.TAG_BYTE) || tag.getBoolean(REMEMBER_RECIPE_TYPE);
     }
 
+    @Override
     public void setRememberRecipeType(boolean remember) {
         var tag = getHostTag();
         tag.putBoolean(REMEMBER_RECIPE_TYPE, remember);
@@ -56,7 +59,7 @@ public class UnitedWTHost extends WCTMenuHost implements IUnitedTerminalHost {
     }
 
     @Override
-    public @Nullable MyoRecipeType getUnitedRecipeType() {
+    public @Nullable MyoRecipeType getLastRecipeType() {
         var tag = getHostTag();
         if (!tag.contains(SELECTED_RECIPE_TYPE, Tag.TAG_STRING)) {
             return null;
@@ -65,15 +68,14 @@ public class UnitedWTHost extends WCTMenuHost implements IUnitedTerminalHost {
     }
 
     @Override
-    public void setUnitedRecipeType(@Nullable MyoRecipeType recipeType) {
+    public void setLastRecipeType(@Nullable MyoRecipeType recipeType) {
         var tag = getHostTag();
         if (recipeType == null) {
             tag.remove(SELECTED_RECIPE_TYPE);
         } else {
-            tag.putString(SELECTED_RECIPE_TYPE, recipeType.toString());
+            tag.putString(SELECTED_RECIPE_TYPE, recipeType.name());
         }
         saveHostTag(tag);
-
     }
 
     private CompoundTag getHostTag() {

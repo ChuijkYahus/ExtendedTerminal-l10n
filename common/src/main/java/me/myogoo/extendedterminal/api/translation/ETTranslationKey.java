@@ -19,7 +19,7 @@ public enum ETTranslationKey implements MyoTranslateKey {
     public enum GUI implements MyoTranslateKey {
         GUI_CONFIG_TITLE("gui.extendedterminal.config.title"),
         GUI_CONFIG_UNITED_TITLE("gui.extendedterminal.config.united.title"),
-        GUI_CONFIG_REMEMBER_UNITED_RECIPE_KIND("gui.extendedterminal.config.remember_united_recipe_kind"),
+        GUI_CONFIG_REMEMBER_UNITED_RECIPE_TYPE("gui.extendedterminal.config.remember_united_recipe_type"),
         GUI_BASIC_TERMINAL("gui.extendedterminal.basicTerminal"),
         GUI_ADVANCED_TERMINAL("gui.extendedterminal.advancedTerminal"),
         GUI_ELITE_TERMINAL("gui.extendedterminal.eliteTerminal"),
@@ -40,16 +40,7 @@ public enum ETTranslationKey implements MyoTranslateKey {
         ANVIL_EXPERIENCE_SOURCE_PRIORITY("gui.extendedterminal.anvil_experience_source.priority"),
         ANVIL_EXPERIENCE_SOURCE_PLAYER("gui.extendedterminal.anvil_experience_source.player"),
         ANVIL_EXPERIENCE_SOURCE_FLUID("gui.extendedterminal.anvil_experience_source.fluid"),
-        ANVIL_EXPERIENCE_SOURCE_CELL("gui.extendedterminal.anvil_experience_source.cell"),
-        UNITED_RECIPE_KIND_EXTENDED_CRAFTING_BASIC("gui.extendedterminal.united_terminal.kind.extended_crafting.basic"),
-        UNITED_RECIPE_KIND_EXTENDED_CRAFTING_ADVANCED("gui.extendedterminal.united_terminal.kind.extended_crafting.advanced"),
-        UNITED_RECIPE_KIND_EXTENDED_CRAFTING_ELITE("gui.extendedterminal.united_terminal.kind.extended_crafting.elite"),
-        UNITED_RECIPE_KIND_EXTENDED_CRAFTING_ULTIMATE("gui.extendedterminal.united_terminal.kind.extended_crafting.ultimate"),
-        UNITED_RECIPE_KIND_AVARITIA_NEO_EXTREME("gui.extendedterminal.united_terminal.kind.avaritia_neo.extreme"),
-        UNITED_RECIPE_KIND_RE_AVARITIA_SCULK("gui.extendedterminal.united_terminal.kind.re_avaritia.sculk"),
-        UNITED_RECIPE_KIND_RE_AVARITIA_NETHER("gui.extendedterminal.united_terminal.kind.re_avaritia.nether"),
-        UNITED_RECIPE_KIND_RE_AVARITIA_END("gui.extendedterminal.united_terminal.kind.re_avaritia.end"),
-        UNITED_RECIPE_KIND_RE_AVARITIA_EXTREME("gui.extendedterminal.united_terminal.kind.re_avaritia.extreme");
+        ANVIL_EXPERIENCE_SOURCE_CELL("gui.extendedterminal.anvil_experience_source.cell");
 
         private final String key;
 
@@ -115,7 +106,17 @@ public enum ETTranslationKey implements MyoTranslateKey {
     }
 
     public enum BLOCK implements MyoTranslateKey {
-        BLOCK_MATERIAL_CONVERTER("block.extendedterminal.material_converter");
+        BLOCK_MATERIAL_CONVERTER("block.extendedterminal.material_converter"),
+        MINECRAFT_CRAFTING_TABLE("block.minecraft.crafting_table"),
+        EXTENDED_CRAFTING_BASIC("block.extendedcrafting.basic_table"),
+        EXTENDED_CRAFTING_ADVANCED("block.extendedcrafting.advanced_table"),
+        EXTENDED_CRAFTING_ELITE("block.extendedcrafting.elite_table"),
+        EXTENDED_CRAFTING_ULTIMATE("block.extendedcrafting.ultimate_table"),
+        AVARITIA_NEO_EXTREME("block.avaritia.extreme_crafting_table"),
+        RE_AVARITIA_SCULK("block.avaritia.sculk_crafting_table"),
+        RE_AVARITIA_NETHER("block.avaritia.nether_crafting_table"),
+        RE_AVARITIA_END("block.avaritia.end_crafting_table"),
+        RE_AVARITIA_EXTREME("block.avaritia.extreme_crafting_table");
 
         private final String key;
 

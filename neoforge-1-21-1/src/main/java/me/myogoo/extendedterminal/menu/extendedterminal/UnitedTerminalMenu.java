@@ -29,9 +29,9 @@ import java.util.List;
 import java.util.Objects;
 
 public class UnitedTerminalMenu extends TableTerminalBaseMenu<Recipe<RecipeInput>> {
-    public static final String ACTION_REMEMBER_RECIPE_KIND = "rememberRecipeKind";
-    private static final String ACTION_SELECT_NEXT_RECIPE_KIND = "selectNextRecipeKind";
-    private static final String ACTION_SELECT_PREVIOUS_RECIPE_KIND = "selectPreviousRecipeKind";
+    public static final String ACTION_REMEMBER_RECIPE_TYPE = "rememberRecipeType";
+    private static final String ACTION_SELECT_NEXT_RECIPE_TYPE = "selectNextRecipeType";
+    private static final String ACTION_SELECT_PREVIOUS_RECIPE_TYPE = "selectPreviousRecipeType";
     public static final MenuType<UnitedTerminalMenu> TYPE = MenuTypeBuilder
             .create(UnitedTerminalMenu::new, IUnitedTerminalHost.class)
             .buildUnregistered(ETMenuType.UNITED_TERMINAL.getId());
@@ -55,9 +55,9 @@ public class UnitedTerminalMenu extends TableTerminalBaseMenu<Recipe<RecipeInput
                 this.menuType.getSlotSemanticResult());
 
 
-        registerClientAction(ACTION_REMEMBER_RECIPE_KIND, Boolean.class, this::setRememberRecipeType);
-        registerClientAction(ACTION_SELECT_NEXT_RECIPE_KIND, this::selectNextRecipeKind);
-        registerClientAction(ACTION_SELECT_PREVIOUS_RECIPE_KIND, this::selectPreviousRecipeKind);
+        registerClientAction(ACTION_REMEMBER_RECIPE_TYPE, Boolean.class, this::setRememberRecipeType);
+        registerClientAction(ACTION_SELECT_NEXT_RECIPE_TYPE, this::selectNextRecipeType);
+        registerClientAction(ACTION_SELECT_PREVIOUS_RECIPE_TYPE, this::selectPreviousRecipeType);
         loadSavedRecipeType();
         updateCurrentRecipeAndOutput(true);
     }
@@ -69,7 +69,7 @@ public class UnitedTerminalMenu extends TableTerminalBaseMenu<Recipe<RecipeInput
         if (!this.selectedRecipeType.isActive()) {
             this.selectedRecipeType = MyoRecipeType.VANILLA;
             if (getHost() instanceof IUnitedTerminalHost unhost) {
-                unhost.setUnitedRecipeType(MyoRecipeType.VANILLA);
+                unhost.setLastRecipeType(MyoRecipeType.VANILLA);
             }
         }
 
@@ -107,68 +107,68 @@ public class UnitedTerminalMenu extends TableTerminalBaseMenu<Recipe<RecipeInput
         return selectedRecipeType;
     }
 
-    public void setSelectedRecipeType(MyoRecipeType selectedRecipeKind) {
-        if (selectedRecipeKind == null
-                || !selectedRecipeKind.isActive()
-                || this.selectedRecipeType == selectedRecipeKind) {
+    public void setSelectedRecipeType(MyoRecipeType recipeType) {
+        if (recipeType == null
+                || !recipeType.isActive()
+                || this.selectedRecipeType == recipeType) {
             return;
         }
-        this.selectedRecipeType = selectedRecipeKind;
-        saveSavedRecipeType(selectedRecipeKind);
+        this.selectedRecipeType = recipeType;
+        saveSavedRecipeType(recipeType);
         this.currentRecipe = null;
         this.lastTestedInput = null;
         updateCurrentRecipeAndOutput(true);
     }
 
     private void loadSavedRecipeType() {
-        if (!(getHost() instanceof IUnitedTerminalHost host) || !host.getRememberRecipeType()) {
+        if (!(getHost() instanceof IUnitedTerminalHost host) || !host.shouldRememberRecipeType()) {
             return;
         }
 
-        var remembered = host.getUnitedRecipeType();
+        var remembered = host.getLastRecipeType();
         if (remembered != null && remembered.isActive()) {
             this.selectedRecipeType = remembered;
         }
     }
 
     private void saveSavedRecipeType(MyoRecipeType recipeType) {
-        if (!isClientSide() && getHost() instanceof IUnitedTerminalHost host && host.getRememberRecipeType()) {
-            host.setUnitedRecipeType(recipeType);
+        if (!isClientSide() && getHost() instanceof IUnitedTerminalHost host && host.shouldRememberRecipeType()) {
+            host.setLastRecipeType(recipeType);
         }
     }
 
-    public boolean rememberRecipeKind() {
-        return !(getHost() instanceof IUnitedTerminalHost host) || host.getRememberRecipeType();
+    public boolean rememberRecipeType() {
+        return !(getHost() instanceof IUnitedTerminalHost host) || host.shouldRememberRecipeType();
     }
 
     public void setRememberRecipeType(boolean remember) {
         if (isClientSide()) {
-            sendClientAction(ACTION_REMEMBER_RECIPE_KIND, remember);
+            sendClientAction(ACTION_REMEMBER_RECIPE_TYPE, remember);
             return;
         }
 
         if (getHost() instanceof IUnitedTerminalHost host) {
             host.setRememberRecipeType(remember);
             if (remember) {
-                host.setUnitedRecipeType(getSelectedRecipeType());
+                host.setLastRecipeType(getSelectedRecipeType());
             }
         }
     }
 
-    public void selectNextRecipeKind() {
-        selectRecipeKindOffset(1, ACTION_SELECT_NEXT_RECIPE_KIND);
+    public void selectNextRecipeType() {
+        selectRecipeTypeOffset(1, ACTION_SELECT_NEXT_RECIPE_TYPE);
     }
 
-    public void selectPreviousRecipeKind() {
-        selectRecipeKindOffset(-1, ACTION_SELECT_PREVIOUS_RECIPE_KIND);
+    public void selectPreviousRecipeType() {
+        selectRecipeTypeOffset(-1, ACTION_SELECT_PREVIOUS_RECIPE_TYPE);
     }
 
-    private void selectRecipeKindOffset(int offset, String clientAction) {
+    private void selectRecipeTypeOffset(int offset, String clientAction) {
         if (isClientSide()) {
             sendClientAction(clientAction);
             return;
         }
-        var values = getActiveRecipeKinds();
+        var values = getActiveRecipeTypes();
         if (values.size() <= 1) {
             return;
         }
@@ -176,14 +176,14 @@ public class UnitedTerminalMenu extends TableTerminalBaseMenu<Recipe<RecipeInput
         setSelectedRecipeType(values.get(Math.floorMod(currentIndex + offset, values.size())));
     }
 
-    public static List<MyoRecipeType> getActiveRecipeKinds() {
-        var kinds = new ArrayList<MyoRecipeType>(MyoRecipeType.values().length);
-        for (var kind : MyoRecipeType.values()) {
-            if (kind.isActive()) {
-                kinds.add(kind);
+    public static List<MyoRecipeType> getActiveRecipeTypes() {
+        var recipeTypes = new ArrayList<MyoRecipeType>(MyoRecipeType.values().length);
+        for (var recipeType : MyoRecipeType.values()) {
+            if (recipeType.isActive()) {
+                recipeTypes.add(recipeType);
             }
         }
-        return kinds;
+        return recipeTypes;
     }
 
     @Nullable

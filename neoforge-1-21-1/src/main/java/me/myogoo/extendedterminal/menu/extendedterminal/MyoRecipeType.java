@@ -13,19 +13,19 @@ import java.lang.annotation.Annotation;
 
 
 public enum MyoRecipeType {
-    VANILLA(VANILLA.class, ETTranslationKey.BLOCK.BLOCK_MATERIAL_CONVERTER.key(), -1, ResourceLocation.fromNamespaceAndPath(IntegrationConstant.MINECRAFT, "crafting_table")),
+    VANILLA(VANILLA.class, ETTranslationKey.BLOCK.MINECRAFT_CRAFTING_TABLE.key(), -1, ResourceLocation.fromNamespaceAndPath(IntegrationConstant.MINECRAFT, "crafting_table")),
 
-    BASIC(ExtendedCrafting.class, ETTranslationKey.BLOCK.BLOCK_MATERIAL_CONVERTER.key(), 1, ResourceLocation.fromNamespaceAndPath(IntegrationConstant.EXTENDED_CRAFTING_MODID, "basic_table")),
-    ADVANCED(ExtendedCrafting.class, ETTranslationKey.BLOCK.BLOCK_MATERIAL_CONVERTER.key(), 2, ResourceLocation.fromNamespaceAndPath(IntegrationConstant.EXTENDED_CRAFTING_MODID, "advanced_table")),
-    ELITE(ExtendedCrafting.class, ETTranslationKey.BLOCK.BLOCK_MATERIAL_CONVERTER.key(), 3, ResourceLocation.fromNamespaceAndPath(IntegrationConstant.EXTENDED_CRAFTING_MODID, "elite_table")),
-    ULTIMATE(ExtendedCrafting.class, ETTranslationKey.BLOCK.BLOCK_MATERIAL_CONVERTER.key(), 4, ResourceLocation.fromNamespaceAndPath(IntegrationConstant.EXTENDED_CRAFTING_MODID, "ultimate_table")),
+    BASIC(ExtendedCrafting.class, ETTranslationKey.BLOCK.EXTENDED_CRAFTING_BASIC.key(), 1, ResourceLocation.fromNamespaceAndPath(IntegrationConstant.EXTENDED_CRAFTING_MODID, "basic_table")),
+    ADVANCED(ExtendedCrafting.class, ETTranslationKey.BLOCK.EXTENDED_CRAFTING_ADVANCED.key(), 2, ResourceLocation.fromNamespaceAndPath(IntegrationConstant.EXTENDED_CRAFTING_MODID, "advanced_table")),
+    ELITE(ExtendedCrafting.class, ETTranslationKey.BLOCK.EXTENDED_CRAFTING_ELITE.key(), 3, ResourceLocation.fromNamespaceAndPath(IntegrationConstant.EXTENDED_CRAFTING_MODID, "elite_table")),
+    ULTIMATE(ExtendedCrafting.class, ETTranslationKey.BLOCK.EXTENDED_CRAFTING_ULTIMATE.key(), 4, ResourceLocation.fromNamespaceAndPath(IntegrationConstant.EXTENDED_CRAFTING_MODID, "ultimate_table")),
 
-    EXTREME_MEO(AvaritiaNeo.class, ETTranslationKey.BLOCK.BLOCK_MATERIAL_CONVERTER.key(), 4, ResourceLocation.fromNamespaceAndPath(IntegrationConstant.AVARITIA_MODID, "extreme_crafting_table")),
+    EXTREME_MEO(AvaritiaNeo.class, ETTranslationKey.BLOCK.AVARITIA_NEO_EXTREME.key(), 4, ResourceLocation.fromNamespaceAndPath(IntegrationConstant.AVARITIA_MODID, "extreme_crafting_table")),
 
-    SCULK(ReAvaritia.class, ETTranslationKey.BLOCK.BLOCK_MATERIAL_CONVERTER.key(), 1, ResourceLocation.fromNamespaceAndPath(IntegrationConstant.AVARITIA_MODID, "sculk_crafting_table")),
-    Nether(ReAvaritia.class, ETTranslationKey.BLOCK.BLOCK_MATERIAL_CONVERTER.key(), 2, ResourceLocation.fromNamespaceAndPath(IntegrationConstant.AVARITIA_MODID, "nether_crafting_table")),
-    END(ReAvaritia.class, ETTranslationKey.BLOCK.BLOCK_MATERIAL_CONVERTER.key(), 3, ResourceLocation.fromNamespaceAndPath(IntegrationConstant.AVARITIA_MODID, "end_crafting_table")),
-    EXTREME(ReAvaritia.class, ETTranslationKey.BLOCK.BLOCK_MATERIAL_CONVERTER.key(), 4, ResourceLocation.fromNamespaceAndPath(IntegrationConstant.AVARITIA_MODID, "extreme_crafting_table"));
+    SCULK(ReAvaritia.class, ETTranslationKey.BLOCK.RE_AVARITIA_SCULK.key(), 1, ResourceLocation.fromNamespaceAndPath(IntegrationConstant.AVARITIA_MODID, "sculk_crafting_table")),
+    Nether(ReAvaritia.class, ETTranslationKey.BLOCK.RE_AVARITIA_NETHER.key(), 2, ResourceLocation.fromNamespaceAndPath(IntegrationConstant.AVARITIA_MODID, "nether_crafting_table")),
+    END(ReAvaritia.class, ETTranslationKey.BLOCK.RE_AVARITIA_END.key(), 3, ResourceLocation.fromNamespaceAndPath(IntegrationConstant.AVARITIA_MODID, "end_crafting_table")),
+    EXTREME(ReAvaritia.class, ETTranslationKey.BLOCK.RE_AVARITIA_EXTREME.key(), 4, ResourceLocation.fromNamespaceAndPath(IntegrationConstant.AVARITIA_MODID, "extreme_crafting_table"));
 
     private final String translateKey;
     private final int tier;

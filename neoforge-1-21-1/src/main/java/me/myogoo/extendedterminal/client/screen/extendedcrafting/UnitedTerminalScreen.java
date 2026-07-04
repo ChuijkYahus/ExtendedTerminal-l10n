@@ -15,16 +15,16 @@ import net.minecraft.world.item.Items;
 import java.util.List;
 
 public class UnitedTerminalScreen<M extends UnitedTerminalMenu> extends ETTerminalBaseScreen<Recipe<RecipeInput>, M> {
-    private final MyoCycleOverlayButton cycleRecipeKindButton;
+    private final MyoCycleOverlayButton cycleRecipeTypeButton;
 
     public UnitedTerminalScreen(M menu, Inventory playerInventory, Component title, ScreenStyle style) {
         super(menu, playerInventory, title, style);
-        this.cycleRecipeKindButton = new MyoCycleOverlayButton(
-                (Runnable) this::cycleRecipeKind,
-                (Runnable) this::cycleRecipeKindBackwards,
-                this::selectedRecipeKindItem,
-                () -> List.of(selectedRecipeKindTooltip()));
-        widgets.add("cycleRecipeKind", this.cycleRecipeKindButton);
+        this.cycleRecipeTypeButton = new MyoCycleOverlayButton(
+                (Runnable) this::cycleRecipeType,
+                (Runnable) this::cycleRecipeTypeBackwards,
+                this::selectedRecipeTypeItem,
+                () -> List.of(selectedRecipeTypeTooltip()));
+        widgets.add("cycleRecipeType", this.cycleRecipeTypeButton);
     }
 
     @Override
@@ -32,19 +32,19 @@ public class UnitedTerminalScreen<M extends UnitedTerminalMenu> extends ETTermin
         super.updateBeforeRender();
     }
 
-    private void cycleRecipeKind() {
-        this.getMenu().selectNextRecipeKind();
+    private void cycleRecipeType() {
+        this.getMenu().selectNextRecipeType();
     }
 
-    private void cycleRecipeKindBackwards() {
-        this.getMenu().selectPreviousRecipeKind();
+    private void cycleRecipeTypeBackwards() {
+        this.getMenu().selectPreviousRecipeType();
     }
 
-    private Component selectedRecipeKindTooltip() {
+    private Component selectedRecipeTypeTooltip() {
         return Component.translatable(this.getMenu().getSelectedRecipeType().getTranslateKey());
     }
 
-    private Item selectedRecipeKindItem() {
+    private Item selectedRecipeTypeItem() {
         var recipeType = this.getMenu().getSelectedRecipeType();
         var item = BuiltInRegistries.ITEM.get(recipeType.getIcon());
         return item == Items.AIR ? Items.CRAFTING_TABLE : item;

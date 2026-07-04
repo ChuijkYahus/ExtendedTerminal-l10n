@@ -10,7 +10,7 @@ import net.minecraft.network.chat.Component;
 
 public class UnitedTerminalConfigScreen implements MyoConfigTabScreen {
     private UnitedTerminalMenu menu;
-    private AECheckbox rememberRecipeKind;
+    private AECheckbox rememberRecipeType;
 
     @Override
     public void buildTab(WidgetContainer widget, AEBaseScreen<?> screen) {
@@ -19,25 +19,25 @@ public class UnitedTerminalConfigScreen implements MyoConfigTabScreen {
         }
 
         this.menu = menu;
-        this.rememberRecipeKind = widget.addCheckbox(
-                "rememberRecipeKind",
-                Component.translatable(ETTranslationKey.GUI.GUI_CONFIG_REMEMBER_UNITED_RECIPE_KIND.key()),
+        this.rememberRecipeType = widget.addCheckbox(
+                "rememberRecipeType",
+                Component.translatable(ETTranslationKey.GUI.GUI_CONFIG_REMEMBER_UNITED_RECIPE_TYPE.key()),
                 this::save
         );
         updateState();
     }
 
     private void updateState() {
-        if (rememberRecipeKind != null && menu != null) {
-            rememberRecipeKind.setSelected(menu.rememberRecipeKind());
+        if (rememberRecipeType != null && menu != null) {
+            rememberRecipeType.setSelected(menu.rememberRecipeType());
         }
     }
 
     private void save() {
-        if (menu == null || rememberRecipeKind == null) {
+        if (menu == null || rememberRecipeType == null) {
             return;
         }
 
-        menu.setRememberRecipeType(rememberRecipeKind.isSelected());
+        menu.setRememberRecipeType(rememberRecipeType.isSelected());
     }
 }

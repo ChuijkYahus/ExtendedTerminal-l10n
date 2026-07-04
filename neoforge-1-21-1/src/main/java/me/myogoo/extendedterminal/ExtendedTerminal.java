@@ -1,8 +1,8 @@
 package me.myogoo.extendedterminal;
 
 import com.mojang.logging.LogUtils;
-import me.myogoo.extendedterminal.compat.ae2helpers.AE2HelpersCompat;
-import me.myogoo.extendedterminal.compat.ae2helpers.AE2HelpersUpgradeRegistration;
+import me.myogoo.extendedterminal.integration.ae2helpers.AE2HelpersCompat;
+import me.myogoo.extendedterminal.integration.ae2helpers.AE2HelpersUpgradeRegistration;
 import me.myogoo.extendedterminal.init.*;
 import me.myogoo.extendedterminal.init.wt.WTInit;
 import me.myogoo.extendedterminal.init.wt.WTItems;

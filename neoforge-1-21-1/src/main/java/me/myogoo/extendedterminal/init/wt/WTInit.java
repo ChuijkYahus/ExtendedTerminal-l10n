@@ -1,12 +1,11 @@
 package me.myogoo.extendedterminal.init.wt;
 
 import appeng.api.features.GridLinkables;
-import me.myogoo.extendedterminal.compat.ae2helpers.AE2HelpersUpgradeRegistration;
+import me.myogoo.extendedterminal.integration.ae2helpers.AE2HelpersUpgradeRegistration;
 import appeng.api.upgrades.Upgrades;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.items.tools.powered.powersink.PoweredItemCapabilities;
 import de.mari_023.ae2wtlib.AE2wtlibItems;
-import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
 import de.mari_023.ae2wtlib.api.gui.Icon;
 import de.mari_023.ae2wtlib.api.registration.AddTerminalEvent;
 import de.mari_023.ae2wtlib.api.registration.WTDefinition;
@@ -20,7 +19,6 @@ import me.myogoo.extendedterminal.menu.extendedterminal.wt.ETWTMenu;
 import me.myogoo.myotus.api.annotation.mods.AE2WTLib;
 import me.myogoo.myotus.api.MyotusAPI;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.capabilities.Capabilities;

@@ -36,7 +36,7 @@ public class UnitedTerminalPart extends ETTerminalBasePart implements IUnitedTer
 
     private boolean rememberUnitedRecipeType = true;
     @Nullable
-    private MyoRecipeType rememberedUnitedRecipeType;
+    private MyoRecipeType lastRecipeType;
 
     public UnitedTerminalPart(IPartItem<?> partItem) {
         super(partItem, ETMenuType.UNITED_TERMINAL);
@@ -59,9 +59,9 @@ public class UnitedTerminalPart extends ETTerminalBasePart implements IUnitedTer
         this.rememberUnitedRecipeType = !data.contains(REMEMBER_RECIPE_TYPE, Tag.TAG_BYTE)
                 || data.getBoolean(REMEMBER_RECIPE_TYPE);
         if (data.contains(SELECTED_RECIPE_TYPE, Tag.TAG_STRING)) {
-            this.rememberedUnitedRecipeType = MyoRecipeType.valueOf(data.getString(SELECTED_RECIPE_TYPE));
+            this.lastRecipeType = MyoRecipeType.valueOf(data.getString(SELECTED_RECIPE_TYPE));
         } else {
-            this.rememberedUnitedRecipeType = null;
+            this.lastRecipeType = null;
         }
     }
 
@@ -69,15 +69,15 @@ public class UnitedTerminalPart extends ETTerminalBasePart implements IUnitedTer
     public void writeToNBT(CompoundTag data, HolderLookup.Provider registries) {
         super.writeToNBT(data, registries);
         data.putBoolean(REMEMBER_RECIPE_TYPE, this.rememberUnitedRecipeType);
-        if (this.rememberedUnitedRecipeType != null) {
-            data.putString(SELECTED_RECIPE_TYPE, this.rememberedUnitedRecipeType.toString());
+        if (this.lastRecipeType != null) {
+            data.putString(SELECTED_RECIPE_TYPE, this.lastRecipeType.name());
         } else {
             data.remove(SELECTED_RECIPE_TYPE);
         }
     }
 
     @Override
-    public boolean getRememberRecipeType() {
+    public boolean shouldRememberRecipeType() {
         return rememberUnitedRecipeType;
     }
 
@@ -85,27 +85,19 @@ public class UnitedTerminalPart extends ETTerminalBasePart implements IUnitedTer
     public void setRememberRecipeType(boolean remember) {
         this.rememberUnitedRecipeType = remember;
         if (!remember) {
-            this.rememberedUnitedRecipeType = null;
+            this.lastRecipeType = null;
         }
         getHost().markForSave();
     }
 
     @Override
-    public @Nullable MyoRecipeType getUnitedRecipeType() {
-        return null;
+    public @Nullable MyoRecipeType getLastRecipeType() {
+        return lastRecipeType;
     }
 
     @Override
-    public void setUnitedRecipeType(@Nullable MyoRecipeType recipeKind) {
-
-    }
-
-    public @Nullable MyoRecipeType getRememberedUnitedRecipeType() {
-        return rememberedUnitedRecipeType;
-    }
-
-    public void setRememberedUnitedRecipeType(@Nullable MyoRecipeType recipeKind) {
-        this.rememberedUnitedRecipeType = recipeKind;
+    public void setLastRecipeType(@Nullable MyoRecipeType recipeType) {
+        this.lastRecipeType = recipeType;
         getHost().markForSave();
     }
 }
