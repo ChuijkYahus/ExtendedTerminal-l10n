@@ -1,6 +1,7 @@
 package me.myogoo.extendedterminal.menu.extendedterminal;
 
 import appeng.menu.SlotSemantic;
+import appeng.menu.SlotSemantics;
 import me.myogoo.extendedterminal.ExtendedTerminal;
 import me.myogoo.extendedterminal.config.ExtendedTerminalConfig;
 import me.myogoo.extendedterminal.menu.ETMenuType;
@@ -52,7 +53,7 @@ public enum ETTerminalMode {
         };
     }
 
-    public List<SlotSemantic> getSlotSemantics() {
+    public List<SlotSemantic> getInputSlotSemantics() {
         return switch (this) {
             case CRAFTING -> List.of(ETMenuType.ET_TERMINAL.getSlotSemanticGrid());
             case STONECUTTING -> List.of(ETSlotSemantics.STONECUTTING_INPUT);
@@ -60,6 +61,15 @@ public enum ETTerminalMode {
                 List.of(ETSlotSemantics.SMITHING_TABLE_BASE, ETSlotSemantics.SMITHING_TABLE_TEMPLATE,
                         ETSlotSemantics.SMITHING_TABLE_ADDITION);
             case ANVIL -> List.of(ETSlotSemantics.ANVIL_LEFT_INPUT, ETSlotSemantics.ANVIL_RIGHT_INPUT);
+        };
+    }
+    
+    public SlotSemantic getOutputSlotSemantics() {
+        return switch (this) {
+            case CRAFTING -> ETMenuType.ET_TERMINAL.getSlotSemanticResult();
+            case STONECUTTING -> ETSlotSemantics.STONECUTTING_RESULT;
+            case SMITHING -> SlotSemantics.SMITHING_TABLE_RESULT;
+            case ANVIL -> ETSlotSemantics.ANVIL_RESULT;
         };
     }
 

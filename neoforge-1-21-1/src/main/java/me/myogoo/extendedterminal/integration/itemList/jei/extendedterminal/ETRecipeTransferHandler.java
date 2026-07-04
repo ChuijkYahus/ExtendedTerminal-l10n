@@ -1,5 +1,6 @@
 package me.myogoo.extendedterminal.integration.itemList.jei.extendedterminal;
 
+import me.myogoo.extendedterminal.menu.extendedterminal.UnitedTerminalMenu;
 import me.myogoo.myotus.api.annotation.itemList.RecipeTransfer;
 import me.myogoo.myotus.api.annotation.itemList.jei.JEI;
 import me.myogoo.extendedterminal.config.ExtendedTerminalConfig;
@@ -25,5 +26,6 @@ public class ETRecipeTransferHandler {
             registration.addRecipeTransferHandler(new ETSmithingRecipeTransfer(ETTerminalMenu.TYPE, ETTerminalMenu.class, helper), RecipeTypes.SMITHING);
         if (config.enableStonecutterPanel())
             registration.addRecipeTransferHandler(new ETStonecutterRecipeTransfer(ETTerminalMenu.TYPE, ETTerminalMenu.class, helper), RecipeTypes.STONECUTTING);
+        //registration.addRecipeTransferHandler(new ETCraftingRecipeTransfer<>(UnitedTerminalMenu.TYPE, UnitedTerminalMenu.class, helper), RecipeTypes.CRAFTING);
     }
 }

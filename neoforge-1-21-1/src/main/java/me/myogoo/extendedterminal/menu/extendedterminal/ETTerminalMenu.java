@@ -63,7 +63,7 @@ public class ETTerminalMenu extends ETTerminalBaseMenu<CraftingRecipe> {
     // ---------------------------------------------------------------------
     private final ISegmentedInventory craftingInventoryHost;
     @GuiSync(0)
-    public ETTerminalMode currentMode = ETTerminalMode.CRAFTING;
+    private ETTerminalMode currentMode = ETTerminalMode.CRAFTING;
 
     private final CraftingMatrixSlot[] craftingSlots;
     private final CraftingTermSlot outputSlot;
@@ -634,7 +634,7 @@ public class ETTerminalMenu extends ETTerminalBaseMenu<CraftingRecipe> {
     @Override
     public boolean hasIngredient(Ingredient ingredient, Object2IntOpenHashMap<Object> reservedAmounts) {
         List<Slot> slots = ETTerminalMode.loadableValues().stream()
-                .map(ETTerminalMode::getSlotSemantics)
+                .map(ETTerminalMode::getInputSlotSemantics)
                 .flatMap(Collection::stream)
                 .map(this::getSlots)
                 .flatMap(Collection::stream)
