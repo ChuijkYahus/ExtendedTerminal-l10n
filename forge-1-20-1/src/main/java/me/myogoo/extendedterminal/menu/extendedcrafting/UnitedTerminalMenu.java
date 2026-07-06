@@ -375,15 +375,15 @@ public class UnitedTerminalMenu extends ETTerminalBaseMenu<Recipe<?>> {
     }
 
     public enum UnitedRecipeKind {
-        EXTENDED_CRAFTING_BASIC("extended_crafting/basic", RecipeFamily.EXTENDED_CRAFTING, ExtendedCrafting.class, 1, ETTranslationKey.GUI.UNITED_RECIPE_KIND_EXTENDED_CRAFTING_BASIC, "extendedcrafting", "basic_table"),
-        EXTENDED_CRAFTING_ADVANCED("extended_crafting/advanced", RecipeFamily.EXTENDED_CRAFTING, ExtendedCrafting.class, 2, ETTranslationKey.GUI.UNITED_RECIPE_KIND_EXTENDED_CRAFTING_ADVANCED, "extendedcrafting", "advanced_table"),
-        EXTENDED_CRAFTING_ELITE("extended_crafting/elite", RecipeFamily.EXTENDED_CRAFTING, ExtendedCrafting.class, 3, ETTranslationKey.GUI.UNITED_RECIPE_KIND_EXTENDED_CRAFTING_ELITE, "extendedcrafting", "elite_table"),
-        EXTENDED_CRAFTING_ULTIMATE("extended_crafting/ultimate", RecipeFamily.EXTENDED_CRAFTING, ExtendedCrafting.class, 4, ETTranslationKey.GUI.UNITED_RECIPE_KIND_EXTENDED_CRAFTING_ULTIMATE, "extendedcrafting", "ultimate_table"),
-        AVARITIA_NEO_EXTREME("avaritia_neo/extreme", RecipeFamily.AVARITIA_NEO, AvaritiaNeo.class, 4, ETTranslationKey.GUI.UNITED_RECIPE_KIND_AVARITIA_NEO_EXTREME, "avaritia", "extreme_crafting_table"),
-        RE_AVARITIA_SCULK("re_avaritia/sculk", RecipeFamily.RE_AVARITIA, ReAvaritia.class, 1, ETTranslationKey.GUI.UNITED_RECIPE_KIND_RE_AVARITIA_SCULK, "avaritia", "sculk_crafting_table"),
-        RE_AVARITIA_NETHER("re_avaritia/nether", RecipeFamily.RE_AVARITIA, ReAvaritia.class, 2, ETTranslationKey.GUI.UNITED_RECIPE_KIND_RE_AVARITIA_NETHER, "avaritia", "nether_crafting_table"),
-        RE_AVARITIA_END("re_avaritia/end", RecipeFamily.RE_AVARITIA, ReAvaritia.class, 3, ETTranslationKey.GUI.UNITED_RECIPE_KIND_RE_AVARITIA_END, "avaritia", "end_crafting_table"),
-        RE_AVARITIA_EXTREME("re_avaritia/extreme", RecipeFamily.RE_AVARITIA, ReAvaritia.class, 4, ETTranslationKey.GUI.UNITED_RECIPE_KIND_RE_AVARITIA_EXTREME, "avaritia", "extreme_crafting_table");
+        EXTENDED_CRAFTING_BASIC("extended_crafting/basic", RecipeFamily.EXTENDED_CRAFTING, ExtendedCrafting.class, 1, ETTranslationKey.BLOCK.EXTENDED_CRAFTING_BASIC, "extendedcrafting", "basic_table"),
+        EXTENDED_CRAFTING_ADVANCED("extended_crafting/advanced", RecipeFamily.EXTENDED_CRAFTING, ExtendedCrafting.class, 2, ETTranslationKey.BLOCK.EXTENDED_CRAFTING_ADVANCED, "extendedcrafting", "advanced_table"),
+        EXTENDED_CRAFTING_ELITE("extended_crafting/elite", RecipeFamily.EXTENDED_CRAFTING, ExtendedCrafting.class, 3, ETTranslationKey.BLOCK.EXTENDED_CRAFTING_ELITE, "extendedcrafting", "elite_table"),
+        EXTENDED_CRAFTING_ULTIMATE("extended_crafting/ultimate", RecipeFamily.EXTENDED_CRAFTING, ExtendedCrafting.class, 4, ETTranslationKey.BLOCK.EXTENDED_CRAFTING_ULTIMATE, "extendedcrafting", "ultimate_table"),
+        AVARITIA_NEO_EXTREME("avaritia_neo/extreme", RecipeFamily.AVARITIA_NEO, AvaritiaNeo.class, 4, ETTranslationKey.BLOCK.AVARITIA_NEO_EXTREME, "avaritia", "extreme_crafting_table"),
+        RE_AVARITIA_SCULK("re_avaritia/sculk", RecipeFamily.RE_AVARITIA, ReAvaritia.class, 1, ETTranslationKey.BLOCK.RE_AVARITIA_SCULK, "avaritia", "sculk_crafting_table"),
+        RE_AVARITIA_NETHER("re_avaritia/nether", RecipeFamily.RE_AVARITIA, ReAvaritia.class, 2, ETTranslationKey.BLOCK.RE_AVARITIA_NETHER, "avaritia", "nether_crafting_table"),
+        RE_AVARITIA_END("re_avaritia/end", RecipeFamily.RE_AVARITIA, ReAvaritia.class, 3, ETTranslationKey.BLOCK.RE_AVARITIA_END, "avaritia", "end_crafting_table"),
+        RE_AVARITIA_EXTREME("re_avaritia/extreme", RecipeFamily.RE_AVARITIA, ReAvaritia.class, 4, ETTranslationKey.BLOCK.RE_AVARITIA_EXTREME, "avaritia", "extreme_crafting_table");
 
         private final String serializedName;
         private final RecipeFamily family;
