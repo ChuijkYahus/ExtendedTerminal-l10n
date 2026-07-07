@@ -1,6 +1,7 @@
 package me.myogoo.extendedterminal.integration.itemList.jei.extendedterminal.handler;
 
 import me.myogoo.extendedterminal.client.screen.extendedterminal.ETTerminalScreen;
+import me.myogoo.extendedterminal.integration.itemList.jei.handler.MyoBaseClickableArea;
 import me.myogoo.extendedterminal.menu.extendedterminal.ETTerminalMenu;
 import me.myogoo.extendedterminal.menu.extendedterminal.ETTerminalMode;
 import mezz.jei.api.constants.RecipeTypes;
@@ -35,14 +36,8 @@ public class ETTerminalGuiHandler implements IGuiContainerHandler<ETTerminalScre
         );
     }
 
-    private static class ETGuiClickableArea implements IGuiClickableArea {
+    private static class ETGuiClickableArea extends MyoBaseClickableArea {
         private final static Rect2i DummyRect2i = new Rect2i(0, 0, 0, 0);
-        private static final List<RecipeType<?>> DEFAULT_RECIPE_TYPES = List.of(
-                RecipeTypes.CRAFTING,
-                RecipeTypes.SMITHING,
-                RecipeTypes.STONECUTTING,
-                RecipeTypes.ANVIL
-        );
 
         private final ETTerminalMenu menu;
         private final ETTerminalMode targetMode;
@@ -74,20 +69,7 @@ public class ETTerminalGuiHandler implements IGuiContainerHandler<ETTerminalScre
 
         @Override
         public boolean isTooltipEnabled() {
-            return  targetMode == menu.getMode();
-        }
-
-        enum Direction {
-            UP, DOWN, LEFT, RIGHT;
-
-            Rect2i getArea(Slot slot) {
-                return switch (this) {
-                    case UP -> new Rect2i(slot.x, slot.y + 24, 24, 24);
-                    case DOWN -> new Rect2i(slot.x, slot.y - 24, 24, 24);
-                    case LEFT -> new Rect2i(slot.x - 40, slot.y, 24, 24);
-                    case RIGHT -> new Rect2i(slot.x + 40, slot.y, 24, 24);
-                };
-            }
+            return targetMode == menu.getMode();
         }
 
         private static RecipeType<?> recipeTypeFor(ETTerminalMode mode) {
