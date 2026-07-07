@@ -11,7 +11,6 @@ import mezz.jei.api.recipe.IFocusFactory;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.runtime.IRecipesGui;
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.world.inventory.Slot;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -37,8 +36,6 @@ public class ETTerminalGuiHandler implements IGuiContainerHandler<ETTerminalScre
     }
 
     private static class ETGuiClickableArea extends MyoBaseClickableArea {
-        private final static Rect2i DummyRect2i = new Rect2i(0, 0, 0, 0);
-
         private final ETTerminalMenu menu;
         private final ETTerminalMode targetMode;
 

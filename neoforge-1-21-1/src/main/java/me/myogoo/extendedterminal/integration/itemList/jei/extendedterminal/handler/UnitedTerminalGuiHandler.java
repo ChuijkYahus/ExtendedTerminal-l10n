@@ -57,7 +57,7 @@ public class UnitedTerminalGuiHandler implements IGuiContainerHandler<UnitedTerm
         }
 
         @Override
-        public void onClick(IFocusFactory focusFactory, IRecipesGui recipesGui) {
+        public void onClick(@NotNull IFocusFactory focusFactory, @NotNull IRecipesGui recipesGui) {
             if(targetRecipeType == menu.getSelectedRecipeType()) {
                 recipesGui.showTypes(List.of(recipeTypeFor(targetRecipeType)));
             }

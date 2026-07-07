@@ -18,6 +18,5 @@ public class AVNeoGuiHandler {
     @MyotusSubscriber
     public static void init(IGuiHandlerRegistration registration) {
         registration.addGuiContainerHandler(NeoExtremeTerminalScreen.class, new JeiTableGuiHandler<>(AvaritiaJEIPlugin.EXTREME_CRAFTING));
-        registration.addGuiContainerHandler(UnitedTerminalScreen.class, (IGuiContainerHandler) new JeiTableGuiHandler<>(AvaritiaJEIPlugin.EXTREME_CRAFTING));
     }
 }

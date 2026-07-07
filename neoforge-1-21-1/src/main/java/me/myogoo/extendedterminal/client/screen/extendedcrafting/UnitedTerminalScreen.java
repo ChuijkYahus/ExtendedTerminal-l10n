@@ -1,6 +1,7 @@
 package me.myogoo.extendedterminal.client.screen.extendedcrafting;
 
 import appeng.client.gui.style.ScreenStyle;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeInput;
 import me.myogoo.extendedterminal.client.screen.ETTerminalBaseScreen;
@@ -46,7 +47,7 @@ public class UnitedTerminalScreen<M extends UnitedTerminalMenu> extends ETTermin
 
     private Item selectedRecipeTypeItem() {
         var recipeType = this.getMenu().getSelectedRecipeType();
-        var item = BuiltInRegistries.ITEM.get(recipeType.getIcon());
+        var item = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(recipeType.modid(), recipeType.blockId()));
         return item == Items.AIR ? Items.CRAFTING_TABLE : item;
     }
 }

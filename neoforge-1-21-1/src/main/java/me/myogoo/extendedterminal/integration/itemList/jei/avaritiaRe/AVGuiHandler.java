@@ -27,9 +27,5 @@ public class AVGuiHandler {
         registration.addGuiContainerHandler(NetherTerminalScreen.class, new JeiTableHolderGuiHandler<>(NetherCraftingTableCategory.RECIPE_TYPE));
         registration.addGuiContainerHandler(EndTerminalScreen.class, new JeiTableHolderGuiHandler<>(EndCraftingTableCategory.RECIPE_TYPE));
         registration.addGuiContainerHandler(ExtremeTerminalScreen.class, new JeiTableHolderGuiHandler<>(ExtremeCraftingTableCategory.RECIPE_TYPE));
-        registration.addGuiContainerHandler(UnitedTerminalScreen.class, (IGuiContainerHandler) new JeiTableHolderGuiHandler<>(SculkCraftingTableCategory.RECIPE_TYPE));
-        registration.addGuiContainerHandler(UnitedTerminalScreen.class, (IGuiContainerHandler) new JeiTableHolderGuiHandler<>(NetherCraftingTableCategory.RECIPE_TYPE));
-        registration.addGuiContainerHandler(UnitedTerminalScreen.class, (IGuiContainerHandler) new JeiTableHolderGuiHandler<>(EndCraftingTableCategory.RECIPE_TYPE));
-        registration.addGuiContainerHandler(UnitedTerminalScreen.class, (IGuiContainerHandler) new JeiTableHolderGuiHandler<>(ExtremeCraftingTableCategory.RECIPE_TYPE));
     }
 }
