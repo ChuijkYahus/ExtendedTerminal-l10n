@@ -482,7 +482,7 @@ public class ETTerminalMenu extends ETTerminalBaseMenu<CraftingRecipe> {
         if (player.getAbilities().instabuild) {
             return true;
         }
-        return MyotusAPI.experience().canConsumeExperience(this.energySource, this.storage, getActionSourceFor(player),
+        return MyotusAPI.experience().canConsume(this.energySource, this.storage, getActionSourceFor(player),
                 player, getRequiredAnvilExperience(player), getAnvilExperienceSourcePriority());
     }
 
@@ -490,19 +490,19 @@ public class ETTerminalMenu extends ETTerminalBaseMenu<CraftingRecipe> {
         if (player.getAbilities().instabuild) {
             return true;
         }
-        return MyotusAPI.experience().consumeExperience(this.energySource, this.storage,
+        return MyotusAPI.experience().consume(this.energySource, this.storage,
                 getActionSourceFor(player), player, getRequiredAnvilExperience(player), getAnvilExperienceSourcePriority());
     }
 
     private long getRequiredAnvilExperience(Player player) {
         int cost = Math.max(0, this.anvilCost);
         if (usesApothicAnvilExperienceCost()) {
-            return MyotusAPI.experience().totalExperienceForLevel(cost);
+            return MyotusAPI.experience().totalForLevel(cost);
         }
 
         int targetLevel = Math.max(0, player.experienceLevel - cost);
-        return MyotusAPI.experience().totalExperienceForLevel(player.experienceLevel)
-                - MyotusAPI.experience().totalExperienceForLevel(targetLevel);
+        return MyotusAPI.experience().totalForLevel(player.experienceLevel)
+                - MyotusAPI.experience().totalForLevel(targetLevel);
     }
 
     private boolean usesApothicAnvilExperienceCost() {
@@ -511,7 +511,7 @@ public class ETTerminalMenu extends ETTerminalBaseMenu<CraftingRecipe> {
     }
 
     private long getExtractableStorageExperience(Player player, ExperienceMath.ExperienceSource source) {
-        return MyotusAPI.experience().extractableStorageExperience(this.energySource, this.storage,
+        return MyotusAPI.experience().extractable(this.energySource, this.storage,
                 getActionSourceFor(player), source);
     }
 
