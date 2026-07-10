@@ -5,7 +5,7 @@ import appeng.client.gui.Icon;
 import me.myogoo.extendedterminal.api.translation.ETTranslationKey;
 import net.minecraft.world.item.crafting.Recipe;
 import me.myogoo.extendedterminal.client.screen.ETTerminalBaseScreen;
-import me.myogoo.myotus.client.gui.widgets.button.MyoCycleOverlayButton;
+import me.myogoo.myotus.client.gui.widgets.button.MyoCycleButton;
 import me.myogoo.extendedterminal.menu.extendedcrafting.UnitedTerminalMenu;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -17,11 +17,11 @@ import net.minecraft.world.item.Items;
 import java.util.List;
 
 public class UnitedTerminalScreen extends ETTerminalBaseScreen<Recipe<?>, UnitedTerminalMenu> {
-    private MyoCycleOverlayButton cycleRecipeKindButton;
+    private MyoCycleButton cycleRecipeKindButton;
 
     public UnitedTerminalScreen(UnitedTerminalMenu menu, Inventory playerInventory, Component title, ScreenStyle style) {
         super(menu, playerInventory, title, style);
-        this.cycleRecipeKindButton = new MyoCycleOverlayButton(
+        this.cycleRecipeKindButton = new MyoCycleButton(
                 (Runnable) this::cycleRecipeKind,
                 (Runnable) this::cycleRecipeKindBackwards,
                 this::selectedRecipeKindItem,

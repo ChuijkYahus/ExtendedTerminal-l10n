@@ -1,7 +1,7 @@
 package me.myogoo.extendedterminal.client.screen.extendedterminal.gui;
 
 import me.myogoo.extendedterminal.api.translation.ETTranslationKey;
-import me.myogoo.myotus.client.gui.widgets.button.MyoCycleOverlayButton;
+import me.myogoo.myotus.client.gui.widgets.button.MyoCycleButton;
 import me.myogoo.extendedterminal.menu.extendedterminal.ETTerminalMenu;
 import me.myogoo.myotus.api.experience.ExperienceMath;
 import net.minecraft.client.Minecraft;
@@ -18,13 +18,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class AnvilExperienceSourceButton extends MyoCycleOverlayButton {
+public class AnvilExperienceSourceButton extends MyoCycleButton {
     private static final ResourceLocation APPLIED_EXPERIENCED_CELL_ID =
             ResourceLocation.fromNamespaceAndPath("appex", "experience_storage_cell_1k");
     private final ETTerminalMenu menu;
 
     public AnvilExperienceSourceButton(ETTerminalMenu menu) {
         super(
+                menu::cycleAnvilExperienceSourcePriority,
                 menu::cycleAnvilExperienceSourcePriority,
                 () -> getSourceIcon(menu),
                 () -> List.of(createSourceTooltip(menu)));

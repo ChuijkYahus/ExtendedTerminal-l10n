@@ -19,8 +19,7 @@ public class ETConfigTab {
         var ae2wtlibLoaded = MyotusAPI.integrations().isLoaded(AE2WTLib.class);
 
         if (ae2wtlibLoaded) {
-            MyotusAPI.get()
-                    .configRegistrar()
+            MyotusAPI.configTabs()
                     .terminalConfigTab(new MyoConfigTab(
                             ResourceLocation.fromNamespaceAndPath(ExtendedTerminal.MODID, "wireless_et_terminal"),
                             Component.translatable(ETTranslationKey.GUI.GUI_CONFIG_TITLE.key()),
@@ -30,8 +29,7 @@ public class ETConfigTab {
                     ).visibleWhen(context -> context.host() instanceof ETWTHost));
         }
 
-        MyotusAPI.get()
-                .configRegistrar()
+        MyotusAPI.configTabs()
                 .terminalConfigTab(new MyoConfigTab(
                         ResourceLocation.fromNamespaceAndPath(ExtendedTerminal.MODID, "united_terminal"),
                         Component.translatable(ETTranslationKey.GUI.GUI_CONFIG_UNITED_TITLE.key()),
