@@ -39,7 +39,7 @@ public class AnvilExperienceSourceButton extends MyoCycleButton {
     }
 
     private static Component createSourcePriorityLabel(ETTerminalMenu menu) {
-        return Component.translatable(menu.getAnvilExperienceSourcePriorityLabelKeys().getFirst().key());
+        return Component.translatable(menu.getSelectedAnvilExperienceSourceLabelKey().key());
     }
 
     @Override
@@ -52,7 +52,7 @@ public class AnvilExperienceSourceButton extends MyoCycleButton {
 
     @Nullable
     private static Item getSourceIcon(ETTerminalMenu menu) {
-        return switch (menu.getAnvilExperienceSourcePriority().getFirst()) {
+        return switch (menu.getSelectedAnvilExperienceSource()) {
             case FLUID_XP -> Items.EXPERIENCE_BOTTLE;
             case APPLIED_EXPERIENCED_AMOUNT -> getAppliedExperiencedCellIcon();
             case PLAYER -> null;
@@ -60,7 +60,7 @@ public class AnvilExperienceSourceButton extends MyoCycleButton {
     }
 
     private boolean isPlayerSourceSelected() {
-        return this.menu.getAnvilExperienceSourcePriority().getFirst() == ExperienceMath.ExperienceSource.PLAYER;
+        return this.menu.getSelectedAnvilExperienceSource() == ExperienceMath.ExperienceSource.PLAYER;
     }
 
     private void renderPlayerHead(GuiGraphics guiGraphics) {

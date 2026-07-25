@@ -431,22 +431,33 @@ public class ETTerminalMenu extends ETTerminalBaseMenu<CraftingRecipe> {
     }
 
     public List<ExperienceMath.ExperienceSource> getAnvilExperienceSourcePriority() {
+        return MyotusAPI.experience().availableAnvilSourcePriority(this.powerSource, this.storage,
+                getActionSourceFor(getPlayer()), getSelectedAnvilExperienceSource());
+    }
+
+    public ExperienceMath.ExperienceSource getSelectedAnvilExperienceSource() {
         var sources = getAvailableAnvilExperienceSources();
-        var selected = sources.isEmpty()
+        return sources.isEmpty()
                 ? ExperienceMath.ExperienceSource.PLAYER
                 : sources.get(Math.floorMod(this.anvilExperienceSourcePriorityIndex, sources.size()));
-        return MyotusAPI.experience().availableAnvilSourcePriority(this.powerSource, this.storage,
-                getActionSourceFor(getPlayer()), selected);
+    }
+
+    public MyoTranslateKey getSelectedAnvilExperienceSourceLabelKey() {
+        return getAnvilExperienceSourceLabelKey(getSelectedAnvilExperienceSource());
     }
 
     public List<MyoTranslateKey> getAnvilExperienceSourcePriorityLabelKeys() {
         return getAnvilExperienceSourcePriority().stream()
-                .<MyoTranslateKey>map(source -> switch (source) {
-                    case PLAYER -> ETTranslationKey.GUI.ANVIL_EXPERIENCE_SOURCE_PLAYER;
-                    case FLUID_XP -> ETTranslationKey.GUI.ANVIL_EXPERIENCE_SOURCE_FLUID;
-                    case APPLIED_EXPERIENCED_AMOUNT -> ETTranslationKey.GUI.ANVIL_EXPERIENCE_SOURCE_CELL;
-                })
+                .map(ETTerminalMenu::getAnvilExperienceSourceLabelKey)
                 .toList();
+    }
+
+    private static MyoTranslateKey getAnvilExperienceSourceLabelKey(ExperienceMath.ExperienceSource source) {
+        return switch (source) {
+            case PLAYER -> ETTranslationKey.GUI.ANVIL_EXPERIENCE_SOURCE_PLAYER;
+            case FLUID_XP -> ETTranslationKey.GUI.ANVIL_EXPERIENCE_SOURCE_FLUID;
+            case APPLIED_EXPERIENCED_AMOUNT -> ETTranslationKey.GUI.ANVIL_EXPERIENCE_SOURCE_CELL;
+        };
     }
 
     private List<ExperienceMath.ExperienceSource> getAvailableAnvilExperienceSources() {
@@ -495,7 +506,7 @@ public class ETTerminalMenu extends ETTerminalBaseMenu<CraftingRecipe> {
     }
 
     private void rememberSelectedAnvilExperienceSource() {
-        var selected = getAnvilExperienceSourcePriority().get(0);
+        var selected = getSelectedAnvilExperienceSource();
         if (this.host.getRememberedAnvilExperienceSource() != selected) {
             this.host.setRememberedAnvilExperienceSource(selected);
         }
