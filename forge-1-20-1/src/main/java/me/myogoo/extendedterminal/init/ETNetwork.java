@@ -5,6 +5,7 @@ import me.myogoo.extendedterminal.network.serverbound.ETFillPendingCraftingSlotP
 import me.myogoo.extendedterminal.network.serverbound.ETFillSmithingGridFromRecipePacket;
 import me.myogoo.extendedterminal.network.serverbound.ETFillStonecutterGridFromRecipePacket;
 import me.myogoo.myotus.api.MyotusAPI;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 public final class ETNetwork {
     public static final int TABLE_FILL_CRAFTING_GRID_PACKET_ID = 10000;
@@ -15,6 +16,10 @@ public final class ETNetwork {
     private static boolean registered;
 
     private ETNetwork() {
+    }
+
+    public static void init(FMLCommonSetupEvent event) {
+        register();
     }
 
     public static synchronized void register() {
