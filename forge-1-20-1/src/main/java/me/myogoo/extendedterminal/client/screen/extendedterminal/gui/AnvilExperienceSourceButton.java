@@ -71,7 +71,7 @@ public class AnvilExperienceSourceButton extends MyoCycleButton {
 
         var stack = new ItemStack(Items.PLAYER_HEAD);
         stack.getOrCreateTag().put("SkullOwner", NbtUtils.writeGameProfile(new CompoundTag(), player.getGameProfile()));
-        guiGraphics.renderItem(stack, getX(), getY() + 1 + (isHovered() ? 1 : 0));
+        guiGraphics.renderItem(stack, getX(), getY());
     }
 
     private static Item getAppliedExperiencedCellIcon() {
