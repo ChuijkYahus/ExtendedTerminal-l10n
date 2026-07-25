@@ -3,6 +3,7 @@ package me.myogoo.extendedterminal.menu.extendedterminal;
 import appeng.me.storage.LinkStatusRespectingInventory;
 import appeng.menu.guisync.GuiSync;
 import appeng.menu.implementations.MenuTypeBuilder;
+import appeng.menu.me.items.CraftingTermMenu;
 import com.blakebr0.extendedcrafting.api.TableCraftingInput;
 import com.blakebr0.extendedcrafting.init.ModRecipeTypes;
 import committee.nova.mods.avaritia.api.common.crafting.TierInput;
@@ -26,6 +27,7 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class UnitedTerminalMenu extends TableTerminalBaseMenu<Recipe<RecipeInput>> {
@@ -207,6 +209,11 @@ public class UnitedTerminalMenu extends TableTerminalBaseMenu<Recipe<RecipeInput
         } else {
             return findVanillaRecipe(level, input);
         }
+    }
+
+    @Override
+    public CraftingTermMenu.MissingIngredientSlots findMissingIngredients(Map<Integer, Ingredient> ingredients) {
+        return super.findMissingIngredients(ingredients);
     }
 
     @Nullable
