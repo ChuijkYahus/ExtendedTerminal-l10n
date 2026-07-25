@@ -18,6 +18,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 public class ETTerminalConfigScreen implements MyoConfigTabScreen {
     private ETWTMenu menu;
     private AECheckbox pickBlock;
+    private AECheckbox craftIfMissing;
     private AECheckbox restock;
     private AECheckbox magnet;
     private AECheckbox pickupToME;
@@ -29,13 +30,16 @@ public class ETTerminalConfigScreen implements MyoConfigTabScreen {
         }
 
         this.menu = menu;
-        this.pickBlock = widget.addCheckbox("pickBlock", TextConstants.PICK_BLOCK, this::save);
+        this.pickBlock = widget.addCheckbox("pickBlock", TextConstants.PICK_BLOCK, this::changeVisibility);
+        this.craftIfMissing = widget.addCheckbox("craftIfMissing", TextConstants.CRAFT_IF_MISSING, this::save);
         this.restock = widget.addCheckbox("restock", TextConstants.RESTOCK, this::save);
         this.magnet = widget.addCheckbox("magnet", TextConstants.MAGNET, this::save);
         this.pickupToME = widget.addCheckbox("pickupToME", TextConstants.PICKUP_TO_ME, this::save);
 
         var stack = stack();
         pickBlock.setSelected(stack.getOrDefault(AE2wtlibComponents.PICK_BLOCK, false));
+        craftIfMissing.setSelected(stack.getOrDefault(AE2wtlibComponents.CRAFT_IF_MISSING, false));
+        craftIfMissing.active = pickBlock.isSelected();
         restock.setSelected(stack.getOrDefault(AE2wtlibComponents.RESTOCK, false));
 
         var magnetMode = stack.getOrDefault(AE2wtlibAdditionalComponents.MAGNET_SETTINGS, MagnetMode.OFF);
@@ -55,6 +59,11 @@ public class ETTerminalConfigScreen implements MyoConfigTabScreen {
         return host.getItemStack();
     }
 
+    private void changeVisibility() {
+        craftIfMissing.active = pickBlock.isSelected();
+        save();
+    }
+
     private void save() {
         if (menu == null || !(menu.getHost() instanceof WTMenuHost host)) {
             return;
@@ -66,6 +75,7 @@ public class ETTerminalConfigScreen implements MyoConfigTabScreen {
         }
 
         PacketDistributor.sendToServer(new TerminalSettingsPacket(locator,
-                pickBlock.isSelected(), restock.isSelected(), magnet.isSelected(), pickupToME.isSelected()));
+                pickBlock.isSelected(), restock.isSelected(), magnet.isSelected(), pickupToME.isSelected(),
+                craftIfMissing.isSelected()));
     }
 }

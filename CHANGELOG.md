@@ -8,3 +8,4 @@
 - Let the AE2 wireless terminal hotkey open Extended Wireless Terminal and Wireless United Terminal.
 
 ### Bug Fixes
+- Fix the 1.21.1 wireless terminal settings screen with AE2WTLib 19.3.0 and newer.

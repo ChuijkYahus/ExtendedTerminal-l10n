@@ -38,6 +38,7 @@ modId = "ae2wtlib"
 type = "OPTIONAL"
 ordering = "BEFORE"
 side = "BOTH"
+versionRange = "[19.3.0,)"
 
 [[dependencies."${mod_id}"]]
 modId = "polymorph"

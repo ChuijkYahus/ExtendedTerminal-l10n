@@ -1,7 +1,7 @@
 package me.myogoo.extendedterminal.init.wt;
 
 import appeng.api.features.GridLinkables;
-import me.myogoo.extendedterminal.integration.ae2helpers.AE2HelpersUpgradeRegistration;
+import appeng.api.features.HotkeyAction;
 import appeng.api.upgrades.Upgrades;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.items.tools.powered.powersink.PoweredItemCapabilities;
@@ -11,6 +11,7 @@ import de.mari_023.ae2wtlib.api.registration.AddTerminalEvent;
 import de.mari_023.ae2wtlib.api.registration.WTDefinition;
 import de.mari_023.ae2wtlib.api.terminal.ItemWT;
 import me.myogoo.extendedterminal.ExtendedTerminal;
+import me.myogoo.extendedterminal.integration.ae2helpers.AE2HelpersUpgradeRegistration;
 import me.myogoo.extendedterminal.me.host.ETWTHost;
 import me.myogoo.extendedterminal.me.host.UnitedWTHost;
 import me.myogoo.extendedterminal.menu.ETMenuType;
@@ -28,7 +29,6 @@ import net.neoforged.neoforge.registries.RegisterEvent;
 import static me.myogoo.extendedterminal.init.wt.WTItems.WT_ITEMS;
 
 public class WTInit {
-    private static final String AE_WIRELESS_TERMINAL_HOTKEY = "wireless_terminal";
     private static final Icon.Texture WIRELESS_ET_TERMINAL_ICON = new Icon.Texture(
             ExtendedTerminal.makeId("textures/item/wireless_et_terminal.png"), 16, 16);
     private static final Icon.Texture WIRELESS_UNITED_TERMINAL_ICON = new Icon.Texture(
@@ -50,7 +50,7 @@ public class WTInit {
             MenuType<?> menuType, Icon icon) {
         AddTerminalEvent
                 .register(e -> e.builder(etMenuType.getWTIdAsString(), host, menuType, (ItemWT) terminal.asItem(), icon)
-                        .hotkeyName(AE_WIRELESS_TERMINAL_HOTKEY)
+                        .hotkeyName(HotkeyAction.WIRELESS_TERMINAL)
                         .addTerminal());
     }
 
