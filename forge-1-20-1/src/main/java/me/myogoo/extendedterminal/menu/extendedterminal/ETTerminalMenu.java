@@ -31,6 +31,7 @@ import me.myogoo.extendedterminal.menu.extendedterminal.slot.ETStoneCutterSlot;
 import me.myogoo.extendedterminal.menu.slot.ETCraftingBaseSlot;
 import me.myogoo.myotus.api.MyotusAPI;
 import me.myogoo.myotus.api.experience.ExperienceMath;
+import me.myogoo.myotus.api.experience.ExperienceStorageAdapter;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -67,6 +68,15 @@ public class ETTerminalMenu extends ETTerminalBaseMenu<CraftingRecipe> {
     private static final String ACTION_SET_MODE = "setMode";
     private static final String ACTION_SET_ANVIL_ITEM_NAME = "setAnvilItemName";
     private static final String ACTION_CYCLE_ANVIL_EXPERIENCE_SOURCE_PRIORITY = "cycleAnvilExperienceSourcePriority";
+    private static final String SOPHISTICATED_CORE_XP_FLUID_ID = "sophisticatedcore:xp_still";
+    private static final long SOPHISTICATED_CORE_FLUID_UNITS_PER_EXPERIENCE = 20L;
+    private static final ExperienceStorageAdapter SOPHISTICATED_CORE_XP_STORAGE =
+            MyotusAPI.experience().fluidStorage(
+                    key -> SOPHISTICATED_CORE_XP_FLUID_ID.equals(key.getId().toString()),
+                    SOPHISTICATED_CORE_FLUID_UNITS_PER_EXPERIENCE);
+    private static final List<ExperienceStorageAdapter> ANVIL_EXPERIENCE_STORAGE_ADAPTERS = List.of(
+            MyotusAPI.experience().appliedExperiencedStorage(),
+            SOPHISTICATED_CORE_XP_STORAGE);
 
     private final ISegmentedInventory craftingInventoryHost;
     private final IETTerminalHost host;
@@ -432,7 +442,8 @@ public class ETTerminalMenu extends ETTerminalBaseMenu<CraftingRecipe> {
 
     public List<ExperienceMath.ExperienceSource> getAnvilExperienceSourcePriority() {
         return MyotusAPI.experience().availableAnvilSourcePriority(this.powerSource, this.storage,
-                getActionSourceFor(getPlayer()), getSelectedAnvilExperienceSource());
+                getActionSourceFor(getPlayer()), getSelectedAnvilExperienceSource(),
+                ANVIL_EXPERIENCE_STORAGE_ADAPTERS);
     }
 
     public ExperienceMath.ExperienceSource getSelectedAnvilExperienceSource() {
@@ -521,7 +532,8 @@ public class ETTerminalMenu extends ETTerminalBaseMenu<CraftingRecipe> {
             return true;
         }
         return MyotusAPI.experience().canConsume(this.powerSource, this.storage, getActionSourceFor(player),
-                player, getRequiredAnvilExperience(player), getAnvilExperienceSourcePriority());
+                player, getRequiredAnvilExperience(player), getAnvilExperienceSourcePriority(),
+                ANVIL_EXPERIENCE_STORAGE_ADAPTERS);
     }
 
     public boolean consumeAnvilExperience(Player player) {
@@ -529,7 +541,8 @@ public class ETTerminalMenu extends ETTerminalBaseMenu<CraftingRecipe> {
             return true;
         }
         return MyotusAPI.experience().consume(this.powerSource, this.storage,
-                getActionSourceFor(player), player, getRequiredAnvilExperience(player), getAnvilExperienceSourcePriority());
+                getActionSourceFor(player), player, getRequiredAnvilExperience(player),
+                getAnvilExperienceSourcePriority(), ANVIL_EXPERIENCE_STORAGE_ADAPTERS);
     }
 
     private long getRequiredAnvilExperience(Player player) {
@@ -549,6 +562,10 @@ public class ETTerminalMenu extends ETTerminalBaseMenu<CraftingRecipe> {
     }
 
     private long getExtractableStorageExperience(Player player, ExperienceMath.ExperienceSource source) {
+        if (source == ExperienceMath.ExperienceSource.FLUID_XP) {
+            return MyotusAPI.experience().extractable(this.powerSource, this.storage,
+                    getActionSourceFor(player), SOPHISTICATED_CORE_XP_STORAGE);
+        }
         return MyotusAPI.experience().extractable(this.powerSource, this.storage,
                 getActionSourceFor(player), source);
     }

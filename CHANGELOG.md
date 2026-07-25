@@ -9,3 +9,4 @@
 
 ### Bug Fixes
 - Fix the 1.21.1 wireless terminal settings screen with AE2WTLib 19.3.0 and newer.
+- Recognize Sophisticated Core XP fluid as an anvil experience source.
