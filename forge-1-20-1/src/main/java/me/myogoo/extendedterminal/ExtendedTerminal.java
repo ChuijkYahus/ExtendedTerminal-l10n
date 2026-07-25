@@ -30,6 +30,7 @@ public class ExtendedTerminal {
         ETConfig.init();
         ETModIntegration.initialize();
         AE2HelpersCompat.logDetectedState(LOGGER);
+        ETNetwork.register();
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         ETBlocks.REGISTER.register(modEventBus);
@@ -39,7 +40,6 @@ public class ExtendedTerminal {
         ETMenus.REGISTER.register(modEventBus);
         ETCreativeTab.REGISTER.register(modEventBus);
         modEventBus.addListener(EventPriority.LOWEST, AE2HelpersUpgradeRegistration::registerTerminalPartUpgrades);
-        modEventBus.addListener(ETNetwork::init);
         if (MyotusAPI.integrations().isLoaded(AE2WTLib.class)) {
             WTItems.register();
             WTMenus.register();
