@@ -5,9 +5,13 @@ import me.myogoo.extendedterminal.api.adapter.recipe.table.IShapedTableRecipeAda
 import me.myogoo.extendedterminal.client.ae2helpers.ETAutoCraftingWatcher;
 import me.myogoo.extendedterminal.api.adapter.recipe.table.MyoTableRecipe;
 import me.myogoo.extendedterminal.menu.ETTerminalBaseMenu;
+import me.myogoo.extendedterminal.menu.extendedterminal.MyoRecipeType;
+import me.myogoo.extendedterminal.menu.extendedterminal.UnitedTerminalMenu;
 import me.myogoo.extendedterminal.network.serverbound.FillTableCraftingGridFromRecipePacket;
+import me.myogoo.extendedterminal.network.serverbound.FillUnitedGridPacket;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
@@ -17,6 +21,10 @@ public abstract class ItemListTableRecipeTransferHandler<T extends ETTerminalBas
     protected abstract Map<Integer, Ingredient> getGuiSlotToIngredientMap(T menu, MyoTableRecipe recipe);
 
     protected void performTransfer(T menu, MyoTableRecipe recipe, boolean craftMissing) {
+        performTransfer(menu, recipe, craftMissing, null);
+    }
+
+    protected void performTransfer(T menu, MyoTableRecipe recipe, boolean craftMissing, @Nullable MyoRecipeType recipeType) {
         var templateItems = recipe.findGoodTemplateItems(menu);
         int recipeWidth = NOT_SET_RECIPE_SIZE;
         int recipeHeight = NOT_SET_RECIPE_SIZE;
@@ -26,7 +34,9 @@ public abstract class ItemListTableRecipeTransferHandler<T extends ETTerminalBas
         }
 
         ETAutoCraftingWatcher.INSTANCE.preparePending(menu, getGuiSlotToIngredientMap(menu, recipe), craftMissing);
-        ServerboundPacket message = new FillTableCraftingGridFromRecipePacket(recipe.id(), templateItems, craftMissing,
+        ServerboundPacket message = menu instanceof UnitedTerminalMenu && recipeType != null
+                ? new FillUnitedGridPacket(recipe.id(), templateItems, craftMissing, recipeWidth, recipeHeight, recipeType)
+                : new FillTableCraftingGridFromRecipePacket(recipe.id(), templateItems, craftMissing,
                 recipeWidth, recipeHeight);
         PacketDistributor.sendToServer(message);
     }

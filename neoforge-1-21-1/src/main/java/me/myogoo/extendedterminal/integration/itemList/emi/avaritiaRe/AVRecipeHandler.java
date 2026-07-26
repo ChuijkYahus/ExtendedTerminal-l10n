@@ -1,6 +1,7 @@
 package me.myogoo.extendedterminal.integration.itemList.emi.avaritiaRe;
 
 import me.myogoo.extendedterminal.integration.itemList.emi.avaritiaRe.handler.AVUnitedTerminalRecipeHandler;
+import me.myogoo.extendedterminal.menu.extendedterminal.MyoRecipeType;
 import me.myogoo.extendedterminal.menu.extendedterminal.UnitedTerminalMenu;
 import committee.nova.mods.avaritia.init.compat.emi.category.tables.*;
 import dev.emi.emi.api.EmiRegistry;
@@ -25,9 +26,9 @@ public class AVRecipeHandler {
         registry.addRecipeHandler(NetherTerminalMenu.TYPE, new AVTerminalRecipeHandler<>(NetherCraftingTableCategory.CATEGORY, NetherTerminalMenu.class, ETMenuType.NETHER_TERMINAL));
         registry.addRecipeHandler(EndTerminalMenu.TYPE, new AVTerminalRecipeHandler<>(EndCraftingTableCategory.CATEGORY, EndTerminalMenu.class, ETMenuType.END_TERMINAL));
         registry.addRecipeHandler(ExtremeTerminalMenu.TYPE, new AVTerminalRecipeHandler<>(ExtremeCraftingTableCategory.CATEGORY, ExtremeTerminalMenu.class, ETMenuType.EXTREME_TERMINAL));
-        registry.addRecipeHandler(UnitedTerminalMenu.TYPE, new AVUnitedTerminalRecipeHandler(NetherCraftingTableCategory.CATEGORY));
-        registry.addRecipeHandler(UnitedTerminalMenu.TYPE, new AVUnitedTerminalRecipeHandler(EndCraftingTableCategory.CATEGORY));
-        registry.addRecipeHandler(UnitedTerminalMenu.TYPE, new AVUnitedTerminalRecipeHandler(ExtremeCraftingTableCategory.CATEGORY));
-        registry.addRecipeHandler(UnitedTerminalMenu.TYPE, new AVUnitedTerminalRecipeHandler(SculkCraftingTableCategory.CATEGORY));
+        registry.addRecipeHandler(UnitedTerminalMenu.TYPE, new AVUnitedTerminalRecipeHandler(SculkCraftingTableCategory.CATEGORY, MyoRecipeType.SCULK));
+        registry.addRecipeHandler(UnitedTerminalMenu.TYPE, new AVUnitedTerminalRecipeHandler(NetherCraftingTableCategory.CATEGORY, MyoRecipeType.Nether));
+        registry.addRecipeHandler(UnitedTerminalMenu.TYPE, new AVUnitedTerminalRecipeHandler(EndCraftingTableCategory.CATEGORY, MyoRecipeType.END));
+        registry.addRecipeHandler(UnitedTerminalMenu.TYPE, new AVUnitedTerminalRecipeHandler(ExtremeCraftingTableCategory.CATEGORY, MyoRecipeType.EXTREME));
     }
 }

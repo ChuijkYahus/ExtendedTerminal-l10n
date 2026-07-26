@@ -5,7 +5,9 @@ import appeng.core.localization.ItemModText;
 import committee.nova.mods.avaritia.api.common.crafting.ITierCraftingRecipe;
 import me.myogoo.extendedterminal.api.adapter.recipe.table.MyoTableRecipe;
 import me.myogoo.extendedterminal.integration.itemList.jei.handler.AbstractTableHolderRecipeHandler;
+import me.myogoo.extendedterminal.integration.itemList.jei.handler.IJeiAbstractRecipeHandler;
 import me.myogoo.extendedterminal.integration.itemList.module.avaritia.AVRecipeTransferHelper;
+import me.myogoo.extendedterminal.menu.extendedterminal.UnitedTerminalMenu;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
@@ -20,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import static appeng.integration.modules.itemlists.TransferHelper.BLUE_PLUS_BUTTON_COLOR;
 import static appeng.integration.modules.itemlists.TransferHelper.ORANGE_PLUS_BUTTON_COLOR;
@@ -52,11 +55,13 @@ public class AVJeiRecipeTransferHandler<T extends ETTerminalBaseMenu<?>> extends
 
         var slotToIngredientMap = getGuiSlotToIngredientMap(menu, adapterRecipe);
         var missingSlots = menu.findMissingIngredients(slotToIngredientMap);
+        Set<Integer> inputSlotKeys = menu instanceof UnitedTerminalMenu ? slotToIngredientMap.keySet() : Set.of();
 
         if (missingSlots.missingSlots().size() == slotToIngredientMap.size()) {
             // All missing, can't do much...
+            var inputSlotsByKey = IJeiAbstractRecipeHandler.getInputSlotViewsByKey(inputSlots, inputSlotKeys);
             var missingSlotViews = missingSlots.missingSlots().stream()
-                    .map(idx -> idx < inputSlots.size() ? inputSlots.get(idx) : null)
+                    .map(inputSlotsByKey::get)
                     .filter(Objects::nonNull)
                     .toList();
             return helper.createUserErrorForMissingSlots(ItemModText.NO_ITEMS.text(), missingSlotViews);
@@ -65,7 +70,7 @@ public class AVJeiRecipeTransferHandler<T extends ETTerminalBaseMenu<?>> extends
         if (!doTransfer) {
             if (missingSlots.totalSize() != 0) {
                 int color = missingSlots.anyMissing() ? ORANGE_PLUS_BUTTON_COLOR : BLUE_PLUS_BUTTON_COLOR;
-                return new Result.PartiallyCraftable(missingSlots, color, craftMissing);
+                return new Result.PartiallyCraftable(missingSlots, color, craftMissing, inputSlotKeys);
             }
         } else {
             performTransfer(menu, adapterRecipe, craftMissing);

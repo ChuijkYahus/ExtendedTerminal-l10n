@@ -13,6 +13,7 @@ import me.myogoo.extendedterminal.menu.extendedcrafting.UnitedTerminalMenu;
 import me.myogoo.extendedterminal.network.serverbound.ETFillCraftingGridFromRecipePacket;
 import me.myogoo.myotus.api.MyotusAPI;
 import mezz.jei.api.gui.builder.ITooltipBuilder;
+import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
@@ -25,8 +26,11 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import static appeng.integration.modules.jeirei.TransferHelper.BLUE_SLOT_HIGHLIGHT_COLOR;
 import static appeng.integration.modules.jeirei.TransferHelper.RED_SLOT_HIGHLIGHT_COLOR;
@@ -60,6 +64,40 @@ public abstract class AbstractTableRecipeHandler<T extends ETTerminalBaseMenu<?>
     }
 
     protected abstract Map<Integer, Ingredient> getGuiSlotToIngredientMap(T menu, ITableRecipeAdapter<?> recipe);
+
+    protected Set<Integer> getDisplayedInputSlotKeys(T menu, Map<Integer, Ingredient> slotToIngredientMap) {
+        return menu instanceof UnitedTerminalMenu ? slotToIngredientMap.keySet() : Set.of();
+    }
+
+    protected List<IRecipeSlotView> getMissingSlotViews(T menu, List<IRecipeSlotView> inputSlots,
+                                                        Set<Integer> missingSlots, Set<Integer> inputSlotKeys) {
+        if (menu instanceof UnitedTerminalMenu && !inputSlotKeys.isEmpty()) {
+            var inputSlotsByKey = getRecipeInputSlots(inputSlots, inputSlotKeys);
+            return missingSlots.stream()
+                    .map(inputSlotsByKey::get)
+                    .filter(slotView -> slotView != null)
+                    .toList();
+        }
+
+        return missingSlots.stream()
+                .map(idx -> idx < inputSlots.size() ? inputSlots.get(idx) : null)
+                .filter(slotView -> slotView != null)
+                .toList();
+    }
+
+    private static Map<Integer, IRecipeSlotView> getRecipeInputSlots(List<IRecipeSlotView> inputSlots,
+                                                                     Set<Integer> inputSlotKeys) {
+        var sortedKeys = inputSlotKeys.stream().sorted().toList();
+        var displayedSlots = inputSlots.stream()
+                .filter(slot -> !slot.isEmpty())
+                .toList();
+
+        var result = new HashMap<Integer, IRecipeSlotView>(sortedKeys.size());
+        for (int i = 0; i < sortedKeys.size() && i < displayedSlots.size(); i++) {
+            result.put(sortedKeys.get(i), displayedSlots.get(i));
+        }
+        return result;
+    }
 
     protected void performTransfer(T menu, @Nullable ITableRecipeAdapter<?> recipe, boolean craftMissing) {
         performTransfer(menu, recipe, craftMissing, null);
@@ -106,11 +144,18 @@ public abstract class AbstractTableRecipeHandler<T extends ETTerminalBaseMenu<?>
             private final CraftingTermMenu.MissingIngredientSlots missingSlots;
             private final boolean craftMissing;
             private final int color;
+            private final Set<Integer> inputSlotKeys;
 
             public PartiallyCraftable(CraftingTermMenu.MissingIngredientSlots missingSlots, int color, boolean craftMissing) {
+                this(missingSlots, color, craftMissing, Set.of());
+            }
+
+            public PartiallyCraftable(CraftingTermMenu.MissingIngredientSlots missingSlots, int color,
+                                      boolean craftMissing, Set<Integer> inputSlotKeys) {
                 this.missingSlots = missingSlots;
                 this.craftMissing = craftMissing;
                 this.color = color;
+                this.inputSlotKeys = Set.copyOf(inputSlotKeys);
             }
 
             @Override
@@ -127,14 +172,26 @@ public abstract class AbstractTableRecipeHandler<T extends ETTerminalBaseMenu<?>
 
                 // 1) draw slot highlights
                 var slotViews = slots.getSlotViews(RecipeIngredientRole.INPUT);
-                for (int i = 0; i < slotViews.size(); i++) {
-                    var slotView = slotViews.get(i);
-                    boolean missing = missingSlots.missingSlots().contains(i);
-                    boolean craftable = missingSlots.craftableSlots().contains(i);
-                    if (missing || craftable) {
-                        slotView.drawHighlight(
-                                guiGraphics,
-                                missing ? RED_SLOT_HIGHLIGHT_COLOR : BLUE_SLOT_HIGHLIGHT_COLOR);
+                if (inputSlotKeys.isEmpty()) {
+                    for (int i = 0; i < slotViews.size(); i++) {
+                        var slotView = slotViews.get(i);
+                        boolean missing = missingSlots.missingSlots().contains(i);
+                        boolean craftable = missingSlots.craftableSlots().contains(i);
+                        if (missing || craftable) {
+                            slotView.drawHighlight(
+                                    guiGraphics,
+                                    missing ? RED_SLOT_HIGHLIGHT_COLOR : BLUE_SLOT_HIGHLIGHT_COLOR);
+                        }
+                    }
+                } else {
+                    for (var entry : getRecipeInputSlots(slotViews, inputSlotKeys).entrySet()) {
+                        boolean missing = missingSlots.missingSlots().contains(entry.getKey());
+                        boolean craftable = missingSlots.craftableSlots().contains(entry.getKey());
+                        if (missing || craftable) {
+                            entry.getValue().drawHighlight(
+                                    guiGraphics,
+                                    missing ? RED_SLOT_HIGHLIGHT_COLOR : BLUE_SLOT_HIGHLIGHT_COLOR);
+                        }
                     }
                 }
 

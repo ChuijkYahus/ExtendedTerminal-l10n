@@ -21,7 +21,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static appeng.integration.modules.jeirei.TransferHelper.BLUE_PLUS_BUTTON_COLOR;
 import static appeng.integration.modules.jeirei.TransferHelper.ORANGE_PLUS_BUTTON_COLOR;
@@ -65,17 +64,16 @@ public class ECJeiRecipeTransferHandler<T extends ETTerminalBaseMenu<?>> extends
 
         if (missingSlots.missingSlots().size() == slotToIngredientMap.size()) {
             // All missing, can't do much...
-            var missingSlotViews = missingSlots.missingSlots().stream()
-                    .map(idx -> idx < inputSlots.size() ? inputSlots.get(idx) : null)
-                    .filter(Objects::nonNull)
-                    .toList();
+            var missingSlotViews = getMissingSlotViews(menu, inputSlots, missingSlots.missingSlots(),
+                    getDisplayedInputSlotKeys(menu, slotToIngredientMap));
             return helper.createUserErrorForMissingSlots(ItemModText.NO_ITEMS.text(), missingSlotViews);
         }
 
         if (!doTransfer) {
             if (missingSlots.totalSize() != 0) {
                 int color = missingSlots.anyMissing() ? ORANGE_PLUS_BUTTON_COLOR : BLUE_PLUS_BUTTON_COLOR;
-                return new Result.PartiallyCraftable(missingSlots, color, craftMissing);
+                return new Result.PartiallyCraftable(missingSlots, color, craftMissing,
+                        getDisplayedInputSlotKeys(menu, slotToIngredientMap));
             }
         } else {
             performTransfer(menu, adapterRecipe, craftMissing,
@@ -89,9 +87,6 @@ public class ECJeiRecipeTransferHandler<T extends ETTerminalBaseMenu<?>> extends
     @Override
     public Map<Integer, Ingredient> getGuiSlotToIngredientMap(T menu, ITableRecipeAdapter<?> recipe) {
         int gridSideLength = menu.getCraftingGridWidth();
-        if (menu instanceof UnitedTerminalMenu) {
-            gridSideLength = recipe.tier() * 2 + 1;
-        }
         var raw = recipe.recipe().getIngredients();
         List<Ingredient> ingredients;
 

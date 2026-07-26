@@ -49,7 +49,7 @@ public class FillTableCraftingGridFromRecipePacket extends FillRecipeBasePacket 
 
 
     @Override
-    public CustomPacketPayload.@NotNull Type<FillTableCraftingGridFromRecipePacket> type() {
+    public CustomPacketPayload.@NotNull Type<? extends FillTableCraftingGridFromRecipePacket> type() {
         return TYPE;
     }
 

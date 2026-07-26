@@ -4,6 +4,7 @@ import me.myogoo.myotus.api.annotation.itemList.RecipeCategory;
 import me.myogoo.myotus.api.annotation.itemList.jei.JEI;
 import me.myogoo.extendedterminal.config.ExtendedTerminalConfig;
 import me.myogoo.extendedterminal.init.ETParts;
+import me.myogoo.extendedterminal.menu.ETMenuType;
 import me.myogoo.myotus.api.annotation.MyotusSubscriber;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
@@ -19,6 +20,9 @@ public class ETRecipeCatalyst {
             if(config.enableSmithingPanel()) registration.addRecipeCatalyst(ETParts.ET_TERMINAL_PART, RecipeTypes.SMITHING);
             if(config.enableStonecutterPanel()) registration.addRecipeCatalyst(ETParts.ET_TERMINAL_PART, RecipeTypes.STONECUTTING);
             if(config.enableAnvilPanel()) registration.addRecipeCatalyst(ETParts.ET_TERMINAL_PART, RecipeTypes.ANVIL);
+        }
+        if (ETMenuType.UNITED_TERMINAL.canLoad()) {
+            registration.addRecipeCatalyst(ETParts.UNITED_TERMINAL_PART, RecipeTypes.CRAFTING);
         }
     }
 }

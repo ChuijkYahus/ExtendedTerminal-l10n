@@ -1,13 +1,17 @@
 package me.myogoo.extendedterminal.integration.itemList.jei.extendedterminal.handler.panel;
 
 import appeng.core.localization.ItemModText;
-import me.myogoo.extendedterminal.integration.itemList.jei.extendedterminal.handler.ETTerminalBaseRecipeTransfer;
+import me.myogoo.extendedterminal.api.adapter.recipe.table.MyoTableRecipe;
+import me.myogoo.extendedterminal.integration.itemList.jei.handler.AbstractTableHolderRecipeHandler;
+import me.myogoo.extendedterminal.integration.itemList.jei.handler.IJeiAbstractRecipeHandler;
 import me.myogoo.extendedterminal.integration.itemList.module.extendedterminal.ETCraftingRecipeTransferHelper;
+import me.myogoo.extendedterminal.menu.ETTerminalBaseMenu;
 import me.myogoo.extendedterminal.menu.extendedterminal.ETTerminalMenu;
+import me.myogoo.extendedterminal.menu.extendedterminal.MyoRecipeType;
+import me.myogoo.extendedterminal.menu.extendedterminal.UnitedTerminalMenu;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.transfer.IRecipeTransferError;
 import mezz.jei.api.recipe.transfer.IRecipeTransferHandlerHelper;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -20,13 +24,18 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import static appeng.integration.modules.itemlists.TransferHelper.BLUE_PLUS_BUTTON_COLOR;
 import static appeng.integration.modules.itemlists.TransferHelper.ORANGE_PLUS_BUTTON_COLOR;
 
-public class ETCraftingRecipeTransfer<T extends ETTerminalMenu> extends ETTerminalBaseRecipeTransfer<T, RecipeHolder<CraftingRecipe>> {
+public class ETCraftingRecipeTransfer<T extends ETTerminalBaseMenu<?>>
+        extends AbstractTableHolderRecipeHandler<T, CraftingRecipe, RecipeHolder<CraftingRecipe>> {
+    private final IRecipeTransferHandlerHelper helper;
+
     public ETCraftingRecipeTransfer(MenuType<T> menuType, Class<T> containerClass, IRecipeTransferHandlerHelper helper) {
-        super(menuType, containerClass, helper);
+        super(containerClass, menuType, RecipeTypes.CRAFTING);
+        this.helper = helper;
     }
 
 
@@ -40,12 +49,19 @@ public class ETCraftingRecipeTransfer<T extends ETTerminalMenu> extends ETTermin
         boolean craftingMissing = AbstractContainerScreen.hasControlDown();
         var inputSlots = recipeSlots.getSlotViews(RecipeIngredientRole.INPUT);
 
-        var slotToIngredientMap = helper.getGuiSlotIndexToIngredientMap(recipeHolder);
+        var adapterRecipe = MyoTableRecipe.of(recipe, recipeHolder.id());
+        var slotToIngredientMap = menu instanceof UnitedTerminalMenu
+                ? getGuiSlotToIngredientMap(menu, adapterRecipe)
+                : helper.getGuiSlotIndexToIngredientMap(recipeHolder);
+        Set<Integer> inputSlotKeys = menu instanceof UnitedTerminalMenu
+                ? slotToIngredientMap.keySet()
+                : Set.of();
         var missingSlots = menu.findMissingIngredients(slotToIngredientMap);
 
         if (missingSlots.missingSlots().size() == slotToIngredientMap.size()) {
+            var inputSlotsByKey = IJeiAbstractRecipeHandler.getInputSlotViewsByKey(inputSlots, inputSlotKeys);
             var missingSlotViews = missingSlots.missingSlots().stream()
-                    .map(idx -> idx < inputSlots.size() ? inputSlots.get(idx) : null)
+                    .map(inputSlotsByKey::get)
                     .filter(Objects::nonNull)
                     .toList();
 
@@ -54,22 +70,24 @@ public class ETCraftingRecipeTransfer<T extends ETTerminalMenu> extends ETTermin
         if (!doTransfer) {
             if (missingSlots.totalSize() != 0) {
                 int color = missingSlots.anyMissing() ? ORANGE_PLUS_BUTTON_COLOR : BLUE_PLUS_BUTTON_COLOR;
-                return new Result.PartiallyCraftable(missingSlots, color, craftingMissing);
+                return new Result.PartiallyCraftable(missingSlots, color, craftingMissing, inputSlotKeys);
             }
         } else {
-            ETCraftingRecipeTransferHelper.performTransfer(menu, recipeHolder, craftingMissing);
+            if (menu instanceof UnitedTerminalMenu) {
+                performTransfer(menu, adapterRecipe, craftingMissing, MyoRecipeType.VANILLA);
+            } else {
+                ETCraftingRecipeTransferHelper.performTransfer((ETTerminalMenu) menu, recipeHolder, craftingMissing);
+            }
         }
 
         return Result.createSuccessful();
     }
 
     @Override
-    protected Map<Integer, Ingredient> getGuiSlotToIngredientMap(ETTerminalMenu menu, RecipeHolder<CraftingRecipe> recipeHolder) {
-        return ETCraftingRecipeTransferHelper.getGuiSlotToIngredientMap(menu, recipeHolder.value());
-    }
-
-    @Override
-    public RecipeType<RecipeHolder<CraftingRecipe>> getRecipeType() {
-        return RecipeTypes.CRAFTING;
+    protected Map<Integer, Ingredient> getGuiSlotToIngredientMap(T menu, MyoTableRecipe recipe) {
+        if (menu instanceof UnitedTerminalMenu unitedMenu) {
+            return ETCraftingRecipeTransferHelper.getGuiSlotToIngredientMap(unitedMenu, recipe);
+        }
+        return ETCraftingRecipeTransferHelper.getGuiSlotToIngredientMap((ETTerminalMenu) menu, recipe.get());
     }
 }

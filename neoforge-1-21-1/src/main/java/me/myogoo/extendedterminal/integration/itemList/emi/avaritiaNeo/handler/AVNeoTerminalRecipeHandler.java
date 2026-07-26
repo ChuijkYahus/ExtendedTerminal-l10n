@@ -8,6 +8,8 @@ import me.myogoo.extendedterminal.api.adapter.recipe.table.MyoTableRecipe;
 import me.myogoo.extendedterminal.integration.itemList.emi.handler.AbstractEmiTableRecipeHandler;
 import me.myogoo.extendedterminal.integration.itemList.module.avaritia.AVNeoRecipeTransferHelper;
 import me.myogoo.extendedterminal.menu.ETMenuType;
+import me.myogoo.extendedterminal.menu.extendedterminal.MyoRecipeType;
+import me.myogoo.extendedterminal.menu.extendedterminal.UnitedTerminalMenu;
 import net.byAqua3.avaritia.recipe.RecipeExtremeCrafting;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -41,6 +43,15 @@ public class AVNeoTerminalRecipeHandler<T extends ETTerminalBaseMenu<?>> extends
             return Result.createFailed(ItemModText.INCOMPATIBLE_RECIPE.text());
         }
         return doTransfer(menu, MyoTableRecipe.of(tableRecipe, holder.id()), doTransfer);
+    }
+
+    @Override
+    protected void performTransfer(T menu, MyoTableRecipe recipe, boolean craftMissing) {
+        if (menu instanceof UnitedTerminalMenu) {
+            super.performTransfer(menu, recipe, craftMissing, MyoRecipeType.EXTREME_MEO);
+        } else {
+            super.performTransfer(menu, recipe, craftMissing);
+        }
     }
 
     @Override
