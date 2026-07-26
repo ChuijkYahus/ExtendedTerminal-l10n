@@ -21,6 +21,7 @@
   "block.extendedterminal.material_converter": "재료 변환기",
   "item.extendedterminal.material_converter": "재료 변환기",
   "item.extendedterminal.material_converter.tooltip": "AE2 저장소의 기존 Extended Terminal 재료를 Myotus 재료로 변환합니다.",
+  "item.extendedterminal.material_converter.removal_warning": "다음 버전에 삭제됩니다",
   "message.extendedterminal.material_converter.converted": "AE2 저장소에서 재료 %d개를 변환했습니다.",
   "message.extendedterminal.material_converter.empty": "AE2 저장소에서 기존 Extended Terminal 재료를 찾지 못했습니다.",
   "message.extendedterminal.material_converter.missing_targets": "Myotus 재료 아이템이 등록되어 있지 않습니다.",

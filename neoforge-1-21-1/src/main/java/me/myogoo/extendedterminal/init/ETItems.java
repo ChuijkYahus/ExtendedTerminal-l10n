@@ -43,7 +43,8 @@ public class ETItems {
     public static final ItemDefinition<TooltipBlockItem> MATERIAL_CONVERTER = createItem("material_converter",
             ExtendedTerminal.makeId("material_converter"),
             properties -> new TooltipBlockItem(ETBlocks.MATERIAL_CONVERTER.get(), properties,
-                    ETTranslationKey.ITEM.ITEM_MATERIAL_CONVERTER_TOOLTIP.key()));
+                    ETTranslationKey.ITEM.ITEM_MATERIAL_CONVERTER_TOOLTIP.key(),
+                    ETTranslationKey.ITEM.ITEM_MATERIAL_CONVERTER_REMOVAL_WARNING.key()));
 
     public static <T extends Item> ItemDefinition<T> createItem(String name, ResourceLocation id,
             Function<Item.Properties, T> itemFactory) {

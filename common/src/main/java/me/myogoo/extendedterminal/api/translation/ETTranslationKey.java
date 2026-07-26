@@ -90,6 +90,7 @@ public enum ETTranslationKey implements MyoTranslateKey {
         ITEM_CHARGED_ENDER_PEARL("item.extendedterminal.charged_ender_pearl"),
         ITEM_MATERIAL_CONVERTER("item.extendedterminal.material_converter"),
         ITEM_MATERIAL_CONVERTER_TOOLTIP("item.extendedterminal.material_converter.tooltip"),
+        ITEM_MATERIAL_CONVERTER_REMOVAL_WARNING("item.extendedterminal.material_converter.removal_warning"),
         ITEM_DEPRECATED_MATERIAL_TOOLTIP("item.extendedterminal.item.tooltip.deprecated_material"),
         ITEM_UNREGISTERED_TERMINAL_TOOLTIP("item.extendedterminal.item.tooltip.unregistered_terminal");
 

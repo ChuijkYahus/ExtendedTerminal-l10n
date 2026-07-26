@@ -21,6 +21,7 @@
   "block.extendedterminal.material_converter": "Material Converter",
   "item.extendedterminal.material_converter": "Material Converter",
   "item.extendedterminal.material_converter.tooltip": "Converts old Extended Terminal materials in AE2 storage into Myotus materials.",
+  "item.extendedterminal.material_converter.removal_warning": "This item will be removed in the next version.",
   "message.extendedterminal.material_converter.converted": "Converted %d material(s) in AE2 storage.",
   "message.extendedterminal.material_converter.empty": "No old Extended Terminal materials found in AE2 storage.",
   "message.extendedterminal.material_converter.missing_targets": "Myotus material items are not registered.",
