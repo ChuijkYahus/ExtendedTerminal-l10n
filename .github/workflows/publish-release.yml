@@ -75,19 +75,19 @@ jobs:
           release_version="${RELEASE_TAG#v}"
 
           case "$release_version" in
-            "${forge_mc_version}-${forge_mod_version}")
+            "${forge_mc_version}-"*)
               module="forge-1-20-1"
               mc_version="$forge_mc_version"
-              mod_version="$forge_mod_version"
+              base_mod_version="$forge_mod_version"
               myotus_version="$forge_myotus_version"
               mod_loader="$forge_mod_loader"
               version_type="$forge_version_type"
               java_version="$forge_java_version"
               ;;
-            "${neoforge_mc_version}-${neoforge_mod_version}")
+            "${neoforge_mc_version}-"*)
               module="neoforge-1-21-1"
               mc_version="$neoforge_mc_version"
-              mod_version="$neoforge_mod_version"
+              base_mod_version="$neoforge_mod_version"
               myotus_version="$neoforge_myotus_version"
               mod_loader="$neoforge_mod_loader"
               version_type="$neoforge_version_type"
@@ -95,7 +95,7 @@ jobs:
               ;;
             *)
               echo "::error::Release tag '${RELEASE_TAG}' does not match a releasable module version."
-              echo "::error::Expected '${forge_mc_version}-${forge_mod_version}' or '${neoforge_mc_version}-${neoforge_mod_version}', optionally prefixed with 'v'."
+              echo "::error::Expected a tag for Minecraft ${forge_mc_version} or ${neoforge_mc_version}, optionally prefixed with 'v'."
               exit 1
               ;;
           esac
@@ -103,6 +103,22 @@ jobs:
           if [[ "$myotus_version" == *-SNAPSHOT ]]; then
             echo "::error::Release builds require CI-resolvable Myotus release versions."
             echo "::error::Found ${module} using Myotus ${myotus_version}."
+            exit 1
+          fi
+
+          expected_version="${mc_version}-${base_mod_version}"
+          if [[ "$release_version" == "$expected_version" ]]; then
+            mod_version="$base_mod_version"
+          elif [[ "$release_version" == "${expected_version}-"* ]]; then
+            version_qualifier="${release_version#"${expected_version}-"}"
+            if [[ ! "$version_qualifier" =~ ^hotfix[0-9]+$ ]]; then
+              echo "::error::Release tag qualifier '${version_qualifier}' is not supported."
+              echo "::error::Use '${expected_version}-hotfix0', '${expected_version}-hotfix1', and so on."
+              exit 1
+            fi
+            mod_version="${base_mod_version}-${version_qualifier}"
+          else
+            echo "::error::Release tag '${RELEASE_TAG}' must be '${expected_version}' or '${expected_version}-hotfix<N>', optionally prefixed with 'v'."
             exit 1
           fi
 
@@ -152,10 +168,12 @@ jobs:
 
       - name: Build selected Minecraft version
         env:
+          RELEASE_MOD_VERSION: ${{ steps.metadata.outputs.mod_version }}
           TARGET_MODULE: ${{ steps.metadata.outputs.module }}
         run: |
           chmod +x ./gradlew
           ./gradlew ":${TARGET_MODULE}:build" \
+            -Pmod_version="${RELEASE_MOD_VERSION}" \
             --build-cache \
             --no-daemon \
             --console=plain
