@@ -11,7 +11,6 @@ item_ids:
   - wireless_united_terminal
 ---
 # United Terminal
-<myotus:condition load="extendedcrafting">
 <ItemImage id="extendedterminal:united_terminal" scale={3}/>
 
 <ItemLink id="extendedterminal:united_terminal" /> combines the Extended Terminal tools with Extended Crafting support in a single terminal.
@@ -35,5 +34,4 @@ It requires a <ItemLink id="ae2:wireless_access_point"/> to function.
     <Recipe id="extendedterminal:ae2wtlib/united_etp" />
     <Recipe id="extendedterminal:ae2wtlib/upgrade_wireless_united_terminal" />
 </Row>
-</myotus:condition>
 </myotus:condition>
