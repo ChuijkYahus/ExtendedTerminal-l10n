@@ -3,10 +3,6 @@
     {
       "type": "myotus:mod_condition",
       "active_mod": "ae2wtlib"
-    },
-    {
-      "type": "myotus:mod_condition",
-      "active_mod": "extendedcrafting"
     }
   ],
   "type": "minecraft:crafting_shaped",

@@ -30,7 +30,6 @@ public enum ETMenuType implements IExtensibleEnum {
     @ExtendedCrafting
     ULTIMATE_TERMINAL(9, 4, ETSlotSemantics.ULTIMATE_CRAFTING_GRID, ETSlotSemantics.ULTIMATE_CRAFTING_RESULT),
 
-    @ExtendedCrafting
     UNITED_TERMINAL(9, 0, ETSlotSemantics.EXTENDED_CRAFTING_UNIVERSAL_GRID,
             ETSlotSemantics.EXTENDED_CRAFTING_UNIVERSAL_RESULT),
 

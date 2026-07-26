@@ -77,7 +77,7 @@ public final class ETRecipeDataProvider extends JsonRecipeProvider {
                 "extendedterminal:wireless_et_terminal",
                 new String[]{"A", "B", "C"},
                 key('A', "ae2:wireless_receiver", 'B', "extendedterminal:et_terminal", 'C', "ae2:dense_energy_cell"));
-        saveShaped(output, "extendedterminal/wt/wireless_united_terminal", conditions("ae2wtlib", "extendedcrafting"),
+        saveShaped(output, "extendedterminal/wt/wireless_united_terminal", conditions("ae2wtlib"),
                 "extendedterminal:wireless_united_terminal",
                 new String[]{"A", "B", "C"},
                 key('A', "ae2:wireless_receiver", 'B', "extendedterminal:united_terminal", 'C', "ae2:dense_energy_cell"));
@@ -90,19 +90,23 @@ public final class ETRecipeDataProvider extends JsonRecipeProvider {
         saveCombine(output, "ae2wtlib/etp", conditions("ae2wtlib"),
                 "extendedterminal:wireless_et_terminal", "ae2wtlib:wireless_pattern_encoding_terminal",
                 "wireless_et_terminal", "pattern_encoding");
-        saveCombine(output, "ae2wtlib/united_etc", conditions("ae2wtlib", "extendedcrafting"),
+        saveCombine(output, "ae2wtlib/united_etc", conditions("ae2wtlib"),
                 "extendedterminal:wireless_united_terminal", "ae2:wireless_crafting_terminal",
                 "wireless_united_terminal", "crafting");
-        saveCombine(output, "ae2wtlib/united_etp", conditions("ae2wtlib", "extendedcrafting"),
+        saveCombine(output, "ae2wtlib/united_etp", conditions("ae2wtlib"),
                 "extendedterminal:wireless_united_terminal", "ae2wtlib:wireless_pattern_encoding_terminal",
                 "wireless_united_terminal", "pattern_encoding");
         saveUpgrade(output, "ae2wtlib/upgrade_wireless_et_terminal", conditions("ae2wtlib"),
                 "extendedterminal:wireless_et_terminal", "wireless_et_terminal");
-        saveUpgrade(output, "ae2wtlib/upgrade_wireless_united_terminal", conditions("ae2wtlib", "extendedcrafting"),
+        saveUpgrade(output, "ae2wtlib/upgrade_wireless_united_terminal", conditions("ae2wtlib"),
                 "extendedterminal:wireless_united_terminal", "wireless_united_terminal");
     }
 
     private static void buildUnitedTerminalCrafting(JsonRecipeOutput output) {
+        saveShapeless(output, "extendedterminal/united_terminal",
+                conditionsFor(new String[]{}, "re-avaritia", "avaritia-neo", "extendedcrafting"),
+                "extendedterminal:united_terminal",
+                "minecraft:crafting_table", "myotus:compat_processor", "ae2:dense_energy_cell");
         saveUnitedTerminal(output, "reavaritia/united_terminal",
                 conditionsFor(new String[]{"re-avaritia"}, "avaritia-neo", "extendedcrafting"),
                 "extendedterminal:sculk_terminal", "extendedterminal:nether_terminal",
